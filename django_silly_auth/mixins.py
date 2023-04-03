@@ -18,14 +18,14 @@ class SillyAuthUserMixin(models.Model):
         default=uuid.uuid4,
         editable=False,
     )
-    username_validator = UnicodeUsernameValidator() # same as AbstractUser
+    username_validator = UnicodeUsernameValidator()  # same as AbstractUser
 
     username = models.CharField(
         _("username"),
         max_length=150,
         unique=True,
         help_text=_(
-            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+            _("Required. 150 characters or fewer. Letters, digits and ./+/-/_ only."),
         ),
         validators=[username_validator],
         error_messages={
@@ -69,3 +69,6 @@ class SillyAuthUserMixin(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"<User (DSA): {self.username}>"

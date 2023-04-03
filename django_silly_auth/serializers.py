@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.contrib.auth.password_validation import validate_password
+
 from rest_framework import serializers
 
 User = get_user_model()
@@ -94,5 +95,33 @@ class EmailSerializer(serializers.Serializer):
 
         if email_errors:
             errors['email'] = email_errors
+            raise serializers.ValidationError(errors)
+        return data
+
+
+class LoginSerializer(serializers.Serializer):
+    credential = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        credential = data.get('credential')
+        password = data.get('password')
+        errors = dict()
+        credential_errors = list()
+        password_errors = list()
+
+        if "@" in credential:
+            if not User.objects.filter(email=credential).exists():
+                credential_errors += ["Email not found", ]
+        else:
+            if not User.objects.filter(username=credential).exists():
+                credential_errors += ["User not found", ]
+
+        if credential_errors:
+            errors['username'] = credential_errors
+        if password_errors:
+            errors['password'] = password_errors
+
+        if errors:
             raise serializers.ValidationError(errors)
         return data

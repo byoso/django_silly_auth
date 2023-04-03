@@ -1,10 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from django.shortcuts import redirect
-from django.contrib.auth.hashers import check_password
 
 from django_silly_auth.serializers import (
     GetAllUsersSerializer,
@@ -20,28 +19,6 @@ from django_silly_auth.utils import (
 from django_silly_auth.utils import warning
 
 User = get_user_model()
-
-
-@api_view(['POST'])
-def login_api(request):
-    credential = request.data.get('credential')
-    password = request.data.get('password')
-    if not credential or not password:
-        return Response({'error': 'no credential or password provided'})
-    if "@" in credential:
-        user = User.objects.filter(email=credential).first()
-    else:
-        user = User.objects.filter(username=credential).first()
-
-    match = check_password(password, user.password)
-    if not match:
-        return Response({'error': 'invalid credential or password'})
-    if not user.is_confirmed:
-        return Response({'error': 'account not confirmed, check your email or ask for a new confirmation email'})
-    if not user.is_active:
-        return Response({'error': 'account not active, contact the administrator'})
-
-    return Response({'token': user.auth_token.key})
 
 
 @api_view(['GET'])

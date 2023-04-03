@@ -1,13 +1,11 @@
 from django.urls import path
-# from rest_framework.authtoken.views import obtain_auth_token
-from django_silly_auth.views.custom_login import login_with_auth_token
-from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
-
-from django_silly_auth.views import api_views, views
-
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+
+from django_silly_auth.views.api_custom_login import login_with_auth_token
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth.views import api_views, views
 
 User = get_user_model()
 
@@ -24,7 +22,7 @@ urlpatterns = [
 if conf["ALLOW_CREATE_USER_ENDPOINT"]:
     urlpatterns += [path('users/', api_views.UserView.as_view())]
 if conf["ALLOW_LOGIN_ENDPOINT"]:
-    urlpatterns += [path('token/login/', login_with_auth_token, name="obtain_auth_token")]
+    urlpatterns += [path('token/login/', login_with_auth_token, name="login_with_auth_token")]
 if conf["ALLOW_LOGOUT_ENDPOINT"]:
     urlpatterns += [path('token/logout/', api_views.logout_api_view, name="logout_api_view")]
 if conf["ALLOW_EMAIL_CONFIRM_ENDPOINT"]:

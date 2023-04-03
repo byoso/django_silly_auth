@@ -6,6 +6,7 @@ SILLY_AUTH_SETTINGS = {
     # General settings
     "SITE_NAME": None,  # str used in templates if provided
     "SITE_URL": None,  # http:// entry url ('index') used in templates if provided
+    "USE_DRF": True,  # TODO: False for only classic django views
 
     "GET_ALL_USERS": False,  # True for dev tests only, opens the endpoint
     "PRINT_WARNINGS": True,  # print warnings to terminal

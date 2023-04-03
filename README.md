@@ -27,7 +27,7 @@ Currently only works with Django Rest Framework, not with classic Django.
 |Endpoint / SILLY_AUTH config | method | form-data | Permission | Effects |
 |---|---|---|---|---|
 ALLOW_LOGIN_ENDPOINT = True
-| `token/login/` | POST | username, password | - | get a jwt token |
+| `token/login/` | POST | credential, password | - | get a jwt token |
 ALLOW_LOGOUT_ENDPOINT = True
 | `token/logout/` | GET | - | IsAuthenticated | force delete token |
 ALLOW_CREATE_USER_ENDPOINT
@@ -47,6 +47,9 @@ ALLOW_CHANGE_EMAIL_ENDPOINT = True
 | `` |  |  |  |  |
 | `` |  |  |  |  |
 | `` |  |  |  |  |
+
+## Credential
+`credential` is a field that expects an email OR a username, both can match as well.
 
 ## Autorization with jwt token
 If `IsAuthenticated` is needed, add this in your headers:
