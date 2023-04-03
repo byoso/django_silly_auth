@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth import get_user_model
-from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.decorators import login_required
 
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
@@ -27,8 +25,8 @@ def reset_password(request, token):
             return render(request, conf["RESET_PASSWORD_TEMPLATE"], {'form': form})
 
     if user:
-        if not user.confirmed:
-            user.confirmed = True
+        if not user.is_confirmed:
+            user.is_confirmed = True
             user.save()
         # login(request, user)
         context = {
@@ -40,7 +38,6 @@ def reset_password(request, token):
         return render(request, conf["RESET_PASSWORD_TEMPLATE"], context)
 
 
-@login_required
 def password_reset_done(request):
     context = {
         "site_name": conf["SITE_NAME"],
@@ -93,6 +90,5 @@ def confirm_new_email(request, token):
 
 def email_change_done(request):
     context = {
-
     }
-    return render(request, conf["NEW_EMAIL_DONE_TEMPLATE"], context)
+    return render(request, conf["NEW_EMAIL_CONFIRMED_DONE_TEMPLATE"], context)

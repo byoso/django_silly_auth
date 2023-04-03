@@ -26,7 +26,7 @@ class SillyAuthUserMixin(models.Model):
 
 
     new_email = models.EmailField(blank=True, null=True, unique=True)
-    confirmed = models.BooleanField(default=False)
+    is_confirmed = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -50,4 +50,3 @@ class SillyAuthUserMixin(models.Model):
             print("Token error:", e)
             return None
         return get_object_or_404(get_user_model(), id=pk)
-

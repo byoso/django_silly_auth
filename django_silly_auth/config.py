@@ -54,8 +54,10 @@ SILLY_AUTH_SETTINGS = {
 
 }
 
-
-for key in settings.SILLY_AUTH:
-    if key not in SILLY_AUTH_SETTINGS:
-        raise SillyAuthError(f"Unexpected key in settings.SILLY_AUTH: '{key}'")
-    SILLY_AUTH_SETTINGS[key] = settings.SILLY_AUTH[key]
+try:
+    for key in settings.SILLY_AUTH:
+        if key not in SILLY_AUTH_SETTINGS:
+            raise SillyAuthError(f"Unexpected key in settings.SILLY_AUTH: '{key}'")
+        SILLY_AUTH_SETTINGS[key] = settings.SILLY_AUTH[key]
+except AttributeError:
+    pass

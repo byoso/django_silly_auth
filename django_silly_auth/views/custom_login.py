@@ -19,7 +19,7 @@ class LoginWithAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         # custom part here:########################
-        if not user.confirmed and not user.is_superuser:
+        if not user.is_confirmed and not user.is_superuser:
             msg = _('Account not confirmed. Please check your email for a confirmation link.')
             raise ValidationError(msg, code='authorization')
         # end of customization ####################

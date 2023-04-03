@@ -36,7 +36,7 @@ def login_api(request):
     match = check_password(password, user.password)
     if not match:
         return Response({'error': 'invalid credential or password'})
-    if not user.confirmed:
+    if not user.is_confirmed:
         return Response({'error': 'account not confirmed, check your email or ask for a new confirmation email'})
     if not user.is_active:
         return Response({'error': 'account not active, contact the administrator'})
@@ -50,7 +50,7 @@ def confirm_email(request, token):
     """Recieves the token given by email and confirms the user's account"""
     user = User.verify_jwt_token(token)
     if user:
-        user.confirmed = True
+        user.is_confirmed = True
         user.save()
         return Response({'success': 'account confirmed'})
     return Response({'error': 'invalid token'})
@@ -68,7 +68,7 @@ def resend_email_confirmation(request):
     else:
         user = User.objects.filter(username=credential).first()
     if user:
-        if user.confirmed:
+        if user.is_confirmed:
             return Response({'error': 'account already confirmed'})
         send_confirm_email(request, user)
         return Response({'success': 'email sent for password reset'})
@@ -106,8 +106,8 @@ def reset_password(request, token):
     """Recieves the token given by email and confirms the user's account"""
     user = User.verify_jwt_token(token)
     if user:
-        if not user.confirmed:
-            user.confirmed = True
+        if not user.is_confirmed:
+            user.is_confirmed = True
             user.save()
         if conf["PASSWORD_RESET_REDIRECT"]:
             return redirect(conf["PASSWORD_RESET_REDIRECT"])

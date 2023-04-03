@@ -1,6 +1,14 @@
+# environment
 _project_fake/
 _users/
 .venv/
 manage.py
 __pycache__/
 *.sqlite3
+
+
+# packaging
+.eggs/
+build/
+dist/
+django_silly_auth.egg-info/

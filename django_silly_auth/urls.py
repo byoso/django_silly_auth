@@ -14,8 +14,8 @@ User = get_user_model()
 
 @receiver(pre_save, sender=User)
 def superuser_is_always_confirmed(sender, instance, **kwargs):
-    if instance.is_superuser and not instance.confirmed:
-        instance.confirmed = True
+    if instance.is_superuser and not instance.is_confirmed:
+        instance.is_confirmed = True
 
 
 urlpatterns = [

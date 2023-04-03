@@ -7,7 +7,6 @@ from django.contrib.auth.password_validation import validate_password
 
 class NewPasswordForm(forms.Form):
 
-
     password = forms.CharField(
         max_length=64, widget=forms.PasswordInput,
         validators=[validate_password]
