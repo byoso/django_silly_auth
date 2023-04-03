@@ -1,6 +1,19 @@
-# Django Silly Auth
+# Django Silly Auth (WIP)
 
-## DRF only
+## Why one more authentication system for Django and DRF? again !
+
+I've used a few ones, and did not find the one that behaves the way I want,
+efficient, but flexible, I want to win time, and get what I need straight to the point.
+
+The aim of DSA it to provide a good-enought-to-go authentication out of the box, but still remains highly
+modulable throught its SILLY_AUTH config in **settings.py**, so it is always possible to improve your
+authentication when you have the time for it.
+
+If you're building a SPA, you can go with DSA as it is at first, and as your work progresses,
+switch off the default urls, views and templates to add yours.
+
+
+## DRF only (for now)
 
 Currently only works with Django Rest Framework, not with classic Django.
 
@@ -30,7 +43,7 @@ ALLOW_CHANGE_PASSWORD_ENDPOINT = True
 | `password/change/` | POST | password, password2 | IsAuthenticated | Change the password |
 ALLOW_CHANGE_EMAIL_ENDPOINT = True
 | `email/request_change/` | POST | email | IsAuthenticated | Send a confirmation email for activating the new email |
-| `` |  |  |  |  |
+| `email/change/done/` | GET |  |  | Displays a confirmation template |
 | `` |  |  |  |  |
 | `` |  |  |  |  |
 | `` |  |  |  |  |

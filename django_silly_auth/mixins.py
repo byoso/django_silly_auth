@@ -5,6 +5,10 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.exceptions import ValidationError
+
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 
 
@@ -14,16 +18,21 @@ class SillyAuthUserMixin(models.Model):
         default=uuid.uuid4,
         editable=False,
     )
+    username_validator = UnicodeUsernameValidator() # same as AbstractUser
 
-    # TODO: Ajouter des validateurs avec et sans @
     username = models.CharField(
+        _("username"),
         max_length=150,
         unique=True,
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
     )
-    email = models.EmailField(
-        unique=True,
-    )
-
+    email = models.EmailField(_("email address"), unique=True)
 
     new_email = models.EmailField(blank=True, null=True, unique=True)
     is_confirmed = models.BooleanField(default=False)
@@ -50,3 +59,13 @@ class SillyAuthUserMixin(models.Model):
             print("Token error:", e)
             return None
         return get_object_or_404(get_user_model(), id=pk)
+
+    def clean(self):
+        if "@" in self.username:
+            raise ValidationError(
+                {'username': _("username can't contain '@' character")})
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
