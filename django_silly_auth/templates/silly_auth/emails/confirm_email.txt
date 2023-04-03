@@ -1,0 +1,13 @@
+Dear {{ user.username }},
+
+To confirm your and activate your email, click on the following link:
+{{ link }}
+
+If you have not registered an account,
+please just ignore this message.
+
+Best regards
+
+{% if site_name %}
+{{ site_name }}
+{% endif %}

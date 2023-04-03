@@ -1,0 +1,32 @@
+{% extends 'silly_auth/_base.html' %}
+
+
+{% block content %}
+
+<h1 class="title h1">New Email confirmation</h1>
+
+Account : {{ user.username }} <br>
+New email: {{ user.new_email }} <br>
+<hr>
+
+{% if site_name %}
+<h2 class="subtitle h2">{{ site_name }}</h2>
+{% endif %}
+
+<form method="POST">
+  {% csrf_token %}
+
+  Enter your password
+  <br>
+  {{ form.password }}
+  {% if form.errors %}
+      {% for error in form.errors.password %}
+      <p style="color: red;">{{ error }}</p>
+      {% endfor %}
+  {% endif %}
+  <br>
+  <button type="submit" class="button is-primary btn btn-primary m-2">Submit</button>
+
+</form>
+
+{% endblock content %}

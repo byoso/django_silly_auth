@@ -1,0 +1,6 @@
+_project_fake/
+_users/
+.venv/
+manage.py
+__pycache__/
+*.sqlite3

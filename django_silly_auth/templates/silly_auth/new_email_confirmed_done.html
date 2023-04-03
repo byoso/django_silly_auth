@@ -1,0 +1,23 @@
+{% extends 'silly_auth/_base.html' %}
+
+{% block content %}
+
+
+  <h1 class="title h1">Email changed succesfully</h1>
+
+  <p>
+    Your email has been changed, now your can log in again with your new email.
+
+  </p>
+
+  {% if link %}
+    {% if site_name %}
+      <a href="{{ link }}">Back to {{ site_name }}</a>
+    {% else %}
+      <a href="{{ link }}">Back to the website</a>
+    {% endif %}
+  {% endif %}
+
+
+
+{% endblock content %}
