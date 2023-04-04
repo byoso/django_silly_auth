@@ -2,13 +2,15 @@ from django.conf import settings
 from django_silly_auth.exceptions import SillyAuthError
 from django_silly_auth.templates.helpers import dsa_template_path
 
+print("=== IMPORT django_silly_auth.config")
 
 SILLY_AUTH_SETTINGS = {
     # General settings
     "SITE_NAME": None,  # str used in templates if provided
     "SITE_URL": None,  # http:// entry url ('index') used in templates if provided
-    "USE_DRF": True,  # TODO: False for only classic django views
-    "BASE_TEMPLATE": dsa_template_path("silly_auth/_base.html"),  # if you use the provided views
+    "USE_DRF": True,  # False for only classic django views
+    "USE_ALL_TEMPLATES": False,  # False recommended if you use DRF, otherwise True is good to go fast.
+    "BASE_TEMPLATE": dsa_template_path("silly_auth/_base.html"),  # if you use the provided templates
 
     "GET_ALL_USERS": False,  # True for dev tests only, opens the endpoint
     "PRINT_WARNINGS": True,  # print warnings to terminal
