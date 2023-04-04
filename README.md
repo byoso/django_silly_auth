@@ -1,4 +1,4 @@
-# Django Silly Auth (WIP)
+# Django Silly Auth (Beta WIP)
 
 ## Why one more authentication system for Django and DRF? again !
 
@@ -6,7 +6,7 @@ I've used a few ones, and did not find the one that behaves the way I want,
 efficient, but flexible, I want to win time, and get what I need straight to the point.
 
 The aim of DSA it to provide a good-enought-to-go authentication out of the box, but still remains highly
-modulable throught its SILLY_AUTH config in **settings.py**, so it is always possible to improve your
+modular through its SILLY_AUTH config in **settings.py**, so it is always possible to improve your
 authentication when you have the time for it.
 
 If you're building a SPA, you can go with DSA as it is at first, and as your work progresses,

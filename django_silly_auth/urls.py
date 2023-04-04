@@ -9,7 +9,7 @@ from django_silly_auth.views import api_views, views
 
 User = get_user_model()
 
-
+# Signal interceptor to make sure that superusers are always confirmed
 @receiver(pre_save, sender=User)
 def superuser_is_always_confirmed(sender, instance, **kwargs):
     if instance.is_superuser and not instance.is_confirmed:
@@ -18,9 +18,15 @@ def superuser_is_always_confirmed(sender, instance, **kwargs):
 
 urlpatterns = [
 ]
+# for testing
+if conf["TEST_TEMPLATES"]:
+    urlpatterns += [
+        path('_test/', views.test_templates_view, name="test_templates_view"),
+        path('_test_users/', views.test_users_view, name="test_users_view"),
+        ]
 
 if conf["ALLOW_CREATE_USER_ENDPOINT"]:
-    urlpatterns += [path('users/', api_views.UserView.as_view())]
+    urlpatterns += [path('users/', api_views.UserView.as_view(), name="users")]
 if conf["ALLOW_LOGIN_ENDPOINT"]:
     urlpatterns += [path('token/login/', login_with_auth_token, name="login_with_auth_token")]
 if conf["ALLOW_LOGOUT_ENDPOINT"]:

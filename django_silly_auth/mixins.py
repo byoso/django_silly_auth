@@ -6,8 +6,11 @@ from django.shortcuts import get_object_or_404
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.exceptions import ValidationError
+from django.core.validators import (
+    MinLengthValidator,
+    MaxLengthValidator,
+)
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 
@@ -18,7 +21,6 @@ class SillyAuthUserMixin(models.Model):
         default=uuid.uuid4,
         editable=False,
     )
-    username_validator = UnicodeUsernameValidator()  # same as AbstractUser
 
     username = models.CharField(
         _("username"),
@@ -27,9 +29,14 @@ class SillyAuthUserMixin(models.Model):
         help_text=_(
             _("Required. 150 characters or fewer. Letters, digits and ./+/-/_ only."),
         ),
-        validators=[username_validator],
+        validators=[
+            MinLengthValidator(5),
+            MaxLengthValidator(150)
+        ],
         error_messages={
             "unique": _("A user with that username already exists."),
+            "max_length": _("Username must be less than 150 characters."),
+            "invalid": _("Username must contain only letters, digits and ./+/-/_ characters."),
         },
     )
     email = models.EmailField(_("email address"), unique=True)

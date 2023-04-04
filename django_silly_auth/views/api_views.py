@@ -1,9 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
+from django.utils.translation import gettext_lazy as _
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.exceptions import (
+    ValidationError,
+    PermissionDenied,
+    NotFound,
+    AuthenticationFailed
+    )
 
 from django_silly_auth.serializers import (
     GetAllUsersSerializer,
@@ -29,8 +36,9 @@ def confirm_email(request, token):
     if user:
         user.is_confirmed = True
         user.save()
-        return Response({'success': 'account confirmed'})
-    return Response({'error': 'invalid token'})
+        return Response({'success': _('account confirmed')})
+    msg = "Invalid Token"
+    raise ValidationError(msg, code='authorization')
 
 
 @api_view(['POST'])
@@ -39,17 +47,18 @@ def resend_email_confirmation(request):
     """Reends an email to the user to confirm his account"""
     credential = request.data.get('credential')
     if not credential:
-        return Response({'error': 'no credential provided'})
+        raise ValidationError(_("no credential provided"), code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
     else:
         user = User.objects.filter(username=credential).first()
     if user:
         if user.is_confirmed:
-            return Response({'error': 'account already confirmed'})
+            return Response({'error': _('account already confirmed')})
         send_confirm_email(request, user)
-        return Response({'success': 'email sent for password reset'})
-    return Response({'error': 'user not found'})
+        return Response({'success': _('email sent for password reset')})
+    msg = "Invalid credential"
+    raise ValidationError(msg, code='authorization')
 
 
 @api_view(['GET'])
@@ -57,7 +66,7 @@ def resend_email_confirmation(request):
 def logout_api_view(request):
     """Destroys the auth token"""
     request.user.auth_token.delete()
-    return Response({'success': 'logged out, token destroyed'})
+    return Response({'success': _('logged out, token destroyed')})
 
 
 @api_view(['POST'])
@@ -66,15 +75,16 @@ def request_password_reset(request):
     """Sends an email to the user with a link to reset their password"""
     credential = request.data.get('credential')
     if not credential:
-        return Response({'error': 'no credential provided'})
+        raise ValidationError(_("no credential provided"), code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
     else:
         user = User.objects.filter(username=credential).first()
     if user:
         send_password_reset_email(request, user)
-        return Response({'success': 'email sent for password reset'})
-    return Response({'error': 'user not found'})
+        return Response({'success': _('email sent for password reset')})
+    msg = "Invalid credential"
+    raise ValidationError(msg, code='authorization')
 
 
 @api_view(['GET'])
@@ -88,8 +98,9 @@ def reset_password(request, token):
             user.save()
         if conf["PASSWORD_RESET_REDIRECT"]:
             return redirect(conf["PASSWORD_RESET_REDIRECT"])
-        return Response({'success': 'logged in from email'})
-    return Response({'error': 'invalid token'})
+        return Response({'success': _(f'{user.name} identifyed, password changed')})
+    msg = _("Invalid Token")
+    raise ValidationError(msg, code='authorization')
 
 
 class UserView(APIView):
@@ -106,7 +117,8 @@ class UserView(APIView):
             serializer = GetAllUsersSerializer(users, many=True)
             return Response({'users': serializer.data})
         else:
-            return Response({'error': 'Not allowed'})
+            msg = _("Request not allowed")
+            raise PermissionDenied(msg, code='authorization')
 
     def post(self, request, format=None):
         """Create a new user"""
@@ -116,13 +128,18 @@ class UserView(APIView):
             user.set_password(request.data['password'])
             user.save()
             serializer = GetAllUsersSerializer(user)
+            msg = {
+                "user": serializer.data,
+            }
 
             if conf["EMAIL_SEND_ACCOUNT_CONFIRM_LINK"]:
+                msg["message"] = _("Account created, check your inbox to activate it")
                 send_confirm_email(request, user)
 
-            return Response({'user': serializer.data})
+            return Response(msg)
         else:
-            return Response({'error': serializer.errors})
+            msg = serializer.errors
+            raise ValidationError(msg, code='authorization')
 
 
 @api_view(['POST'])
@@ -135,8 +152,9 @@ def change_password(request):
         password = request.data.get('password')
         user.set_password(password)
         user.save()
-        return Response({'success': 'password changed'})
-    return Response({'error': serializer.errors})
+        return Response({'success': _('password changed')})
+    msg = serializer.errors
+    raise ValidationError(msg, code='authorization')
 
 
 @api_view(['POST'])
@@ -150,5 +168,6 @@ def change_email_request(request):
         user.save()
         send_confirm_email(request, user, new_email=True)
 
-        return Response({'success': 'New email saved, check your inbox to activate it'})
-    return Response({'error': serializer.errors})
+        return Response({'success': _('New email saved, check your inbox to activate it')})
+    msg = serializer.errors
+    raise ValidationError(msg, code='authorization')

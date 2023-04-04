@@ -1,0 +1,23 @@
+{% extends base_template|default:"silly_auth/_base.html" %}
+
+
+{% block content %}
+
+<h2 class="subtitle">Test users</h2>
+{% if users %}
+<ul>
+  {% for user in users %}
+  <li>
+    <p>{{ user.username }}</p>
+  </li>
+
+  {% endfor %}
+
+</ul>
+
+{% endif %}
+
+
+
+
+{% endblock content %}
