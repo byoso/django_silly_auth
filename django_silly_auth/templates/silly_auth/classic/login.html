@@ -1,0 +1,30 @@
+{% extends base_template %}
+
+{% block content %}
+<h1 class="h2 subtitle">Login</h1>
+<form method="post">
+    {% csrf_token %}
+
+<p>
+    {{ form.credential.label }} <br>
+    {{ form.credential }} <br>
+    {% for error in form.errors.credential %}
+    <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+</p>
+<p>
+    {{ form.password.label }} <br>
+    {{ form.password }} <br>
+    {% for error in form.errors.password %}
+    <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+    <br>
+    <a href="{% url 'classic_request_password_reset' %}">Forgot your password ?</a>
+</p>
+
+
+    <input type="submit" class="button is-success m-2 btn btn-success" value="log in">
+</form>
+
+
+{% endblock content %}

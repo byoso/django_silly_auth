@@ -3,6 +3,7 @@ from django.shortcuts import reverse
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 
 from smtplib import SMTPServerDisconnected
 
@@ -23,7 +24,10 @@ reset_password_endpoint = conf["RESET_PASSWORD_ENDPOINT"]
 def send_password_reset_email(request, user):
     token = user.get_jwt_token(expires_in=validity_time)
     domain = request.build_absolute_uri('/')[:-1]
-    link = domain + reverse(reset_password, args=[token])
+    if conf["FULL_CLASSIC"]:
+        link = domain + reverse('classic_reset_password', args=[token])
+    else:
+        link = domain + reverse(reset_password, args=[token])
     context = {
         'user': user,
         'link': link,
@@ -48,9 +52,14 @@ def send_confirm_email(request, user, new_email=False):
     token = user.get_jwt_token(expires_in=validity_time)
     domain = request.build_absolute_uri('/')[:-1]
     if new_email:
+        if conf["FULL_CLASSIC"]:
+            link = domain + reverse('classic_confirm_new_email', args=[token])
         link = domain + reverse('confirm_new_email', args=[token])
     else:
-        link = domain + reverse('confirm_email', args=[token])
+        if conf["FULL_CLASSIC"]:
+            link = domain + reverse('classic_confirm_email', args=[token])
+        else:
+            link = domain + reverse('confirm_email', args=[token])
     context = {
         'user': user,
         'link': link,

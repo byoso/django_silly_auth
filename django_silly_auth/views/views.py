@@ -8,6 +8,7 @@ from django_silly_auth.forms import NewPasswordForm, NewEmailConfirmForm
 from django_silly_auth.templates.helpers import dsa_template_path
 
 
+print("=== IMPORT django_silly_auth.views.views")
 
 User = get_user_model()
 
@@ -16,20 +17,20 @@ def test_templates_view(request):
     users = User.objects.all()
     context = {
         "users": users,
-        "title": "dsa render !",
+        "title": "dsa render test",
         "base_template": conf["BASE_TEMPLATE"],
     }
     return render(request, dsa_template_path("silly_auth/_test/_test.html"), context)
+
 
 def test_users_view(request):
     users = User.objects.all()
     context = {
         "users": users,
-        "title": "dsa render !",
+        "title": "dsa render test",
         "base_template": conf["BASE_TEMPLATE"],
     }
     return render(request, dsa_template_path("silly_auth/_test/_users.html"), context)
-
 
 
 def reset_password(request, token):
@@ -45,6 +46,7 @@ def reset_password(request, token):
             context = {
                 "link": conf["SITE_URL"],
                 "base_template": conf["BASE_TEMPLATE"],
+                "title": conf["TEMPLATES_TITLE"],
             }
             return render(request, conf["RESET_PASSWORD_DONE_TEMPLATE"], {'link': conf["SITE_URL"]})
         else:
@@ -54,12 +56,12 @@ def reset_password(request, token):
         if not user.is_confirmed:
             user.is_confirmed = True
             user.save()
-        # login(request, user)
         context = {
             "user": user,
             "site_name": conf["SITE_NAME"],
             "form": NewPasswordForm(),
             "base_template": conf["BASE_TEMPLATE"],
+            "title": conf["TEMPLATES_TITLE"],
         }
         return render(request, conf["RESET_PASSWORD_TEMPLATE"], context)
 
@@ -69,6 +71,7 @@ def password_reset_done(request):
         "site_name": conf["SITE_NAME"],
         "link": conf["SITE_URL"],
         "base_template": conf["BASE_TEMPLATE"],
+        "title": conf["TEMPLATES_TITLE"],
     }
     return render(request, conf["RESET_PASSWORD_DONE_TEMPLATE"], context)
 
@@ -90,6 +93,7 @@ def confirm_new_email(request, token):
                         "site_name": conf["SITE_NAME"],
                         "link": conf["SITE_URL"],
                         "base_template": conf["BASE_TEMPLATE"],
+                        "title": conf["TEMPLATES_TITLE"],
                     }
                     return render(request, conf["NEW_EMAIL_CONFIRMED_DONE_TEMPLATE"], context)
                 form.add_error('password', 'Invalid password')
@@ -98,6 +102,7 @@ def confirm_new_email(request, token):
                 "user": user,
                 "site_name": conf["SITE_NAME"],
                 "base_template": conf["BASE_TEMPLATE"],
+                "title": conf["TEMPLATES_TITLE"],
             }
             return render(request, conf["NEW_EMAIL_CONFIRM_TEMPLATE"], context)
 
@@ -110,6 +115,7 @@ def confirm_new_email(request, token):
                 "user": user,
                 "site_name": conf["SITE_NAME"],
                 "base_template": conf["BASE_TEMPLATE"],
+                "title": conf["TEMPLATES_TITLE"],
             }
             return render(request, conf["NEW_EMAIL_CONFIRM_TEMPLATE"], context)
     if conf["SITE_URL"]:
@@ -120,5 +126,6 @@ def confirm_new_email(request, token):
 def email_change_done(request):
     context = {
         "base_template": conf["BASE_TEMPLATE"],
+        "title": conf["TEMPLATES_TITLE"],
     }
     return render(request, conf["NEW_EMAIL_CONFIRMED_DONE_TEMPLATE"], context)

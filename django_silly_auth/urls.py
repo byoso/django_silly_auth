@@ -3,13 +3,17 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 
-from django_silly_auth.views.api_custom_login import login_with_auth_token
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
-from django_silly_auth.views import api_views, views
+from django_silly_auth.views import api_views, views, classics
+
+if conf["USE_DRF"]:
+    from django_silly_auth.views.api_custom_login import login_with_auth_token
+    print("=== login_with_auth_token FROM django_silly_auth.api_custom_login")
 
 print("=== IMPORT django_silly_auth.urls")
 
 User = get_user_model()
+
 
 # Signal interceptor to make sure that superusers are always confirmed
 @receiver(pre_save, sender=User)
@@ -102,3 +106,19 @@ if conf["ALLOW_CONFIRM_NEW_EMAIL_HOOK_ENDPOINT"]:
             name='email_change_done'
         )
     ]
+
+if conf["FULL_CLASSIC"]:
+    urlpatterns += [
+        path('classic_login/', classics.login_view, name='classic_login'),
+        path('classic_logout/', classics.logout_view, name='classic_logout'),
+        path('classic_signin/', classics.signin_view, name='classic_signin'),
+        path('classic_request_password_reset/', classics.request_password_reset, name='classic_request_password_reset'),
+        path('classic_reset_password/<token>', classics.reset_password, name='classic_reset_password'),
+        path('classic_change_username/', classics.change_username, name='classic_change_username'),
+        path('classic_change_email/', classics.change_email, name='classic_change_email'),
+        path('classic_confirm_email/<token>', classics.confirm_email, name='classic_confirm_email'),
+    ]
+    if conf["USE_CLASSIC_INDEX"]:
+        urlpatterns += [path('', classics.index, name='classic_index'),]
+    if conf["USE_CLASSIC_ACCOUNT"]:
+        urlpatterns += [path('classic_account/', classics.account, name='classic_account'),]

@@ -41,7 +41,7 @@ class SillyAuthUserMixin(models.Model):
     )
     email = models.EmailField(_("email address"), unique=True)
 
-    new_email = models.EmailField(blank=True, null=True, unique=True)
+    new_email = models.EmailField(blank=True, null=True, unique=False)
     is_confirmed = models.BooleanField(default=False)
 
     class Meta:
@@ -74,7 +74,7 @@ class SillyAuthUserMixin(models.Model):
         super().clean()
 
     def save(self, *args, **kwargs):
-        self.full_clean()
+        # self.full_clean()
         super().save(*args, **kwargs)
 
     def __str__(self):

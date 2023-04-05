@@ -1,0 +1,29 @@
+{% extends base_template %}
+
+
+{% block content %}
+
+<h1 class="h2 subtitle">Change Username</h1>
+
+Current username: {{ user.username }} <br>
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        {{ form.username.label }} <br>
+        {{ form.username }} <br>
+        {% for error in form.errors.username %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+
+    </p>
+    <p>
+        <input type="submit" class="button is-success m-2 btn btn-success" value="confirm">
+    </p>
+
+</form>
+
+
+
+{% endblock content %}

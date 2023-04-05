@@ -5,7 +5,7 @@
 I've used a few ones, and did not find the one that behaves the way I want,
 efficient, but flexible, I want to win time, and get what I need straight to the point.
 
-The aim of DSA it to provide a good-enought-to-go authentication out of the box, but still remains highly
+The aim of DSA it to provide a good-enough-to-go authentication out of the box, but still remains highly
 modular through its SILLY_AUTH config in **settings.py**, so it is always possible to improve your
 authentication when you have the time for it.
 

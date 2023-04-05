@@ -1,0 +1,19 @@
+{% extends base_template %}
+
+
+{% block content %}
+
+<h1 class="h2 subtitle">Account</h1>
+
+<h3>{{user.username}} - {{ user.email }}</h3>
+    secret id: {{ user.id }}
+    <hr>
+<p>
+   <a class="button is-primary m-2" href="{% url 'classic_change_username' %}">Change my Username</a>
+
+   <a class="button is-primary m-2" href="{% url 'classic_change_email' %}"> Change my email </a>
+
+   <a class="button is-primary m-2" href="{% url 'classic_request_password_reset' %}">Reset my password</a>
+</p>
+
+{% endblock content %}

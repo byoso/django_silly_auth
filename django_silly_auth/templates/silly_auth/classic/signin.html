@@ -1,0 +1,44 @@
+{% extends base_template %}
+
+<h1 class="h2 subtitle">Sign up</h1>
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        {{ form.username.label }} <br>
+        {{ form.username}} <br>
+        {% for error in form.errors.username %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.email.label }} <br>
+        {{ form.email }} <br>
+        {% for error in form.errors.email %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }} <br>
+        {{ form.password }} <br>
+        {% for error in form.errors.password %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password2.label }} <br>
+        {{ form.password2 }} <br>
+        {% for error in form.errors.password2 %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+        <input type="submit" value="Sign In">
+
+
+</form>
+
+
+{% endblock content %}
