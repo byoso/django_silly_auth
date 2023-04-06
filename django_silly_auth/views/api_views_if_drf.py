@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
@@ -31,6 +32,7 @@ print("=== IMPORT django_silly_auth.views.api_view_if_drf")
 User = get_user_model()
 
 
+@transaction.atomic
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def confirm_email(request, token):
@@ -44,6 +46,7 @@ def confirm_email(request, token):
     raise ValidationError(msg, code='authorization')
 
 
+@transaction.atomic
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def resend_email_confirmation(request):
@@ -64,6 +67,7 @@ def resend_email_confirmation(request):
     raise ValidationError(msg, code='authorization')
 
 
+@transaction.atomic
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def logout_api_view(request):
@@ -72,6 +76,7 @@ def logout_api_view(request):
     return Response({'success': _('logged out, token destroyed')})
 
 
+@transaction.atomic
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def request_password_reset(request):
@@ -90,6 +95,7 @@ def request_password_reset(request):
     raise ValidationError(msg, code='authorization')
 
 
+@transaction.atomic
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def reset_password(request, token):
@@ -106,6 +112,7 @@ def reset_password(request, token):
     raise ValidationError(msg, code='authorization')
 
 
+@transaction.atomic
 class UserView(APIView):
     permission_classes = []
 
@@ -145,6 +152,7 @@ class UserView(APIView):
             raise ValidationError(msg, code='authorization')
 
 
+@transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
@@ -160,6 +168,7 @@ def change_password(request):
     raise ValidationError(msg, code='authorization')
 
 
+@transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def change_email_request(request):

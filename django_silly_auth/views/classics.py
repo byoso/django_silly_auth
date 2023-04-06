@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.forms import (
@@ -26,6 +27,7 @@ print("=== IMPORT django_silly_auth.views.classics")
 User = get_user_model()
 
 
+@transaction.atomic
 def index(request):
     context = {
         "base_template": conf["BASE_TEMPLATE"],
@@ -33,7 +35,7 @@ def index(request):
     }
     return render(request, conf["CLASSIC_INDEX"], context)
 
-
+@transaction.atomic
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -77,6 +79,7 @@ def logout_view(request):
     return redirect('classic_index')
 
 
+@transaction.atomic
 @login_required
 def account(request):
     context = {
@@ -86,6 +89,7 @@ def account(request):
     return render(request, conf["CLASSIC_ACCOUNT"], context)
 
 
+@transaction.atomic
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -123,6 +127,7 @@ def signup_view(request):
     return render(request, conf["CLASSIC_SIGNUP"], context)
 
 
+@transaction.atomic
 def request_password_reset(request):
     if request.method == "POST":
         form = CredentialForm(request.POST)
@@ -175,6 +180,7 @@ def request_password_reset(request):
     return render(request, conf["CLASSIC_REQUEST_PASSWORD_RESET"], context)
 
 
+@transaction.atomic
 def reset_password(request, token):
     """Receive the token from the confirmation email and reset the password"""
     user = User.verify_jwt_token(token)
@@ -223,6 +229,7 @@ def reset_password(request, token):
     return render(request, conf["CLASSIC_RESET_PASSWORD"], context)
 
 
+@transaction.atomic
 @login_required
 def change_username(request):
     if request.method == 'POST':
@@ -259,6 +266,7 @@ def change_username(request):
     return render(request, conf["CLASSIC_CHANGE_USERNAME"], context)
 
 
+@transaction.atomic
 @login_required
 def change_email(request):
     if request.method == 'POST':
@@ -296,6 +304,7 @@ def change_email(request):
     return render(request, conf["CLASSIC_CHANGE_EMAIL"], context)
 
 
+@transaction.atomic
 def confirm_email(request, token):
     user = User.verify_jwt_token(token)
     if user is None:
@@ -322,6 +331,7 @@ def confirm_email(request, token):
         return redirect("classic_index")
 
 
+@transaction.atomic
 def request_resend_account_confirmation_email(request):
     if request.method == 'POST':
         form = CredentialForm(request.POST)

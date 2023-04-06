@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
+from django.db import transaction
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.forms import NewPasswordForm, NewEmailConfirmForm
@@ -12,6 +13,7 @@ print("=== IMPORT django_silly_auth.views.views")
 User = get_user_model()
 
 
+@transaction.atomic
 def test_templates_view(request):
     users = User.objects.all()
     context = {
@@ -22,6 +24,7 @@ def test_templates_view(request):
     return render(request, "silly_auth/_test/_test.html", context)
 
 
+@transaction.atomic
 def test_users_view(request):
     users = User.objects.all()
     context = {
@@ -32,6 +35,7 @@ def test_users_view(request):
     return render(request, "silly_auth/_test/_users.html", context)
 
 
+@transaction.atomic
 def reset_password(request, token):
     user = User.verify_jwt_token(token)
     if not user:
@@ -65,6 +69,7 @@ def reset_password(request, token):
         return render(request, conf["RESET_PASSWORD_TEMPLATE"], context)
 
 
+@transaction.atomic
 def password_reset_done(request):
     context = {
         "site_name": conf["SITE_NAME"],
@@ -75,6 +80,7 @@ def password_reset_done(request):
     return render(request, conf["RESET_PASSWORD_DONE_TEMPLATE"], context)
 
 
+@transaction.atomic
 def confirm_new_email(request, token):
     """Recieves the token given by email and confirms the user's account"""
     if request.method == 'POST':
@@ -122,6 +128,7 @@ def confirm_new_email(request, token):
     return HttpResponse('error: invalid token or no email change ongoing')
 
 
+@transaction.atomic
 def email_change_done(request):
     context = {
         "base_template": conf["BASE_TEMPLATE"],

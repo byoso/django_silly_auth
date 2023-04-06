@@ -74,7 +74,6 @@ SILLY_AUTH_SETTINGS = {
     "CLASSIC_RESET_PASSWORD": "silly_auth/classic/reset_password.html",
     "CLASSIC_REQUEST_RESEND_ACCOUNT_CONFIRMATION_EMAIL": "silly_auth/classic/request_resend_account_confirmation_email.html",
 
-
 }
 
 # Overwrite SILLY_AUTH_SETTINGS with datas from  settings.SILLY_AUTH
