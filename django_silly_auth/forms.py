@@ -139,6 +139,10 @@ class ResetPasswordForm(forms.Form):
         validators=[validate_password]
     )
 
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        return password
+
     def clean_password2(self):
         password = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']

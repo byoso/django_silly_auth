@@ -3,27 +3,39 @@
 {% block content %}
 <h1 class="h2 subtitle">Login</h1>
 <form method="post">
-    {% csrf_token %}
+  {% csrf_token %}
 
-<p>
-    {{ form.credential.label }} <br>
-    {{ form.credential }} <br>
-    {% for error in form.errors.credential %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-</p>
-<p>
-    {{ form.password.label }} <br>
-    {{ form.password }} <br>
-    {% for error in form.errors.password %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-    <br>
-    <a href="{% url 'classic_request_password_reset' %}">Forgot your password ?</a>
-</p>
+  <p>
+      {{ form.credential.label }} <br>
+      {{ form.credential }} <br>
+      <ul>
+        {% for error in form.errors.credential %}
+        <li style="color: red;">{{ error }}</li>
+        {% endfor %}
 
+      </ul>
+  </p>
+  <p>
+      {{ form.password.label }} <br>
+      {{ form.password }} <br>
+      <ul>
+        {% for error in form.errors.password %}
+        <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      <br>
+  </p>
 
-    <input type="submit" class="button is-success m-2 btn btn-success" value="log in">
+  <ul>
+    <li>
+      <a href="{% url 'classic_request_password_reset' %}">I forgot my password.</a>
+    </li>
+    <li>
+      <a href="{% url 'classic_signin' %}">My account is unconfirmed, please send me the confirmation email again.</a>
+    </li>
+  </ul>
+
+  <input type="submit" class="button is-success m-2 btn btn-success" value="log in">
 </form>
 
 

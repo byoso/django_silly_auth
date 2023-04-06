@@ -10,15 +10,11 @@
   <section class="section">
     <div class="container">
 
+
       <nav class="navbar is-fixed-top pl-2 pr-2" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="https://github.com/byoso/django_silly_auth" target="_blank">
-            <h1 class="title">DSA test - base template</h1>
-          </a>
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+            <h1 class="title">DSA test - custom base template</h1>
           </a>
         </div>
 
@@ -46,7 +42,7 @@
                 <a class="navbar-item" href="https://www.buymeacoffee.com/byoso" target="_blank">
                   Buy me a coffee
                 </a>
-                <a class="navbar-item" href="mailto:mail@mail.com">
+                <a class="navbar-item" href="mailto:peigne.plume@gmail.com">
                   Contact
                 </a>
                 <hr class="navbar-divider">
@@ -107,28 +103,17 @@
   </body>
 
 <script>
-// Bulma - notifications delete button
+// notifications delete button
 document.addEventListener('DOMContentLoaded', () => {
   (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
     const $notification = $delete.parentNode;
+
     $delete.addEventListener('click', () => {
       $notification.parentNode.removeChild($notification);
-    });
-  });
-});
-
-// Bulma - navbar burger
-document.addEventListener('DOMContentLoaded', () => {
-  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-  $navbarBurgers.forEach( el => {
-    el.addEventListener('click', () => {
-      const target = el.dataset.target;
-      const $target = document.getElementById(target);
-      el.classList.toggle('is-active');
-      $target.classList.toggle('is-active');
     });
   });
 });
 </script>
 
 </html>
+

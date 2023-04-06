@@ -1,4 +1,4 @@
-# Django Silly Auth (Beta WIP)
+# Django Silly Auth (WIP)
 
 ## Why one more authentication system for Django and DRF? again !
 
@@ -13,10 +13,6 @@ If you're building a SPA, you can go with DSA as it is at first, and as your wor
 switch off the default urls, views and templates to add yours.
 
 
-## DRF only (for now)
-
-Currently only works with Django Rest Framework, not with classic Django.
-
 <hr>
 
 # [WIKI doc](https://github.com/byoso/django_silly_auth/wiki)
@@ -29,3 +25,5 @@ Currently only works with Django Rest Framework, not with classic Django.
 - ## [SILLY_AUTH settings explained](https://github.com/byoso/django_silly_auth/wiki/SILLY_AUTH-settings-explained)
 
 - ## [API Endpoints](https://github.com/byoso/django_silly_auth/wiki/API-endpoints)
+
+- ## [Classic Django](https://github.com/byoso/django_silly_auth/wiki/Classic-Django)

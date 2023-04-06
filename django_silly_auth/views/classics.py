@@ -161,6 +161,7 @@ def request_password_reset(request):
 
 
 def reset_password(request, token):
+    """Receive the token from the confirmation email and reset the password"""
     user = User.verify_jwt_token(token)
     if user is None:
         return HttpResponse(_("Token invalid or expired"))
