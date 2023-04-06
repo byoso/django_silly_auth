@@ -5,7 +5,6 @@ from django.contrib.auth.hashers import check_password
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.forms import NewPasswordForm, NewEmailConfirmForm
-from django_silly_auth.templates.helpers import dsa_template_path
 
 
 print("=== IMPORT django_silly_auth.views.views")
@@ -20,7 +19,7 @@ def test_templates_view(request):
         "title": "dsa render test",
         "base_template": conf["BASE_TEMPLATE"],
     }
-    return render(request, dsa_template_path("silly_auth/_test/_test.html"), context)
+    return render(request, "silly_auth/_test/_test.html", context)
 
 
 def test_users_view(request):
@@ -30,7 +29,7 @@ def test_users_view(request):
         "title": "dsa render test",
         "base_template": conf["BASE_TEMPLATE"],
     }
-    return render(request, dsa_template_path("silly_auth/_test/_users.html"), context)
+    return render(request, "silly_auth/_test/_users.html", context)
 
 
 def reset_password(request, token):

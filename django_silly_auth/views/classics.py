@@ -1,15 +1,13 @@
 from django.http import HttpResponse, Http404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
-from django_silly_auth.forms import NewPasswordForm, NewEmailConfirmForm
-from django_silly_auth.templates.helpers import dsa_template_path
 from django_silly_auth.forms import (
     LoginForm,
     SignUpForm,

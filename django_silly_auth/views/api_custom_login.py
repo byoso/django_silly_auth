@@ -9,7 +9,7 @@ from rest_framework.serializers import ValidationError
 
 from django_silly_auth.serializers import LoginSerializer
 
-print("=== IMPORT django_silly_auth.api_custom_login")
+print("=== IMPORT django_silly_auth.views.api_custom_login")
 
 User = get_user_model()
 

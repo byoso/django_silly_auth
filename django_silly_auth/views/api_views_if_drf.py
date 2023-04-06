@@ -26,7 +26,7 @@ from django_silly_auth.utils import (
 from django_silly_auth.utils import warning
 
 
-print("=== IMPORT django_silly_auth.api_view_if_drf")
+print("=== IMPORT django_silly_auth.views.api_view_if_drf")
 
 User = get_user_model()
 
