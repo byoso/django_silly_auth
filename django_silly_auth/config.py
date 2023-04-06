@@ -65,9 +65,9 @@ SILLY_AUTH_SETTINGS = {
     # FULL_CLASSIC templates, if you use FULL_CLASSIC == True, change this to your own templates
     "USE_CLASSIC_INDEX": True,  # if False, your url route must have the name='classic_index'
     "CLASSIC_INDEX": dsa_template_path("silly_auth/classic/index.html"),
-    "USE_CLASSIC_ACCOUNT": True, # if False, your url route must have the name='classic_account'
+    "USE_CLASSIC_ACCOUNT": True,  # if False, your url route must have the name='classic_account'
     "CLASSIC_ACCOUNT": dsa_template_path("silly_auth/classic/account.html"),
-    "CLASSIC_SIGNIN": dsa_template_path("silly_auth/classic/signin.html"),
+    "CLASSIC_SIGNUP": dsa_template_path("silly_auth/classic/signup.html"),
     "CLASSIC_LOGIN": dsa_template_path("silly_auth/classic/login.html"),
     "CLASSIC_CHANGE_EMAIL": dsa_template_path("silly_auth/classic/change_email.html"),
     "CLASSIC_CHANGE_USERNAME": dsa_template_path("silly_auth/classic/change_username.html"),

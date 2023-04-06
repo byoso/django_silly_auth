@@ -112,7 +112,7 @@ if conf["FULL_CLASSIC"]:
     urlpatterns += [
         path('classic_login/', classics.login_view, name='classic_login'),
         path('classic_logout/', classics.logout_view, name='classic_logout'),
-        path('classic_signin/', classics.signin_view, name='classic_signin'),
+        path('classic_signup/', classics.signup_view, name='classic_signup'),
         path('classic_request_password_reset/', classics.request_password_reset, name='classic_request_password_reset'),
         path('classic_reset_password/<token>', classics.reset_password, name='classic_reset_password'),
         path('classic_change_username/', classics.change_username, name='classic_change_username'),

@@ -65,7 +65,7 @@ class LoginForm(forms.Form):
         return credential
 
 
-class SignInForm(forms.Form):
+class SignUpForm(forms.Form):
     username = forms.CharField(
         label=_("Username"),
         validators=[MinLengthValidator(4), MaxLengthValidator(64)],

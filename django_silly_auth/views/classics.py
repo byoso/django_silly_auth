@@ -12,7 +12,7 @@ from django_silly_auth.forms import NewPasswordForm, NewEmailConfirmForm
 from django_silly_auth.templates.helpers import dsa_template_path
 from django_silly_auth.forms import (
     LoginForm,
-    SignInForm,
+    SignUpForm,
     CredentialForm,
     ResetPasswordForm,
     ChangeUsernameForm,
@@ -49,7 +49,7 @@ def login_view(request):
             else:
                 user = authenticate(
                     request, username=credential, password=password)
-            if user is not None:
+            if user is not None and user.is_confirmed:
                 login(request, user)
                 return redirect('classic_index')
             else:
@@ -88,14 +88,14 @@ def account(request):
     return render(request, conf["CLASSIC_ACCOUNT"], context)
 
 
-def signin_view(request):
+def signup_view(request):
     if request.method == 'POST':
-        form = SignInForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = User(username=username, email=email, is_active=False)
+            user = User(username=username, email=email, is_active=True)
             user.set_password(password)
             user.save()
             send_confirm_email(request, user)
@@ -114,15 +114,15 @@ def signin_view(request):
                 "base_template": conf["BASE_TEMPLATE"],
                 "title": conf["TEMPLATES_TITLE"],
             }
-            return render(request, conf["CLASSIC_SIGNIN"], context)
+            return render(request, conf["CLASSIC_SIGNUP"], context)
 
-    form = SignInForm()
+    form = SignUpForm()
     context = {
         "form": form,
         "base_template": conf["BASE_TEMPLATE"],
         "title": conf["TEMPLATES_TITLE"],
     }
-    return render(request, conf["CLASSIC_SIGNIN"], context)
+    return render(request, conf["CLASSIC_SIGNUP"], context)
 
 
 def request_password_reset(request):
@@ -134,18 +134,27 @@ def request_password_reset(request):
                 user = User.objects.get(email=credential)
             else:
                 user = User.objects.get(username=credential)
-
             # user existence is checked by the form validation #
-            send_password_reset_email(request, user)
+            if user.is_active:
+                send_password_reset_email(request, user)
 
-            messages.add_message(
-                request, messages.INFO,
-                message=(_(
-                    "Please check your inbox "
-                    "to reset your password"
-                    )),
-                extra_tags="info"
-            )
+                messages.add_message(
+                    request, messages.INFO,
+                    message=(_(
+                        "Please check your inbox "
+                        "to reset your password"
+                        )),
+                    extra_tags="info"
+                )
+            else:
+                messages.add_message(
+                    request, messages.INFO,
+                    message=(_(
+                        "Your account is not active anymore, please contact the administrator, "
+                        "no email has been sent"
+                        )),
+                    extra_tags="info"
+                )
         else:
             context = {
                 "form": form,
@@ -300,11 +309,10 @@ def confirm_email(request, token):
             extra_tags="danger"
         )
         return redirect('classic_index')
-    if user is not None:
+    if user is not None and user.is_active:
         if user.new_email:
             user.email = user.new_email
             user.new_email = None
-        user.is_active = True
         user.is_confirmed = True
         user.save()
         messages.add_message(
