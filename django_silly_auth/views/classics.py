@@ -13,7 +13,7 @@ from django_silly_auth.templates.helpers import dsa_template_path
 from django_silly_auth.forms import (
     LoginForm,
     SignInForm,
-    RequestPasswordResetForm,
+    CredentialForm,
     ResetPasswordForm,
     ChangeUsernameForm,
     ChangeEmailForm,
@@ -55,8 +55,8 @@ def login_view(request):
             else:
                 messages.add_message(
                     request, messages.ERROR,
-                    message=_("Access denied: wrong password"),
-                    extra_tags="danger"),
+                    message=_("Wrong credentials or unconfirmed account"),
+                    extra_tags="warning"),
         else:
             context = {
                 "form": form,
@@ -98,7 +98,15 @@ def signin_view(request):
             user = User(username=username, email=email, is_active=False)
             user.set_password(password)
             user.save()
-            send_password_reset_email(request, user)
+            send_confirm_email(request, user)
+            messages.add_message(
+                request, messages.INFO,
+                message=(_(
+                    f"Please check your email '{user.email}' "
+                    "to confirm your account"
+                    )),
+                extra_tags="info"
+            )
             return redirect('classic_login')
         else:
             context = {
@@ -119,7 +127,7 @@ def signin_view(request):
 
 def request_password_reset(request):
     if request.method == "POST":
-        form = RequestPasswordResetForm(request.POST)
+        form = CredentialForm(request.POST)
         if form.is_valid():
             credential = form.cleaned_data['credential']
             if "@" in credential:
@@ -133,7 +141,7 @@ def request_password_reset(request):
             messages.add_message(
                 request, messages.INFO,
                 message=(_(
-                    f"Please check your email '{user.email}' "
+                    "Please check your inbox "
                     "to reset your password"
                     )),
                 extra_tags="info"
@@ -149,9 +157,9 @@ def request_password_reset(request):
                 conf["CLASSIC_REQUEST_PASSWORD_RESET"],
                 context
                 )
-    form = RequestPasswordResetForm()
+    form = CredentialForm()
     if request.user.is_authenticated:
-        form = RequestPasswordResetForm(initial={'credential': request.user.email})
+        form = CredentialForm(initial={'credential': request.user.email})
     context = {
         "form": form,
         "base_template": conf["BASE_TEMPLATE"],
@@ -164,22 +172,26 @@ def reset_password(request, token):
     """Receive the token from the confirmation email and reset the password"""
     user = User.verify_jwt_token(token)
     if user is None:
-        return HttpResponse(_("Token invalid or expired"))
+        messages.add_message(
+            request, messages.INFO,
+            message=(_(
+                "Invalid or expired token"
+                )),
+            extra_tags="danger"
+        )
+        return redirect('classic_index')
 
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
             user.set_password(form.cleaned_data['password'])
-            user.is_active = True
-            user.is_confirmed = True
             user.save()
-            login(request, user)
             messages.add_message(
                 request, messages.SUCCESS,
-                message=_("Your password have been reset"),
+                message=_("Your password have been reset, please login"),
                 extra_tags="success"
             )
-            return redirect('classic_account')
+            return redirect('classic_index')
         else:
             context = {
                 'form': form,
@@ -187,9 +199,16 @@ def reset_password(request, token):
                 "title": conf["TEMPLATES_TITLE"],
             }
             return render(request, conf["CLASSIC_RESET_PASSWORD"], context)
+
     form = ResetPasswordForm()
+    login(request, user)
+    messages.add_message(
+        request, messages.SUCCESS,
+        message=_("Your have been logged in by email confirmation, please reset your password."),
+        extra_tags="warning"
+    )
+
     context = {
-        'user': user,
         'form': form,
         "base_template": conf["BASE_TEMPLATE"],
         "title": conf["TEMPLATES_TITLE"],
@@ -240,18 +259,19 @@ def change_email(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             user = request.user
-            user.unconfirmed_email = email
+            user.new_email = email
             user.save()
-            send_confirm_email(request, user)
+            send_confirm_email(request, user, new_email=True)
 
             messages.add_message(
                 request, messages.INFO,
                 message=(_(
-                    "Please check your email to"
-                    f" confirm your address '{email}'"
+                    "Please check your inbox to"
+                    f" confirm your new address '{email}'"
                     )),
                 extra_tags="info"
             )
+            return redirect("classic_account")
         else:
             context = {
                 'form': form,
@@ -271,16 +291,83 @@ def change_email(request):
 
 def confirm_email(request, token):
     user = User.verify_jwt_token(token)
+    if user is None:
+        messages.add_message(
+            request, messages.INFO,
+            message=(_(
+                "Invalid or expired token"
+                )),
+            extra_tags="danger"
+        )
+        return redirect('classic_index')
     if user is not None:
-        user.email = user.new_email
-        user.new_email = None
+        if user.new_email:
+            user.email = user.new_email
+            user.new_email = None
+        user.is_active = True
         user.is_confirmed = True
         user.save()
-        login(request, user)
         messages.add_message(
             request, messages.SUCCESS,
-            message=_(f"Your new email have been confirmed: '{user.email}'"),
+            message=_("Your new email have been confirmed"),
             extra_tags="success"
         )
 
-        return redirect("classic_account")
+        return redirect("classic_index")
+
+
+def request_resend_account_confirmation_email(request):
+    if request.method == 'POST':
+        form = CredentialForm(request.POST)
+        if form.is_valid():
+            credential = form.cleaned_data['credential']
+            if "@" in credential:
+                user = User.objects.get(email=credential)
+            else:
+                user = User.objects.get(username=credential)
+
+            # user existence is checked by the form validation #
+
+            if user.is_confirmed:
+                messages.add_message(
+                    request, messages.INFO,
+                    message=(_(
+                        "Your account is already confirmed, "
+                        "no email has been sent."
+                        )),
+                    extra_tags="info"
+                )
+                return redirect("classic_login")
+
+            send_confirm_email(request, user)
+
+            messages.add_message(
+                request, messages.INFO,
+                message=(_(
+                    "Please check your inbox "
+                    "to confirm your account"
+                    )),
+                extra_tags="info"
+            )
+        else:
+            context = {
+                "form": form,
+                "base_template": conf["BASE_TEMPLATE"],
+                "title": conf["TEMPLATES_TITLE"],
+            }
+            return render(
+                request,
+                conf["CLASSIC_REQUEST_RESEND_ACCOUNT_CONFIRMATION_EMAIL"],
+                context
+                )
+    form = CredentialForm()
+    context = {
+        "form": form,
+        "base_template": conf["BASE_TEMPLATE"],
+        "title": conf["TEMPLATES_TITLE"],
+    }
+    return render(
+        request,
+        conf["CLASSIC_REQUEST_RESEND_ACCOUNT_CONFIRMATION_EMAIL"],
+        context
+        )

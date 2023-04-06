@@ -31,7 +31,12 @@
       <a href="{% url 'classic_request_password_reset' %}">I forgot my password.</a>
     </li>
     <li>
-      <a href="{% url 'classic_signin' %}">My account is unconfirmed, please send me the confirmation email again.</a>
+      <p>
+        <a href="{% url 'classic_request_resend_confirmation_email' %}">
+          My account exists but is unconfirmed, please send me the confirmation email again.
+        </a>
+      </p>
+
     </li>
   </ul>
 

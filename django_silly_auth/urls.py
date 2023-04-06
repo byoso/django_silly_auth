@@ -15,11 +15,12 @@ print("=== IMPORT django_silly_auth.urls")
 User = get_user_model()
 
 
-# Signal interceptor to make sure that superusers are always confirmed
+# Signal interceptor to make sure that superusers are always active
 @receiver(pre_save, sender=User)
-def superuser_is_always_confirmed(sender, instance, **kwargs):
+def new_superuser_is_always_active(sender, instance, **kwargs):
     if instance.is_superuser and not instance.is_confirmed:
         instance.is_confirmed = True
+        instance.is_active = True
 
 
 urlpatterns = [
@@ -117,6 +118,11 @@ if conf["FULL_CLASSIC"]:
         path('classic_change_username/', classics.change_username, name='classic_change_username'),
         path('classic_change_email/', classics.change_email, name='classic_change_email'),
         path('classic_confirm_email/<token>', classics.confirm_email, name='classic_confirm_email'),
+        path(
+            'classic_request_resend_confirmation_email/',
+            classics.request_resend_account_confirmation_email,
+            name='classic_request_resend_confirmation_email'
+        ),
     ]
     if conf["USE_CLASSIC_INDEX"]:
         urlpatterns += [path('', classics.index, name='classic_index'),]

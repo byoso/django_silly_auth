@@ -10,19 +10,9 @@ from smtplib import SMTPServerDisconnected
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.views.views import reset_password
 
-# email address to send emails from
-EMAIL_HOST_USER = settings.EMAIL_HOST_USER
-validity_time = conf["EMAIL_VALID_TIME"]
-email_confirm_account_template = conf["EMAIL_CONFIRM_ACCOUNT_TEMPLATE"]
-email_reset_password_template = conf["EMAIL_RESET_PASSWORD_TEMPLATE"]
-site_name = conf["SITE_NAME"]
-terminal_print = conf["EMAIL_TERMINAL_PRINT"]
-# print_warnings = conf["PRINT_WARNINGS"]
-reset_password_endpoint = conf["RESET_PASSWORD_ENDPOINT"]
-
 
 def send_password_reset_email(request, user):
-    token = user.get_jwt_token(expires_in=validity_time)
+    token = user.get_jwt_token(expires_in=conf["EMAIL_VALID_TIME"])
     domain = request.build_absolute_uri('/')[:-1]
     if conf["FULL_CLASSIC"]:
         link = domain + reverse('classic_reset_password', args=[token])
@@ -31,29 +21,29 @@ def send_password_reset_email(request, user):
     context = {
         'user': user,
         'link': link,
-        'site_name': site_name
+        'site_name': conf["SITE_NAME"]
     }
 
-    msg_text = get_template(email_reset_password_template)
-    if terminal_print:
-        print("from ", EMAIL_HOST_USER)
+    msg_text = get_template(conf["EMAIL_RESET_PASSWORD_TEMPLATE"])
+    if conf["EMAIL_TERMINAL_PRINT"]:
+        print("from ", settings.EMAIL_HOST_USER)
         print(msg_text.render(context))
 
     send_mail(
         'Password reset request',
         msg_text.render(context),
-        EMAIL_HOST_USER,
+        settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False,
     )
 
 
 def send_confirm_email(request, user, new_email=False):
-    token = user.get_jwt_token(expires_in=validity_time)
+    token = user.get_jwt_token(expires_in=conf["EMAIL_VALID_TIME"])
     domain = request.build_absolute_uri('/')[:-1]
     if new_email:
         if conf["FULL_CLASSIC"]:
-            link = domain + reverse('classic_confirm_new_email', args=[token])
+            link = domain + reverse('classic_confirm_email', args=[token])
         link = domain + reverse('confirm_new_email', args=[token])
     else:
         if conf["FULL_CLASSIC"]:
@@ -63,13 +53,13 @@ def send_confirm_email(request, user, new_email=False):
     context = {
         'user': user,
         'link': link,
-        'site_name': site_name,
+        'site_name': conf["SITE_NAME"],
     }
 
-    msg_text = get_template(email_confirm_account_template)
+    msg_text = get_template(conf["EMAIL_CONFIRM_ACCOUNT_TEMPLATE"])
 
-    if terminal_print:
-        print("from ", EMAIL_HOST_USER)
+    if conf["EMAIL_TERMINAL_PRINT"]:
+        print("from ", settings.EMAIL_HOST_USER)
         print(msg_text.render(context))
 
     if new_email:
@@ -80,11 +70,26 @@ def send_confirm_email(request, user, new_email=False):
     send_mail(
         'Confirm your new email',
         msg_text.render(context),
-        EMAIL_HOST_USER,
+        settings.EMAIL_HOST_USER,
         [email],
         fail_silently=False,
     )
 
+
+def send_generic_email(
+        subject,
+        message,
+        host=settings.EMAIL_HOST_USER,
+        to=None,  # list() of emails
+        fail_silently=False
+        ):
+    send_mail(
+        subject,
+        message,
+        host,
+        to,
+        fail_silently,
+    )
 
 class Color:
     """

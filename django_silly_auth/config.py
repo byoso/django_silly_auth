@@ -73,6 +73,7 @@ SILLY_AUTH_SETTINGS = {
     "CLASSIC_CHANGE_USERNAME": dsa_template_path("silly_auth/classic/change_username.html"),
     "CLASSIC_REQUEST_PASSWORD_RESET": dsa_template_path("silly_auth/classic/request_password_reset.html"),
     "CLASSIC_RESET_PASSWORD": dsa_template_path("silly_auth/classic/reset_password.html"),
+    "CLASSIC_REQUEST_RESEND_ACCOUNT_CONFIRMATION_EMAIL": "silly_auth/classic/request_resend_account_confirmation_email.html",
 
 
 }

@@ -111,7 +111,7 @@ class SignInForm(forms.Form):
         return email
 
 
-class RequestPasswordResetForm(forms.Form):
+class CredentialForm(forms.Form):
     credential = forms.CharField(
         label=_("Email or username"),
         validators=[])
