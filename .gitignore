@@ -5,7 +5,7 @@ _users/
 manage.py
 __pycache__/
 *.sqlite3
-
+/templates
 
 # packaging
 .eggs/

@@ -1,4 +1,4 @@
-# Django Silly Auth (Beta)
+# Django Silly Auth (v0.0.9 Beta)
 
 ## Why one more authentication system for Django and DRF? again !
 
@@ -19,4 +19,4 @@ switch off the default urls, views and templates to add yours.
 
 ## [Read this FIRST](https://github.com/byoso/django_silly_auth/wiki/Must-read-this-few-lines-!)
 
-### :coffee: [If you find this usefull, consider buying me a coffee](https://www.buymeacoffee.com/byoso)
+### :coffee: [If you find this package usefull, consider buying me a coffee](https://www.buymeacoffee.com/byoso)

@@ -19,7 +19,7 @@ SILLY_AUTH_SETTINGS = {
     # For development,
     "TEST_TEMPLATES": False,  # for dev only,  opens 2 "_test/" endpoint
     "GET_ALL_USERS": False,  # True for dev tests only, opens the GET 'users/' endpoint
-    "PRINT_WARNINGS": False,  # print warnings to terminal
+    "PRINT_WARNINGS": True,  # print warnings to terminal
     "VERBOSE": False,  # prints to terminal : imports
 
     # emails settings
@@ -81,6 +81,7 @@ SILLY_AUTH_SETTINGS = {
 
 class SillyAuthError(Exception):
     pass
+
 
 # Overwrite SILLY_AUTH_SETTINGS with datas from  settings.SILLY_AUTH
 try:
