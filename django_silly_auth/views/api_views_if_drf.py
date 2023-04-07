@@ -19,15 +19,16 @@ from django_silly_auth.serializers import (
     PasswordsSerializer,
     EmailSerializer,
     )
-from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.utils import (
     send_password_reset_email,
     send_confirm_email
 )
 from django_silly_auth.utils import warning
+import django_silly_auth
 
-
-print("=== IMPORT django_silly_auth.views.api_view_if_drf")
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.views.api_view_if_drf")
 
 User = get_user_model()
 

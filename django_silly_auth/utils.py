@@ -1,3 +1,7 @@
+
+from threading import Thread
+import time
+
 from django.conf import settings
 from django.shortcuts import reverse
 from django.core.mail import send_mail
@@ -7,8 +11,17 @@ from django.utils.translation import gettext_lazy as _
 
 from smtplib import SMTPServerDisconnected
 
-from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.views.views import reset_password
+import django_silly_auth
+
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.utils")
+
+
+def dsa_send_mail(*args, **kwargs):
+    send = Thread(target=send_mail, args=args, kwargs=kwargs, daemon=True)
+    send.start()
 
 
 def send_password_reset_email(request, user):
@@ -29,7 +42,7 @@ def send_password_reset_email(request, user):
         print("from ", settings.EMAIL_HOST_USER)
         print(msg_text.render(context))
 
-    send_mail(
+    dsa_send_mail(
         'Password reset request',
         msg_text.render(context),
         settings.EMAIL_HOST_USER,
@@ -67,7 +80,7 @@ def send_confirm_email(request, user, new_email=False):
     else:
         email = user.email
 
-    send_mail(
+    dsa_send_mail(
         'Confirm your new email',
         msg_text.render(context),
         settings.EMAIL_HOST_USER,
@@ -75,21 +88,6 @@ def send_confirm_email(request, user, new_email=False):
         fail_silently=False,
     )
 
-
-def send_generic_email(
-        subject,
-        message,
-        host=settings.EMAIL_HOST_USER,
-        to=None,  # list() of emails
-        fail_silently=False
-        ):
-    send_mail(
-        subject,
-        message,
-        host,
-        to,
-        fail_silently,
-    )
 
 class Color:
     """

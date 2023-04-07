@@ -12,7 +12,11 @@ from django.core.validators import (
     MaxLengthValidator,
 )
 
-from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth import SILLY_AUTH_SETTINGS as conf
+import django_silly_auth
+
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.mixins")
 
 
 class SillyAuthUserMixin(models.Model):

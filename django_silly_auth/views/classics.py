@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
-from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.forms import (
     LoginForm,
     SignUpForm,
@@ -21,8 +21,10 @@ from django_silly_auth.utils import (
     send_password_reset_email,
     send_confirm_email,
 )
+import django_silly_auth
 
-print("=== IMPORT django_silly_auth.views.classics")
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.views.classics")
 
 User = get_user_model()
 
@@ -139,8 +141,6 @@ def request_password_reset(request):
                 user = User.objects.get(username=credential)
             # user existence is checked by the form validation #
             if user.is_active:
-                send_password_reset_email(request, user)
-
                 messages.add_message(
                     request, messages.INFO,
                     message=(_(
@@ -149,6 +149,8 @@ def request_password_reset(request):
                         )),
                     extra_tags="info"
                 )
+                send_password_reset_email(request, user)
+
             else:
                 messages.add_message(
                     request, messages.INFO,

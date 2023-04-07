@@ -4,11 +4,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.db import transaction
 
-from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.forms import NewPasswordForm, NewEmailConfirmForm
+import django_silly_auth
 
-
-print("=== IMPORT django_silly_auth.views.views")
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.views.views")
 
 User = get_user_model()
 

@@ -1,4 +1,4 @@
-# Django Silly Auth (WIP)
+# Django Silly Auth (Beta)
 
 ## Why one more authentication system for Django and DRF? again !
 
@@ -15,15 +15,8 @@ switch off the default urls, views and templates to add yours.
 
 <hr>
 
-# [WIKI doc](https://github.com/byoso/django_silly_auth/wiki)
+# [WIKI documentation](https://github.com/byoso/django_silly_auth/wiki)
 
-- ## [Read this FIRST](https://github.com/byoso/django_silly_auth/wiki/Must-read-this-few-lines-!)
-- ## [Installation](https://github.com/byoso/django_silly_auth/wiki/Installation)
+## [Read this FIRST](https://github.com/byoso/django_silly_auth/wiki/Must-read-this-few-lines-!)
 
-- ## [Configure emails](https://github.com/byoso/django_silly_auth/wiki/Configure-the-emails-of-the-site)
-
-- ## [SILLY_AUTH settings explained](https://github.com/byoso/django_silly_auth/wiki/SILLY_AUTH-settings-explained)
-
-- ## [API Endpoints](https://github.com/byoso/django_silly_auth/wiki/API-endpoints)
-
-- ## [Classic Django](https://github.com/byoso/django_silly_auth/wiki/Classic-Django)
+### :coffee: [If you find this usefull, consider buying me a coffee](https://www.buymeacoffee.com/byoso)

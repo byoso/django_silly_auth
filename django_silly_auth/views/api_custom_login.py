@@ -8,8 +8,10 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.serializers import ValidationError
 
 from django_silly_auth.serializers import LoginSerializer
+import django_silly_auth
 
-print("=== IMPORT django_silly_auth.views.api_custom_login")
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.views.api_custom_login")
 
 User = get_user_model()
 

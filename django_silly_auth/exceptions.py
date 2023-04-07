@@ -1,2 +1,0 @@
-class SillyAuthError(Exception):
-    pass

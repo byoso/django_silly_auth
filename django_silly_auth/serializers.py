@@ -3,6 +3,10 @@ from django.core import exceptions
 from django.contrib.auth.password_validation import validate_password
 
 from rest_framework import serializers
+import django_silly_auth
+
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.serializers")
 
 User = get_user_model()
 

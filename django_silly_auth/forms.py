@@ -8,7 +8,10 @@ from django.core.validators import (
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
+import django_silly_auth
 
+if django_silly_auth.VERBOSE:
+    print("=== DSA IMPORT django_silly_auth.forms")
 
 User = get_user_model()
 
