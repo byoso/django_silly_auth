@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
@@ -22,7 +23,8 @@ from django_silly_auth.serializers import (
 from django_silly_auth import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.utils import (
     send_password_reset_email,
-    send_confirm_email
+    send_confirm_email,
+    delete_unconfirmed
 )
 from django_silly_auth.utils import warning
 import django_silly_auth
@@ -33,25 +35,72 @@ if django_silly_auth.VERBOSE:
 User = get_user_model()
 
 
-@transaction.atomic
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def confirm_email(request, token):
-    """Recieves the token given by email and confirms the user's account"""
-    user = User.verify_jwt_token(token)
-    if user:
-        user.is_confirmed = True
-        user.save()
-        return Response({'success': _('account confirmed')})
-    msg = "Invalid Token"
-    raise ValidationError(msg, code='authorization')
+# @transaction.atomic
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def confirm_email(request, token):
+#     """Recieves the token given by email and confirms the user's account"""
+#     user = User.verify_jwt_token(token)
+#     if user:
+#         user.is_confirmed = True
+#         user.save()
+#         token, created = Token.objects.get_or_create(user=user)
+#         return Response({'token': token.key})
+#     msg = "Invalid Token"
+#     raise ValidationError(msg, code='authorization')
+
+
+# @transaction.atomic
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def confirm_email(request, token):
+#     """Recieves the token given by email and confirms the user's account"""
+#     user = User.verify_jwt_token(token)
+#     if user:
+#         user.is_confirmed = True
+#         user.save()
+#         return Response({'success': _('account confirmed')})
+#     msg = "Invalid Token"
+#     raise ValidationError(msg, code='authorization')
+
+# @transaction.atomic
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def reset_password(request, token):
+#     """Recieves the token given by email and confirms the user's account"""
+#     user = User.verify_jwt_token(token)
+#     if user:
+#         if not user.is_confirmed:
+#             user.is_confirmed = True
+#             user.save()
+#             token, created = Token.objects.get_or_create(user=user)
+#             return Response({'token': token.key})
+#     msg = _("Invalid Token")
+#     raise ValidationError(msg, code='authorization')
+
+
+# @transaction.atomic
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def reset_password(request, token):
+#     """Recieves the token given by email and confirms the user's account"""
+#     user = User.verify_jwt_token(token)
+#     if user:
+#         if not user.is_confirmed:
+#             user.is_confirmed = True
+#             user.save()
+#         if conf["PASSWORD_RESET_REDIRECT"]:
+#             return redirect(conf["PASSWORD_RESET_REDIRECT"])
+#         return Response({'success': _(f'{user.name} identifyed, password changed')})
+#     msg = _("Invalid Token")
+#     raise ValidationError(msg, code='authorization')
 
 
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def resend_email_confirmation(request):
-    """Reends an email to the user to confirm his account"""
+    """Resends an email to the user to confirm his account"""
     credential = request.data.get('credential')
     if not credential:
         raise ValidationError(_("no credential provided"), code='authorization')
@@ -96,41 +145,24 @@ def request_password_reset(request):
     raise ValidationError(msg, code='authorization')
 
 
-@transaction.atomic
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def reset_password(request, token):
-    """Recieves the token given by email and confirms the user's account"""
-    user = User.verify_jwt_token(token)
-    if user:
-        if not user.is_confirmed:
-            user.is_confirmed = True
-            user.save()
-        if conf["PASSWORD_RESET_REDIRECT"]:
-            return redirect(conf["PASSWORD_RESET_REDIRECT"])
-        return Response({'success': _(f'{user.name} identifyed, password changed')})
-    msg = _("Invalid Token")
-    raise ValidationError(msg, code='authorization')
-
-
-@transaction.atomic
 class UserView(APIView):
     permission_classes = []
 
-    def get(self, request, format=None):
-        """GET all users, only for testing purposes"""
-        if conf["GET_ALL_USERS"]:
-            warning(
-                "WARNING: SILLY_AUTH[\"GET_ALL_USERS\"] "
-                "== True, set it to False in production."
-            )
-            users = User.objects.all()
-            serializer = GetAllUsersSerializer(users, many=True)
-            return Response({'users': serializer.data})
-        else:
-            msg = _("Request not allowed")
-            raise PermissionDenied(msg, code='authorization')
+    # def get(self, request, format=None):
+    #     """GET all users, only for testing purposes"""
+    #     if conf["GET_ALL_USERS"]:
+    #         warning(
+    #             "WARNING: SILLY_AUTH[\"GET_ALL_USERS\"] "
+    #             "== True, set it to False in production."
+    #         )
+    #         users = User.objects.all()
+    #         serializer = GetAllUsersSerializer(users, many=True)
+    #         return Response({'users': serializer.data})
+    #     else:
+    #         msg = _("Request not allowed")
+    #         raise PermissionDenied(msg, code='authorization')
 
+    @transaction.atomic
     def post(self, request, format=None):
         """Create a new user"""
         serializer = CreateUserSerializer(data=request.data)
@@ -138,14 +170,23 @@ class UserView(APIView):
             user = serializer.save()
             user.set_password(request.data['password'])
             user.save()
+            delete_unconfirmed(user)
+            message = _(
+                    f"Please check your inbox '{user.email}' "
+                    "to confirm your account. "
+            )
+            if conf["DELETE_UNCONFIRMED_TIME"] != 0.0:
+                message += _(
+                    "If your account is not confirmed in the next "
+                    f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "
+                    "it will be deleted."
+                )
             serializer = GetAllUsersSerializer(user)
             msg = {
                 "user": serializer.data,
             }
 
-            if conf["EMAIL_SEND_ACCOUNT_CONFIRM_LINK"]:
-                msg["message"] = _("Account created, check your inbox to activate it")
-                send_confirm_email(request, user)
+            send_confirm_email(request, user)
 
             return Response(msg)
         else:

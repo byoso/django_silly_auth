@@ -1,72 +1,33 @@
 from django.conf import settings
 
 # django_silly_auth version
-__version__ = "0.0.9"
+__version__ = "0.1.0"
+
+
+class SillyAuthError(Exception):
+    pass
 
 
 SILLY_AUTH_SETTINGS = {
-    # General settings
+    # Quick settings
+    "AUTO_SET": 'CLASSIC',  # 'CLASSIC', 'SPA', 'SILLY or 'TEST'
+    "DSA_PREFIX": 'auth/',
+
+    # Secondary settings
     "SITE_NAME": None,  # str used in templates if provided
     "SITE_URL": None,  # http:// entry url ('index') used in templates if provided
-    "USE_DRF": True,  # False for only classic django views
-    "FULL_CLASSIC": False,  # False if you use DRF, for Django classic True gets you all out of the box.
-    "BASE_TEMPLATE": "silly_auth/_base.html",  # if you use the provided templates
-    #  DSA dev only, FULL_CLASSIC testing base template:
-    # "BASE_TEMPLATE": "silly_auth/_test/_base.html",
+    "DELETE_UNCONFIRMED_TIME": 24.0,  # hours after what an unconfirmed account is deleted, O to set off
+
+    # Classic settings
+    "USE_CLASSIC": True,
+        # redirections
+    "USE_CLASSIC_INDEX": True,  # if False, your index route must have the name='classic_index'
+    "USE_CLASSIC_ACCOUNT": True,  # if False, your account route must have the name='classic_account'
+        # templates settings
     "TEMPLATES_TITLE": "D.S. AUTH",  # title if you use the provided templates
-
-
-    # For development,
-    "TEST_TEMPLATES": False,  # for dev only,  opens 2 "_test/" endpoint
-    "GET_ALL_USERS": False,  # True for dev tests only, opens the GET 'users/' endpoint
-    "PRINT_WARNINGS": True,  # print warnings to terminal
-    "VERBOSE": False,  # prints to terminal : imports
-
-    # emails settings
-    "EMAIL_TERMINAL_PRINT": True,  # print emails to terminal
-    "EMAIL_VALID_TIME": 600,  # seconds
-
-    # login / logout (DRF views if USE_DRF == True)
-    "ALLOW_LOGIN_ENDPOINT": True,  # activate this endpoint
-    "LOGIN_REDIRECT": None,  # set an endpoint to redirect to after successfull login
-    "ALLOW_LOGOUT_ENDPOINT": True,  # activate this endpoint
-
-    # account creation (DRF views if USE_DRF == True)
-    "ALLOW_CREATE_USER_ENDPOINT": True,  # activate this endpoint
-    "ALLOW_EMAIL_CONFIRM_ENDPOINT": True,  # activate this 'GET' endpoint (hook for email link)
-    "EMAIL_SEND_ACCOUNT_CONFIRM_LINK": True,
-    "ACCOUNT_CONFIRMED_REDIRECT": None,
-    "EMAIL_CONFIRM_ACCOUNT_TEMPLATE":
-        "silly_auth/emails/confirm_email.txt",
-
-    # password reset (forgotten password, contains classic views, accepts GET from email link)
-    "ALLOW_RESET_PASSWORD_ENDPOINT": True,  # activate this endpoint
-    "EMAIL_SEND_PASSWORD_RESET_LINK": True,
-    "EMAIL_RESET_PASSWORD_TEMPLATE":  # email template
-        "silly_auth/emails/request_password_reset.txt",
-    #   default frontend are classic django views, you can change it to
-    #   your own views and/or templates
-    "RESET_PASSWORD_ENDPOINT": "auth/password/reset/",
-    "RESET_PASSWORD_TEMPLATE": "silly_auth/reset_password.html",
-    "RESET_PASSWORD_DONE_TEMPLATE": "silly_auth/reset_password_done.html",
-
-    # password change (DRF view)
-    "ALLOW_CHANGE_PASSWORD_ENDPOINT": True,  # activate this endpoint
-
-    # email change (DRF view)
-    "ALLOW_CHANGE_EMAIL_ENDPOINT": True,  # activate this endpoint
-    "EMAIL_SEND_NEW_EMAIL_CONFIRM_LINK": True,
-
-    "ALLOW_CONFIRM_NEW_EMAIL_HOOK_ENDPOINT": True,  # activate this 'GET' endpoint (hook for email link)
-    # if Flase, change this:
-    "CONFIRM_NEW_EMAIL_HOOK_ENDPOINT": "confirm_new_email/<token>/",  # default is a classic view
-    "NEW_EMAIL_CONFIRM_TEMPLATE": "silly_auth/new_email_confirm.html",  # if new email hook activated
-    "NEW_EMAIL_CONFIRMED_DONE_TEMPLATE": "silly_auth/new_email_confirmed_done.html",  # if new email hook activated
-
-    # FULL_CLASSIC templates, if you use FULL_CLASSIC == True, change this to your own templates
-    "USE_CLASSIC_INDEX": True,  # if False, your url route must have the name='classic_index'
+    "BASE_TEMPLATE": "silly_auth/_base.html",  # if you use the provided templates
+        # templates paths
     "CLASSIC_INDEX": "silly_auth/classic/index.html",
-    "USE_CLASSIC_ACCOUNT": True,  # if False, your url route must have the name='classic_account'
     "CLASSIC_ACCOUNT": "silly_auth/classic/account.html",
     "CLASSIC_SIGNUP": "silly_auth/classic/signup.html",
     "CLASSIC_LOGIN": "silly_auth/classic/login.html",
@@ -76,15 +37,59 @@ SILLY_AUTH_SETTINGS = {
     "CLASSIC_RESET_PASSWORD": "silly_auth/classic/reset_password.html",
     "CLASSIC_REQUEST_RESEND_ACCOUNT_CONFIRMATION_EMAIL": "silly_auth/classic/request_resend_account_confirmation_email.html",
 
+    # DRF settings
+    "USE_DRF": False,  # False for only classic django views
+    "CONFIRMATION_METHOD": 'GET',  # 'GET' or 'POST'
+    "ALLOW_CREATE_USER_ENDPOINT": True,  # activate this endpoint
+
+    # pure SPA only:
+    "SPA_EMAIL_LOGIN_LINK": "http://your spa adress/",  # + <jwt_token>",
+
+    # emails settings
+    "EMAIL_TERMINAL_PRINT": True,  # print emails to terminal
+    "EMAIL_VALID_TIME": 1200,  # seconds
+    "EMAIL_CONFIRM_ACCOUNT_TEMPLATE":
+        "silly_auth/emails/confirm_email.txt",
+    "EMAIL_RESET_PASSWORD_TEMPLATE":  # email template
+        "silly_auth/emails/request_password_reset.txt",
+
+    # For development,
+    "TEST_TEMPLATES": False,  # for dev only,  opens 2 "_test/" endpoint
+    "VERBOSE": False,  # prints to terminal : imports
 }
 
 
-class SillyAuthError(Exception):
-    pass
+# Overwrite SILLY_AUTH_SETTINGS with datas from settings.SILLY_AUTH
 
-
-# Overwrite SILLY_AUTH_SETTINGS with datas from  settings.SILLY_AUTH
 try:
+    if "AUTO_SET" in settings.SILLY_AUTH:
+        auto_set = settings.SILLY_AUTH['AUTO_SET']
+        if auto_set not in ['CLASSIC', 'SPA', 'SILLY', 'TEST']:
+            raise SillyAuthError(
+                "AUTO_SET must be 'CLASSIC', 'SPA', 'SILLY or 'TEST'")
+        match auto_set:
+            case "CLASSIC":
+                SILLY_AUTH_SETTINGS["USE_DRF"] = False
+                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
+                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+
+            case "SPA":
+                SILLY_AUTH_SETTINGS["USE_DRF"] = True
+                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
+                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'POST'
+
+            case "SILLY":
+                SILLY_AUTH_SETTINGS["USE_DRF"] = True
+                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
+                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+
+            case "TEST":
+                SILLY_AUTH_SETTINGS["USE_DRF"] = False
+                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
+                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+                SILLY_AUTH_SETTINGS["BASE_TEMPLATE"] = "silly_auth/_test/_base.html"
+                SILLY_AUTH_SETTINGS["TEST_TEMPLATES"] = True
+
     for key in settings.SILLY_AUTH:
         if key not in SILLY_AUTH_SETTINGS:
             raise SillyAuthError(f"Unexpected key in settings.SILLY_AUTH: '{key}'")
@@ -92,9 +97,16 @@ try:
 except AttributeError:
     pass
 
+if SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] == 'POST' and "SPA_EMAIL_LOGIN_LINK" not in settings.SILLY_AUTH:
+    raise SillyAuthError("Confirmation method is 'POST', you must define a SPA_EMAIL_LOGIN_LINK")
+
+try:
+    float(SILLY_AUTH_SETTINGS["DELETE_UNCONFIRMED_TIME"])
+    assert SILLY_AUTH_SETTINGS["DELETE_UNCONFIRMED_TIME"] >= 0
+except (ValueError, AssertionError):
+    raise SillyAuthError("DELETE_UNCONFIRMED_TIME must be a positive float, or 0 to set off")
 
 VERBOSE = SILLY_AUTH_SETTINGS["VERBOSE"]
-
 if VERBOSE:
     print(f"=== DSA Version: {__version__}")
     print("=== DSA IMPORT django_silly_auth")

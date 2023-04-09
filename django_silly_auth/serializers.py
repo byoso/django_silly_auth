@@ -129,3 +129,39 @@ class LoginSerializer(serializers.Serializer):
         if errors:
             raise serializers.ValidationError(errors)
         return data
+
+
+class CredentialJWTokenSerializer(serializers.Serializer):
+    credential = serializers.CharField()
+    jwt_token = serializers.CharField()
+
+    def validate(self, data):
+        credential = data.get('credential')
+        jwt_token = data.get('jwt_token')
+        errors = dict()
+        credential_errors = list()
+        jwt_errors = list()
+        user = None
+        if "@" in credential:
+            if not User.objects.filter(email=credential).exists():
+                credential_errors += ["Email not found", ]
+            else:
+                user = User.objects.filter(email=credential).first()
+        else:
+            if not User.objects.filter(username=credential).exists():
+                credential_errors += ["User not found", ]
+            else:
+                user = User.objects.filter(username=credential).first()
+        if credential_errors:
+            errors['credential'] = credential_errors
+
+        jwt_user = User.verify_jwt_token(jwt_token)
+        if (user is not None and jwt_user is not None) and user != jwt_user:
+            jwt_errors += ['token does not match user']
+        if User.verify_jwt_token(jwt_token) is None:
+            jwt_errors += ["jwt token invalid or expired"]
+        if jwt_errors:
+            errors['jwt_token'] = jwt_errors
+        if errors:
+            raise serializers.ValidationError(errors)
+        return data

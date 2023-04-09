@@ -1,11 +1,11 @@
 # environment
 _project_fake/
 _users/
+/templates
 .venv/
 manage.py
 __pycache__/
 *.sqlite3
-/templates
 
 # packaging
 .eggs/

@@ -20,6 +20,7 @@ from django_silly_auth.forms import (
 from django_silly_auth.utils import (
     send_password_reset_email,
     send_confirm_email,
+    delete_unconfirmed,
 )
 import django_silly_auth
 
@@ -103,12 +104,20 @@ def signup_view(request):
             user.set_password(password)
             user.save()
             send_confirm_email(request, user)
+            delete_unconfirmed(user)
+            message = _(
+                    f"Please check your email '{user.email}' "
+                    "to confirm your account. "
+            )
+            if conf["DELETE_UNCONFIRMED_TIME"] != 0.0:
+                message += _(
+                    "If your account is not confirmed in the next "
+                    f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "
+                    "it will be deleted."
+                )
             messages.add_message(
                 request, messages.INFO,
-                message=(_(
-                    f"Please check your email '{user.email}' "
-                    "to confirm your account"
-                    )),
+                message=message,
                 extra_tags="info"
             )
             return redirect('classic_login')

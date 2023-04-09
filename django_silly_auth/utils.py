@@ -1,4 +1,4 @@
-
+from functools import wraps
 from threading import Thread
 import time
 
@@ -12,11 +12,33 @@ from django.utils.translation import gettext_lazy as _
 from smtplib import SMTPServerDisconnected
 
 from django_silly_auth import SILLY_AUTH_SETTINGS as conf
-from django_silly_auth.views.views import reset_password
 import django_silly_auth
 
 if django_silly_auth.VERBOSE:
     print("=== DSA IMPORT django_silly_auth.utils")
+
+
+def dsa_thread(func):
+    """decorator that simply runs the function in parallel thread"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        send = Thread(target=func, args=args, kwargs=kwargs, daemon=True)
+        send.start()
+    return wrapper
+
+
+@dsa_thread
+def delete_unconfirmed(user, *args, **kwargs):
+    if conf["VERBOSE"]:
+        print(
+            f"=== {user} created, waiting for confirmation..."
+            f"{conf['DELETE_UNCONFIRMED_TIME']} hours")
+    if conf["DELETE_UNCONFIRMED_TIME"] > 0.0:
+        time.sleep(conf["DELETE_UNCONFIRMED_TIME"] * 3600.0)
+        if not user.is_confirmed:
+            if conf["VERBOSE"]:
+                print(f"=== {user} deleted")
+            user.delete()
 
 
 def dsa_send_mail(*args, **kwargs):
@@ -27,10 +49,10 @@ def dsa_send_mail(*args, **kwargs):
 def send_password_reset_email(request, user):
     token = user.get_jwt_token(expires_in=conf["EMAIL_VALID_TIME"])
     domain = request.build_absolute_uri('/')[:-1]
-    if conf["FULL_CLASSIC"]:
+    if conf["CONFIRMATION_METHOD"] == 'GET':
         link = domain + reverse('classic_reset_password', args=[token])
-    else:
-        link = domain + reverse(reset_password, args=[token])
+    if conf["CONFIRMATION_METHOD"] == 'POST':
+        link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
     context = {
         'user': user,
         'link': link,
@@ -55,14 +77,15 @@ def send_confirm_email(request, user, new_email=False):
     token = user.get_jwt_token(expires_in=conf["EMAIL_VALID_TIME"])
     domain = request.build_absolute_uri('/')[:-1]
     if new_email:
-        if conf["FULL_CLASSIC"]:
+        if conf["CONFIRMATION_METHOD"] == 'GET':
             link = domain + reverse('classic_confirm_email', args=[token])
-        link = domain + reverse('confirm_new_email', args=[token])
+        if conf["CONFIRMATION_METHOD"] == 'POST':
+            link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
     else:
-        if conf["FULL_CLASSIC"]:
+        if conf["CONFIRMATION_METHOD"] == 'GET':
             link = domain + reverse('classic_confirm_email', args=[token])
-        else:
-            link = domain + reverse('confirm_email', args=[token])
+        if conf["CONFIRMATION_METHOD"] == 'POST':
+            link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
     context = {
         'user': user,
         'link': link,
@@ -87,24 +110,3 @@ def send_confirm_email(request, user, new_email=False):
         [email],
         fail_silently=False,
     )
-
-
-class Color:
-    """
-    Color class for terminal output
-    """
-    end = "\x1b[0m"
-    info = "\x1b[0;30;36m"
-    success = "\x1b[0;30;32m"
-    warning = "\x1b[0;30;33m"
-    danger = "\x1b[0;30;31m"
-
-
-def warning(msg):
-    if conf["PRINT_WARNINGS"] is True:
-        print(Color.warning + msg + Color.end)
-
-
-def danger(msg):
-    if conf["PRINT_WARNINGS"] is True:
-        print(Color.danger + msg + Color.end)
