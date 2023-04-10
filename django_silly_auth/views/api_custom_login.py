@@ -53,7 +53,6 @@ class LoginWithJWTToken(APIView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         serializer = CredentialJWTokenSerializer(data=request.data)
-        msg = list()
         if serializer.is_valid():
             jwt_token = serializer.validated_data['jwt_token']
             user = User.verify_jwt_token(jwt_token)
@@ -61,12 +60,14 @@ class LoginWithJWTToken(APIView):
                 user.is_confirmed = True
                 user.new_email = None
                 user.save()
-                msg += [_("Your account has been confirmed, please change your password if necessary.")]
-            if user.new_email:
+                msg = _("Your account has been confirmed.")
+            elif user.new_email:
                 user.email = user.new_email
                 user.new_email = None
                 user.save()
-                msg += [_("Your new email has been activated")]
+                msg = _("Your new email has been activated")
+            else:
+                msg = _("You've been logged in, please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'message': msg})
         raise ValidationError(serializer.errors, code='authorization')

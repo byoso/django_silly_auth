@@ -1,7 +1,7 @@
 from django.conf import settings
 
 # django_silly_auth version
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 
 class SillyAuthError(Exception):
@@ -10,12 +10,11 @@ class SillyAuthError(Exception):
 
 SILLY_AUTH_SETTINGS = {
     # Quick settings
-    "AUTO_SET": 'CLASSIC',  # 'CLASSIC', 'SPA', 'SILLY or 'TEST'
+    "AUTO_SET": 'TEST',  # 'CLASSIC', 'SPA', 'SILLY or 'TEST'
     "DSA_PREFIX": 'auth/',
 
     # Secondary settings
     "SITE_NAME": None,  # str used in templates if provided
-    "SITE_URL": None,  # http:// entry url ('index') used in templates if provided
     "DELETE_UNCONFIRMED_TIME": 24.0,  # hours after what an unconfirmed account is deleted, O to set off
 
     # Classic settings
@@ -45,6 +44,11 @@ SILLY_AUTH_SETTINGS = {
     # pure SPA only:
     "SPA_EMAIL_LOGIN_LINK": "http://your spa adress/",  # + <jwt_token>",
 
+
+    # Silly settings
+    "USE_SILLY": False,
+    "SILLY_LINK_TO_SPA": None,  # link used in templates to get back to your SPA
+
     # emails settings
     "EMAIL_TERMINAL_PRINT": True,  # print emails to terminal
     "EMAIL_VALID_TIME": 1200,  # seconds
@@ -62,40 +66,50 @@ SILLY_AUTH_SETTINGS = {
 # Overwrite SILLY_AUTH_SETTINGS with datas from settings.SILLY_AUTH
 
 try:
-    if "AUTO_SET" in settings.SILLY_AUTH:
-        auto_set = settings.SILLY_AUTH['AUTO_SET']
-        if auto_set not in ['CLASSIC', 'SPA', 'SILLY', 'TEST']:
-            raise SillyAuthError(
-                "AUTO_SET must be 'CLASSIC', 'SPA', 'SILLY or 'TEST'")
-        match auto_set:
-            case "CLASSIC":
-                SILLY_AUTH_SETTINGS["USE_DRF"] = False
-                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
-                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+    settings.SILLY_AUTH
+    is_set = True
+except AttributeError:
+    is_set = False
 
-            case "SPA":
-                SILLY_AUTH_SETTINGS["USE_DRF"] = True
-                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
-                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'POST'
+if is_set and "AUTO_SET" in settings.SILLY_AUTH:
+    auto_set = settings.SILLY_AUTH['AUTO_SET']
+    if auto_set not in ['CLASSIC', 'SPA', 'SILLY', 'TEST']:
+        raise SillyAuthError(
+            "AUTO_SET must be 'CLASSIC', 'SPA', 'SILLY or 'TEST'")
+else:
+    auto_set = SILLY_AUTH_SETTINGS["AUTO_SET"]
 
-            case "SILLY":
-                SILLY_AUTH_SETTINGS["USE_DRF"] = True
-                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
-                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+match auto_set:
+    case "CLASSIC":
+        SILLY_AUTH_SETTINGS["USE_DRF"] = False
+        SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
+        SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
 
-            case "TEST":
-                SILLY_AUTH_SETTINGS["USE_DRF"] = False
-                SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
-                SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
-                SILLY_AUTH_SETTINGS["BASE_TEMPLATE"] = "silly_auth/_test/_base.html"
-                SILLY_AUTH_SETTINGS["TEST_TEMPLATES"] = True
+    case "SPA":
+        SILLY_AUTH_SETTINGS["USE_DRF"] = True
+        SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
+        SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'POST'
 
+    case "SILLY":
+        SILLY_AUTH_SETTINGS["USE_DRF"] = True
+        SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
+        SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+        SILLY_AUTH_SETTINGS["USE_SILLY"] = True
+
+    case "TEST":
+        SILLY_AUTH_SETTINGS["USE_DRF"] = False
+        SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
+        SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+        SILLY_AUTH_SETTINGS["BASE_TEMPLATE"] = "silly_auth/_test/_base.html"
+        SILLY_AUTH_SETTINGS["TEST_TEMPLATES"] = True
+        SILLY_AUTH_SETTINGS["VERBOSE"] = True
+
+if is_set:
     for key in settings.SILLY_AUTH:
         if key not in SILLY_AUTH_SETTINGS:
             raise SillyAuthError(f"Unexpected key in settings.SILLY_AUTH: '{key}'")
         SILLY_AUTH_SETTINGS[key] = settings.SILLY_AUTH[key]
-except AttributeError:
-    pass
+
 
 if SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] == 'POST' and "SPA_EMAIL_LOGIN_LINK" not in settings.SILLY_AUTH:
     raise SillyAuthError("Confirmation method is 'POST', you must define a SPA_EMAIL_LOGIN_LINK")

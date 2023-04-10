@@ -76,16 +76,20 @@ def send_password_reset_email(request, user):
 def send_confirm_email(request, user, new_email=False):
     token = user.get_jwt_token(expires_in=conf["EMAIL_VALID_TIME"])
     domain = request.build_absolute_uri('/')[:-1]
-    if new_email:
-        if conf["CONFIRMATION_METHOD"] == 'GET':
-            link = domain + reverse('classic_confirm_email', args=[token])
-        if conf["CONFIRMATION_METHOD"] == 'POST':
-            link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
-    else:
-        if conf["CONFIRMATION_METHOD"] == 'GET':
-            link = domain + reverse('classic_confirm_email', args=[token])
-        if conf["CONFIRMATION_METHOD"] == 'POST':
-            link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
+    # if new_email:
+    if conf["USE_SILLY"]:
+        link = domain + reverse('silly_confirm_email', args=[token])
+    elif conf["CONFIRMATION_METHOD"] == 'GET':
+        link = domain + reverse('classic_confirm_email', args=[token])
+    if conf["CONFIRMATION_METHOD"] == 'POST':
+        link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
+    # else:
+    #     if conf["CONFIRMATION_METHOD"] == 'GET':
+    #         link = domain + reverse('classic_confirm_email', args=[token])
+    #         if conf["AUTO_SET"] == "SILLY":
+    #             link = domain + reverse('silly_confirm_email', args=[token])
+    #     if conf["CONFIRMATION_METHOD"] == 'POST':
+    #         link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
     context = {
         'user': user,
         'link': link,

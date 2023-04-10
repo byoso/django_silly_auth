@@ -1,4 +1,4 @@
-# Django Silly Auth (v0.0.9 Beta)
+# Django Silly Auth (v1.0.0)
 
 ## Why one more authentication system for Django and DRF? again !
 
@@ -9,8 +9,8 @@ The aim of DSA it to provide a good-enough-to-go authentication out of the box, 
 modular through its SILLY_AUTH config in **settings.py**, so it is always possible to improve your
 authentication when you have the time for it.
 
-If you're building a SPA, you can go with DSA as it is at first, and as your work progresses,
-switch off the default urls, views and templates to add yours.
+## DRF and Django Classic supported
+DSA works as well with both DRF and Classic, just use differents simple settings, and you're done.
 
 
 <hr>

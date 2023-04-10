@@ -210,6 +210,9 @@ def reset_password(request, token):
         if form.is_valid():
             user.set_password(form.cleaned_data['password'])
             user.save()
+            if conf["USE_SILLY"]:
+                return redirect('silly_password_reset_done')
+
             messages.add_message(
                 request, messages.SUCCESS,
                 message=_("Your password have been reset, please login"),
@@ -287,7 +290,7 @@ def change_email(request):
             user = request.user
             user.new_email = email
             user.save()
-            send_confirm_email(request, user, new_email=True)
+            send_confirm_email(request, user)
 
             messages.add_message(
                 request, messages.INFO,
@@ -328,14 +331,21 @@ def confirm_email(request, token):
         )
         return redirect('classic_index')
     if user is not None and user.is_active:
-        if user.new_email:
+        if not user.is_confirmed:
+            user.is_confirmed = True
+            user.new_email = None
+            msg = _("Your account have been confirmed")
+            user.save()
+        elif user.new_email:
             user.email = user.new_email
             user.new_email = None
-        user.is_confirmed = True
-        user.save()
+            msg = _("Your new email have been confirmed")
+            user.save()
+        else:
+            msg = _("Your account is already confirmed")
         messages.add_message(
             request, messages.SUCCESS,
-            message=_("Your new email have been confirmed"),
+            message=msg,
             extra_tags="success"
         )
 

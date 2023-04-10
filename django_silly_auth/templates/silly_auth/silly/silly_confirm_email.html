@@ -1,0 +1,28 @@
+{% extends base_template %}
+
+
+{% block content %}
+
+{% if site_name %}
+  <h2 class="h2 subtitle">{{ site_name }}</h2>
+{% endif %}
+<h1 class="h1 title">Account Confirmation</h1>
+
+
+<div class="notification is-{{ tag }}">
+  <p>
+    {{ message }}
+  </p>
+</div>
+
+{% if link %}
+  {% if site_name %}
+    <a href="{{ link }}">Go back to {{site_name}}</a>
+  {% else %}
+    <a href="{{ link }}">Go back to the website</a>
+  {% endif %}
+{% endif %}
+
+
+
+{% endblock content %}

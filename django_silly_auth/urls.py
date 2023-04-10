@@ -4,7 +4,11 @@ from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 
 from django_silly_auth import SILLY_AUTH_SETTINGS as conf
-from django_silly_auth.views import api_views, test_views, classics
+from django_silly_auth.views import (
+    api_views,
+    test_views,
+    silly_views,
+    classics)
 
 import django_silly_auth
 
@@ -17,9 +21,9 @@ if conf["USE_DRF"]:
     from django_silly_auth.views.api_custom_login import (
         LoginWithAuthToken,
         LoginWithJWTToken,
-        # login_with_jwt_token,
     )
 
+prefix = conf["DSA_PREFIX"]
 User = get_user_model()
 
 
@@ -31,52 +35,51 @@ def new_superuser_is_always_active(sender, instance, **kwargs):
         instance.is_active = True
 
 
-urlpatterns = [
-]
-# DRF routes
+urlpatterns = []
 
+# DRF routes
 if conf["USE_DRF"]:
     urlpatterns += [
-        path('token/login/', LoginWithAuthToken.as_view(), name="login_with_auth_token"),
-        path('token/logout/', api_views.logout_api_view, name="logout_api_view"),
+        path(f'{prefix}token/login/', LoginWithAuthToken.as_view(), name="login_with_auth_token"),
+        path(f'{prefix}token/logout/', api_views.logout_api_view, name="logout_api_view"),
         path(
-            'password/request_reset/',
+            f'{prefix}password/request_reset/',
             api_views.request_password_reset,
             name='request_password_reset'
         ),
         path(
-            'email/confirm_email/resend/',
+            f'{prefix}email/confirm_email/resend/',
             api_views.resend_email_confirmation,
             name="resend_email_confirmation"
         ),
         path(
-            'password/change/',
+            f'{prefix}password/change/',
             api_views.change_password,
             name='change_password'
         ),
         path(
-            'email/request_change/',
+            f'{prefix}email/request_change/',
             api_views.change_email_request,
             name='change_email_request'
         ),
         ]
 
     if conf["ALLOW_CREATE_USER_ENDPOINT"]:
-        urlpatterns += [path('users/', api_views.UserView.as_view(), name="users")]
+        urlpatterns += [path(f'{prefix}users/', api_views.UserView.as_view(), name="users")]
 
 
 # Classic routes
 
 if conf["USE_CLASSIC"]:
     urlpatterns += [
-        path('classic_login/', classics.login_view, name='classic_login'),
-        path('classic_logout/', classics.logout_view, name='classic_logout'),
-        path('classic_signup/', classics.signup_view, name='classic_signup'),
-        path('classic_request_password_reset/', classics.request_password_reset, name='classic_request_password_reset'),
-        path('classic_change_username/', classics.change_username, name='classic_change_username'),
-        path('classic_change_email/', classics.change_email, name='classic_change_email'),
+        path(f'{prefix}classic_login/', classics.login_view, name='classic_login'),
+        path(f'{prefix}classic_logout/', classics.logout_view, name='classic_logout'),
+        path(f'{prefix}classic_signup/', classics.signup_view, name='classic_signup'),
+        path(f'{prefix}classic_change_username/', classics.change_username, name='classic_change_username'),
+        path(f'{prefix}classic_change_email/', classics.change_email, name='classic_change_email'),
+        path(f'{prefix}classic_confirm_email/<token>', classics.confirm_email, name='classic_confirm_email'),
         path(
-            'classic_request_resend_confirmation_email/',
+            f'{prefix}classic_request_resend_confirmation_email/',
             classics.request_resend_account_confirmation_email,
             name='classic_request_resend_confirmation_email'
         ),
@@ -84,25 +87,35 @@ if conf["USE_CLASSIC"]:
     if conf["USE_CLASSIC_INDEX"]:
         urlpatterns += [path('', classics.index, name='classic_index'), ]
     if conf["USE_CLASSIC_ACCOUNT"]:
-        urlpatterns += [path('classic_account/', classics.account, name='classic_account'), ]
-
+        urlpatterns += [path(f'{prefix}classic_account/', classics.account, name='classic_account'), ]
 
 # Email Confirmation routes
 
 if conf['CONFIRMATION_METHOD'] == 'GET':  # uses the classic views, not the 'good' way for a SPA, but works.
     urlpatterns += [
-        path('classic_reset_password/<token>', classics.reset_password, name='classic_reset_password'),
-        path('classic_confirm_email/<token>', classics.confirm_email, name='classic_confirm_email'),
+        path(f'{prefix}classic_reset_password/<token>', classics.reset_password, name='classic_reset_password'),
+        path(f'{prefix}classic_request_password_reset/', classics.request_password_reset, name='classic_request_password_reset'),
     ]
+    if conf["USE_SILLY"]:
+        urlpatterns += [
+            path(
+                f'{prefix}dsa_confirm_email/<token>',
+                silly_views.silly_confirm_email,
+                name='silly_confirm_email'),
+            path(
+                f'{prefix}dsa_password_reset_done',
+                silly_views.silly_password_reset_done,
+                name='silly_password_reset_done'),
+        ]
 
 if conf['CONFIRMATION_METHOD'] == 'POST':
     urlpatterns += [
-        path('login_with_jwt/', LoginWithJWTToken.as_view(), name="login_with_jwt_token" ),
+        path(f'{prefix}login_with_jwt/', LoginWithJWTToken.as_view(), name="login_with_jwt_token"),
     ]
 
 # testing routes
 if conf["TEST_TEMPLATES"]:
     urlpatterns += [
-        path('_test/', test_views.test_templates_view, name="test_templates_view"),
-        path('_test_users/', test_views.test_users_view, name="test_users_view"),
+        path(f'{prefix}_test/', test_views.test_templates_view, name="test_templates_view"),
+        path(f'{prefix}_test_users/', test_views.test_users_view, name="test_users_view"),
         ]
