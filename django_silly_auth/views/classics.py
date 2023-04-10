@@ -102,16 +102,19 @@ def signup_view(request):
             user.save()
             send_confirm_email(request, user)
             delete_unconfirmed(user)
-            message = (
-                    _(f"Please check your inbox at '{user.email}' "),
-                    _("to confirm your account.")
-            )
+            part1 = _("Please check your inbox at")
+            part2 = f" '{user.email}' "
+            part3 = _("to confirm your account.")
+
             if conf["DELETE_UNCONFIRMED_TIME"] != 0.0:
-                message += (
-                    _("If you do not confirm your account within the next "),
-                    _(f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "),
-                    _("it will be deleted.")
-                )
+
+                part4 = _(" If you do not confirm your account within the next ")
+                part5 = _("{} hours, it will be deleted.").format(conf['DELETE_UNCONFIRMED_TIME'])
+            else:
+                part4 = part5 = ""
+
+            message = "{}{}{}{}{}".format(part1, part2, part3, part4, part5)
+
             messages.add_message(
                 request, messages.INFO,
                 message=message,
@@ -262,7 +265,7 @@ def change_username(request):
             user.save()
             messages.add_message(
                 request, messages.SUCCESS,
-                message=_(f"New username set: '{username}'."),
+                message=_("New username set: '{}'.").format(username),
                 extra_tags="success"
             )
             return redirect("classic_account")
@@ -299,12 +302,12 @@ def change_email(request):
             user.save()
             send_confirm_email(request, user)
 
+            part1 = _("Please check your inbox to"),
+            part2 = _(" confirm your new address at '{}'").format(email)
+            message = "{}{}.".format(part1, part2)
             messages.add_message(
                 request, messages.INFO,
-                message=(
-                    _("Please check your inbox to"),
-                    _(f" confirm your new address at '{email}'")
-                    ),
+                message,
                 extra_tags="info"
             )
             return redirect("classic_account")

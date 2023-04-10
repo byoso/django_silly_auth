@@ -6,13 +6,12 @@ from django.conf import settings
 from django.shortcuts import reverse
 from django.core.mail import send_mail
 from django.template.loader import get_template
-from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 from smtplib import SMTPServerDisconnected
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
-import django_silly_auth
+
 
 if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.utils")
@@ -83,13 +82,6 @@ def send_confirm_email(request, user, new_email=False):
         link = domain + reverse('classic_confirm_email', args=[token])
     if conf["CONFIRMATION_METHOD"] == 'POST':
         link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
-    # else:
-    #     if conf["CONFIRMATION_METHOD"] == 'GET':
-    #         link = domain + reverse('classic_confirm_email', args=[token])
-    #         if conf["AUTO_SET"] == "SILLY":
-    #             link = domain + reverse('silly_confirm_email', args=[token])
-    #     if conf["CONFIRMATION_METHOD"] == 'POST':
-    #         link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
     context = {
         'user': user,
         'link': link,

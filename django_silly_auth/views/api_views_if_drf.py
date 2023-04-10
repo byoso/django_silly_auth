@@ -95,19 +95,16 @@ class UserView(APIView):
             user.set_password(request.data['password'])
             user.save()
             delete_unconfirmed(user)
-            message = _(
-                    f"Please check your inbox at '{user.email}' "
-                    "to confirm your account. "
-            )
+            message = _("Please check your inbox at '{}' to confirm your account. ").format(user.email)
             if conf["DELETE_UNCONFIRMED_TIME"] != 0:
-                message += (
-                    _("If you do not confirm your account within the next "),
-                    _(f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "),
-                    _("it will be deleted.")
-                )
+                part1 = _("If you do not confirm your account within the next "),
+                part2 = _("{} hours, ").format(conf['DELETE_UNCONFIRMED_TIME']),
+                part3 = _("it will be deleted.")
+                message = "{}{}{}{}".format(message, part1, part2, part3)
             serializer = GetAllUsersSerializer(user)
             msg = {
                 "user": serializer.data,
+                "message": message,
             }
 
             send_confirm_email(request, user)
@@ -147,6 +144,6 @@ def change_email_request(request):
         send_confirm_email(request, user, new_email=True)
 
         return Response(
-            {'success': _(f"New email saved, check your inbox at '{new_email}' to activate it.")})
+            {'success': _("New email saved, check your inbox at '{}' to activate it.").format(new_email)})
     msg = serializer.errors
     raise ValidationError({"error": msg}, code='authorization')

@@ -16,36 +16,6 @@ if conf["VERBOSE"]:
 User = get_user_model()
 
 
-class NewPasswordForm(forms.Form):
-
-    password = forms.CharField(
-        max_length=64, widget=forms.PasswordInput,
-        validators=[validate_password]
-    )
-    password2 = forms.CharField(
-        label=_("Confirm password"),
-        max_length=64, widget=forms.PasswordInput,
-        validators=[validate_password]
-    )
-
-    def clean_password2(self):
-        password = self.cleaned_data['password']
-        password2 = self.cleaned_data['password2']
-        if password != password2:
-            raise ValidationError(_("The passwords you entered do not match."))
-        return password2
-
-
-class NewEmailConfirmForm(forms.Form):
-
-    password = forms.CharField(
-        max_length=64, widget=forms.PasswordInput,
-        validators=[validate_password]
-    )
-
-#################### FULL CLASSIC FORMS ####################
-
-
 class LoginForm(forms.Form):
     credential = forms.CharField(
         label=_("Username or email"),
