@@ -1,17 +1,12 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.exceptions import (
     ValidationError,
-    PermissionDenied,
-    NotFound,
-    AuthenticationFailed
     )
 
 from django_silly_auth.serializers import (
@@ -20,16 +15,15 @@ from django_silly_auth.serializers import (
     PasswordsSerializer,
     EmailSerializer,
     )
-from django_silly_auth import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.utils import (
     send_password_reset_email,
     send_confirm_email,
     delete_unconfirmed
 )
 
-import django_silly_auth
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.views.api_view_if_drf")
 
 User = get_user_model()

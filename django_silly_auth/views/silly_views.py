@@ -1,18 +1,13 @@
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import check_password
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
-import django_silly_auth
-from django_silly_auth import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.views.classics")
 
 User = get_user_model()

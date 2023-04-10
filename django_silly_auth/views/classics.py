@@ -1,6 +1,4 @@
-from django.http import HttpResponse, Http404
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -8,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
-from django_silly_auth import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.forms import (
     LoginForm,
     SignUpForm,
@@ -22,9 +20,8 @@ from django_silly_auth.utils import (
     send_confirm_email,
     delete_unconfirmed,
 )
-import django_silly_auth
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.views.classics")
 
 User = get_user_model()

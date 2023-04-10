@@ -3,7 +3,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 
-from django_silly_auth import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.views import (
     api_views,
     test_views,
@@ -12,7 +12,7 @@ from django_silly_auth.views import (
 
 import django_silly_auth
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.urls")
     if conf["USE_DRF"]:
         print("=== DSA login_with_auth_token FROM django_silly_auth.views.api_custom_login")

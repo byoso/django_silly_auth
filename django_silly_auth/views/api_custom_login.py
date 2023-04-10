@@ -16,9 +16,9 @@ from django_silly_auth.serializers import (
     LoginSerializer,
     CredentialJWTokenSerializer
     )
-import django_silly_auth
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.views.api_custom_login")
 
 User = get_user_model()

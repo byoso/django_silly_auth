@@ -1,7 +1,6 @@
-from django_silly_auth import SILLY_AUTH_SETTINGS as conf
-import django_silly_auth
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.views.api_views")
     if conf["USE_DRF"]:
         print("=== DSA IMPORT django_silly_auth.views.api_views_if_drf")

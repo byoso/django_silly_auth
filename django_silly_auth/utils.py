@@ -11,10 +11,10 @@ from django.utils.translation import gettext_lazy as _
 
 from smtplib import SMTPServerDisconnected
 
-from django_silly_auth import SILLY_AUTH_SETTINGS as conf
+from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 import django_silly_auth
 
-if django_silly_auth.VERBOSE:
+if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.utils")
 
 
