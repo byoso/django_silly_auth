@@ -1,0 +1,519 @@
+# django-silly-auth translation file
+# Copyright (C) 2023 Vincent Fabre
+# This file is distributed under the same license as the django-silly-auth package.
+# Vincent Fabre <peigne.plume@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-10 23:25+0200\n"
+"PO-Revision-Date: 2023-04-10 23:27+0200\n"
+"Last-Translator: Vincent Fabre <peigne.plume@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: forms.py:26 forms.py:103 forms.py:166
+msgid "Confirm password"
+msgstr "Confirmez le mot de passe"
+
+#: forms.py:35 forms.py:182 serializers.py:73
+msgid "The passwords you entered do not match."
+msgstr "Les mots de passe saisis ne correspondent pas."
+
+#: forms.py:51 forms.py:54 forms.py:138 forms.py:141
+msgid "Username or email"
+msgstr "Nom d'utilisateur ou email"
+
+#: forms.py:58 forms.py:61 forms.py:95 forms.py:99 forms.py:107 forms.py:158
+#: forms.py:161 forms.py:169
+msgid "Password"
+msgstr "Mot de passe"
+
+#: forms.py:73
+#, python-brace-format
+msgid "User '{credential}' unknown or unconfirmed"
+msgstr "Utilisateur '{credential}' inconnu ou non confirmé"
+
+#: forms.py:79 forms.py:83 forms.py:192
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: forms.py:87 forms.py:90 forms.py:212
+msgid "Email"
+msgstr "Email"
+
+#: forms.py:115
+msgid "different than password"
+msgstr "mots de passe différents"
+
+#: forms.py:121 forms.py:199 mixins.py:76 serializers.py:44
+msgid "A username cannot include the symbol '@'."
+msgstr "Un nom d'utilisateur ne peut pas inclure '@'."
+
+#: forms.py:125 forms.py:203
+#, python-brace-format
+msgid "'{username}' is already taken by someone else."
+msgstr "'{username}' est déjà utilisé par quelqu'un."
+
+#: forms.py:132
+#, python-brace-format
+msgid "'{email}' is already taken by someone else."
+msgstr "'{email}' déjà utilisé par quelqu'un."
+
+#: forms.py:152
+#, python-brace-format
+msgid "'{credential}' unknown or unconfirmed"
+msgstr "'{credential}' inconnu ou non confirmé"
+
+#: forms.py:188
+msgid "New username"
+msgstr "Nouveau nom d'utilisateur"
+
+#: forms.py:209
+msgid "New email address"
+msgstr "Nouvelle adresse email"
+
+#: forms.py:220
+#, python-brace-format
+msgid "'{email}' already taken by someone else."
+msgstr "'{email}' déjà utilisé par quelqu'un."
+
+#: mixins.py:29
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: mixins.py:33
+msgid "Required. 150 characters or fewer. Letters, digits and ./+/-/_ only."
+msgstr "Requis. 150 caractères maxi. Lettres, nombres et ./+/-/_ seulement."
+
+#: mixins.py:40
+msgid "A user with that username already exists."
+msgstr "Un utilisateur utilise déjà ce nom."
+
+#: mixins.py:41
+msgid "Username must be less than 150 characters."
+msgstr "Un nom d'utilisateur doit faire moins de 150 caractères."
+
+#: mixins.py:42
+msgid "Username must contain only letters, digits and ./+/-/_ characters."
+msgstr ""
+"Un nom d'utilisateur ne doit contenir que des lettres, nombres, ou +/-/_/."
+
+#: mixins.py:45
+msgid "email address"
+msgstr "adresse email"
+
+#: serializers.py:99
+msgid "This email is already associated with an existing account."
+msgstr "Cet email est déjà associé à un compte existant."
+
+#: serializers.py:120 serializers.py:148
+msgid "Email not found"
+msgstr "Email inconnu"
+
+#: serializers.py:123 serializers.py:153
+msgid "User not found"
+msgstr "Utilisateur inconnu"
+
+#: serializers.py:161
+msgid "The given token does not match the user"
+msgstr "Le token fourni ne correspond pas à l'utilisateur"
+
+#: serializers.py:163
+msgid "jwt token invalid or expired"
+msgstr "le token jwt est invalide ou expiré"
+
+#: templates/silly_auth/_test/_base.html:29
+#: templates/silly_auth/classic/index.html:9
+msgid "Home"
+msgstr "Accueil"
+
+#: templates/silly_auth/_test/_base.html:34
+#: templates/silly_auth/classic/account.html:9
+msgid "Account"
+msgstr "Compte"
+
+#: templates/silly_auth/_test/_base.html:40
+msgid "More"
+msgstr "Plus"
+
+#: templates/silly_auth/_test/_base.html:45
+msgid "Documentation"
+msgstr "Documentation"
+
+#: templates/silly_auth/_test/_base.html:48
+msgid "Buy me a coffee"
+msgstr "Offrez-moi un café"
+
+#: templates/silly_auth/_test/_base.html:51
+msgid "Contact"
+msgstr "Contact"
+
+#: templates/silly_auth/_test/_base.html:55
+msgid "Report an issue"
+msgstr "Signaler un problème"
+
+#: templates/silly_auth/_test/_base.html:67
+msgid "Log out"
+msgstr "Déconnexion"
+
+#: templates/silly_auth/_test/_base.html:71
+#: templates/silly_auth/classic/signup.html:5
+msgid "Sign up"
+msgstr "S'enregistrer"
+
+#: templates/silly_auth/_test/_base.html:74
+msgid "Log in"
+msgstr "Connexion"
+
+#: templates/silly_auth/_test/_base.html:85
+msgid "Test single page"
+msgstr "Test page unique"
+
+#: templates/silly_auth/_test/_base.html:86
+msgid "Test Users page"
+msgstr "Test page utilisateurs"
+
+#: templates/silly_auth/_test/_test.html:8
+msgid "Test template"
+msgstr "Template de test"
+
+#: templates/silly_auth/_test/_test.html:10
+msgid "Simple test here"
+msgstr "Simple test ici"
+
+#: templates/silly_auth/_test/_users.html:7
+msgid "Test users"
+msgstr "Test utilisateurs"
+
+#: templates/silly_auth/classic/account.html:12
+msgid "id:"
+msgstr "id:"
+
+#: templates/silly_auth/classic/account.html:15
+msgid "Change my Username"
+msgstr "Changer nom d'utilisateur"
+
+#: templates/silly_auth/classic/account.html:17
+msgid "Change my email"
+msgstr "Changer mon email"
+
+#: templates/silly_auth/classic/account.html:19
+msgid "Change my password"
+msgstr "Changer mon mot de passe"
+
+#: templates/silly_auth/classic/change_email.html:7
+msgid "Change Email"
+msgstr "Changer d'email"
+
+#: templates/silly_auth/classic/change_email.html:9
+msgid "Your current email:"
+msgstr "Email actuel:"
+
+#: templates/silly_auth/classic/change_email.html:23
+#: templates/silly_auth/classic/change_username.html:25
+#: templates/silly_auth/classic/reset_password.html:36
+msgid "confirm"
+msgstr "validez"
+
+#: templates/silly_auth/classic/change_username.html:8
+msgid "Change Username"
+msgstr "Changer nom d'utilisateur"
+
+#: templates/silly_auth/classic/change_username.html:11
+msgid "Current username"
+msgstr "Nom d'utilisateur actuel"
+
+#: templates/silly_auth/classic/index.html:12
+msgid ""
+"\n"
+"\n"
+"<p>\n"
+"    Welcome to Django Silly Auth :)\n"
+"</p>\n"
+"<p>\n"
+"    You should not see this page in production.\n"
+"</p>\n"
+"<p>\n"
+"    Please change this index in your project.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"<p>\n"
+"    Bienvenue à Django Silly Auth :)\n"
+"</p>\n"
+"<p>\n"
+"    Vous ne devriez pas voir cette page en production.\n"
+"</p>\n"
+"<p>\n"
+"    Veuillez changer cet index dans votre projet.\n"
+"\n"
+
+#: templates/silly_auth/classic/login.html:8
+msgid "Login"
+msgstr "Connexion"
+
+#: templates/silly_auth/classic/login.html:38
+msgid "I forgot my password."
+msgstr "J'ai oublié mon mot de passe."
+
+#: templates/silly_auth/classic/login.html:44
+msgid ""
+"My account exists but is unconfirmed, please send me the confirmation email "
+"again."
+msgstr "J'ai un compte non confirmé, renvoyez-moi l'email de confirmation."
+
+#: templates/silly_auth/classic/login.html:51
+msgid "log in"
+msgstr "se connecter"
+
+#: templates/silly_auth/classic/request_password_reset.html:9
+msgid "Request password reset"
+msgstr "Demander réinitialisation du mot de passe"
+
+#: templates/silly_auth/classic/request_password_reset.html:22
+#: templates/silly_auth/classic/request_resend_account_confirmation_email.html:23
+msgid "send me an email"
+msgstr "envoyez moi un email"
+
+#: templates/silly_auth/classic/request_resend_account_confirmation_email.html:9
+msgid "Request resend account confirmation email"
+msgstr "Renvoyer un email de confirmation de compte"
+
+#: templates/silly_auth/classic/reset_password.html:6
+msgid "Reset Password"
+msgstr "Changer le mot de passe"
+
+#: templates/silly_auth/classic/reset_password.html:8
+msgid "user"
+msgstr "utilisateur"
+
+#: templates/silly_auth/classic/signup.html:40
+msgid "Sign Up"
+msgstr "S'enregistrer"
+
+#: templates/silly_auth/emails/confirm_email.txt:3
+#: templates/silly_auth/emails/request_password_reset.txt:3
+msgid "Dear"
+msgstr "Cher"
+
+#: templates/silly_auth/emails/confirm_email.txt:5
+#, python-format
+msgid ""
+"\n"
+"To confirm your email, please click on the following link:\n"
+"%(link)s\n"
+"\n"
+"If you have not registered an account,\n"
+"please ignore this message.\n"
+"\n"
+"Best regards\n"
+"\n"
+msgstr ""
+"\n"
+"Pour confirmer votre adresse email, veuiller cliquer sur le lien suivant:\n"
+"%(link)s\n"
+"\n"
+"Si vous n'avez pas de compte enregistré,\n"
+"veuillez ignorer ce message.\n"
+"\n"
+"Cordialement\n"
+"\n"
+
+#: templates/silly_auth/emails/request_password_reset.txt:5
+#, python-format
+msgid ""
+"\n"
+"\n"
+"To set or reset your password, please click on the following link:\n"
+"%(link)s\n"
+"\n"
+"If you did not request a password reset, please ignore this message.\n"
+"\n"
+"Best regards\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Pour réinitialiser votre mot de passe, cliquez sur le lien suivant:\n"
+"%(link)s\n"
+"\n"
+"Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer ce "
+"message.\n"
+"\n"
+"Cordialement\n"
+"\n"
+
+#: views/api_custom_login.py:45
+msgid ""
+"Your account has not been confirmed yet. Please check your inbox for a "
+"confirmation link."
+msgstr ""
+"Votre compte n'a pas encore été confirmé. Veuillez vérifier votre boite mail "
+"et utiliser le lien de confirmation."
+
+#: views/api_custom_login.py:50
+msgid "Incorrect credentials."
+msgstr "Indentifiants incorrectes."
+
+#: views/api_custom_login.py:65 views/classics.py:344
+msgid "Your account has been confirmed."
+msgstr "Votre compte a été confirmé."
+
+#: views/api_custom_login.py:70 views/classics.py:349
+msgid "Your new email has been confirmed."
+msgstr "Votre nouvel email a été confirmé."
+
+#: views/api_custom_login.py:72
+msgid ""
+"You've been logged in via email confirmation, please change your password if "
+"necessary."
+msgstr ""
+"Connexion par email de confirmation, changez votre mot de passe si besoin."
+
+#: views/api_views_if_drf.py:39
+msgid "no credential provided"
+msgstr "aucun identifiant fourni"
+
+#: views/api_views_if_drf.py:47 views/classics.py:352
+msgid "Your account is already confirmed."
+msgstr "Votre compte est déjà confirmé."
+
+#: views/api_views_if_drf.py:51 views/api_views_if_drf.py:81
+msgid "Email sent for password reset"
+msgstr "Email envoyé pour réinitialisation du mot de passe"
+
+#: views/api_views_if_drf.py:63
+msgid "Logged out."
+msgstr "Déconnexion."
+
+#: views/api_views_if_drf.py:73
+msgid "No credentials were provided"
+msgstr "Aucun identifiant fourni"
+
+#: views/api_views_if_drf.py:82
+msgid "Invalid credential"
+msgstr "Identifiant non valide"
+
+#: views/api_views_if_drf.py:99
+#, python-brace-format
+msgid "Please check your inbox at '{user.email}' to confirm your account. "
+msgstr ""
+"Veuillez confirmer votre email à  '{user.email}' pour confirmer votre "
+"compte. "
+
+#: views/api_views_if_drf.py:104 views/classics.py:111
+msgid "If you do not confirm your account within the next "
+msgstr "Si vous ne confirmez pas votre compte dans les "
+
+#: views/api_views_if_drf.py:105 views/classics.py:112
+msgid "{conf['DELETE_UNCONFIRMED_TIME']} hours, "
+msgstr "{conf['DELETE_UNCONFIRMED_TIME']} heures, "
+
+#: views/api_views_if_drf.py:106 views/classics.py:113
+msgid "it will be deleted."
+msgstr "il sera supprimé."
+
+#: views/api_views_if_drf.py:132
+msgid "Password successfully changed."
+msgstr "Mot de passe changé avec succès."
+
+#: views/api_views_if_drf.py:150
+#, python-brace-format
+msgid "New email saved, check your inbox at '{new_email}' to activate it."
+msgstr ""
+"Nouvel email enregistré, veuillez vérifier votre boite de réception à "
+"'{new_email}' pour l'activer."
+
+#: views/classics.py:58
+msgid "Incorrect credentials or unconfirmed account."
+msgstr "Identifiants incorrects ou compte non confirmé."
+
+#: views/classics.py:106
+#, python-brace-format
+msgid "Please check your inbox at '{user.email}' "
+msgstr "Vérifiez votre boite de réception à '{user.email}' "
+
+#: views/classics.py:107
+msgid "to confirm your account."
+msgstr "pour confirmer votre compte."
+
+#: views/classics.py:153
+msgid ""
+"Please check your inbox and follow the instructions to reset your password."
+msgstr ""
+"Veuillez consulter votre boite mail et cliquer sur le lien fourni pour "
+"réinitialiser votre mot de passe."
+
+#: views/classics.py:165
+msgid ""
+"Your account is no longer active. Please contact the administrator. No email "
+"has been sent."
+msgstr ""
+"Votre compte est inactif. Contactez l'administrateur. L'envoi de l'email a "
+"été annulé."
+
+#: views/classics.py:208 views/classics.py:335 views/silly_views.py:20
+msgid "Token invalid or expired"
+msgstr "Token invalide ou expiré"
+
+#: views/classics.py:224
+msgid "Your password has been successfully reset. Please log in."
+msgstr ""
+"Votre mot de passe a été réinitialisé avec succès. Vous pouvez vous "
+"connecter."
+
+#: views/classics.py:241
+msgid ""
+"You have been logged in via email confirmation. Please reset your password."
+msgstr ""
+"Vous avez été connecté via un email de confirmation. Réinitialisez votre mot "
+"de passe si besoin."
+
+#: views/classics.py:265
+#, python-brace-format
+msgid "New username set: '{username}'."
+msgstr "Nouveau nom d'utilisateur: '{username}'."
+
+#: views/classics.py:305
+msgid "Please check your inbox to"
+msgstr "Veuillez consulter votre boite mail pour"
+
+#: views/classics.py:306
+#, python-brace-format
+msgid " confirm your new address at '{email}'"
+msgstr " confirmer votre nouvelle adresse à '{email}'"
+
+#: views/classics.py:379
+msgid "Your account is already confirmed. No email has been sent."
+msgstr "Votre compte est déjà confirmé, l'email n'est pas envoyé."
+
+#: views/classics.py:391
+msgid "Please check your inbox to confirm your account."
+msgstr "Consultez votre boite mail pour confirmer votre compte."
+
+#: views/silly_views.py:26
+msgid "Your account has been confirmed"
+msgstr "Votre compte a été confirmé"
+
+#: views/silly_views.py:32
+msgid "Your new email has been confirmed"
+msgstr "Votre nouvelle adresse mail a été confirmée"
+
+#: views/silly_views.py:36
+msgid "Your account has already been confirmed."
+msgstr "Votre compte a déjà été confirmé."
+
+#: views/silly_views.py:50
+msgid "Your password has been successfully reset."
+msgstr "Votre mot de passe a été réinitialisé avec succès."
+
+#~ msgid "Lang."
+#~ msgstr "Lang."

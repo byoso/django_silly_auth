@@ -20,3 +20,7 @@ DSA works as well with both DRF and Classic, just use differents simple settings
 ## [Read this FIRST](https://github.com/byoso/django_silly_auth/wiki/Must-read-this-few-lines-!)
 
 ### :coffee: [If you find this package usefull, consider buying me a coffee](https://www.buymeacoffee.com/byoso)
+
+
+### Changelog
+- 1.0.1: i18n fr + en

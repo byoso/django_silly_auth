@@ -73,7 +73,7 @@ class SillyAuthUserMixin(models.Model):
     def clean(self):
         if "@" in self.username:
             raise ValidationError(
-                {'username': _("username can't contain '@' character")})
+                {'username': _("A username cannot include the symbol '@'.")})
         super().clean()
 
     def save(self, *args, **kwargs):

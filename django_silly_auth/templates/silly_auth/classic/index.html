@@ -1,10 +1,15 @@
 {% extends base_template %}
 
+{% load i18n %}
 
-{% load static %}
+
 {% block content %}
 
-<h1 class="h2 subtitle">Index</h1>
+<h1 class="h2 subtitle">
+  {% translate 'Home' %}
+</h1>
+
+{% blocktrans %}
 
 <p>
     Welcome to Django Silly Auth :)
@@ -14,6 +19,9 @@
 </p>
 <p>
     Please change this index in your project.
+
+{% endblocktrans %}
+
     (settings.SILLY_AUTH["CLASSIC_INDEX"])
 </p>
 

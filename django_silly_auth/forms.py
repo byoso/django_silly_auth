@@ -23,7 +23,7 @@ class NewPasswordForm(forms.Form):
         validators=[validate_password]
     )
     password2 = forms.CharField(
-        label="Confirm password",
+        label=_("Confirm password"),
         max_length=64, widget=forms.PasswordInput,
         validators=[validate_password]
     )
@@ -32,7 +32,7 @@ class NewPasswordForm(forms.Form):
         password = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']
         if password != password2:
-            raise ValidationError("Passwords don't match, do it again")
+            raise ValidationError(_("The passwords you entered do not match."))
         return password2
 
 
@@ -45,15 +45,21 @@ class NewEmailConfirmForm(forms.Form):
 
 #################### FULL CLASSIC FORMS ####################
 
+
 class LoginForm(forms.Form):
     credential = forms.CharField(
         label=_("Username or email"),
         max_length=64,
-        widget=forms.TextInput({'placeholder': _('username or email')})
+        widget=forms.TextInput({
+            'placeholder': _('Username or email'),
+        })
     )
     password = forms.CharField(
         label=_("Password"),
-        max_length=64, widget=forms.PasswordInput,
+        max_length=64,
+        widget=forms.PasswordInput(
+            {'placeholder': _('Password')}
+        ),
         validators=[validate_password]
     )
 
@@ -64,7 +70,7 @@ class LoginForm(forms.Form):
         else:
             user = User.objects.filter(username=credential)
         if not user or not user[0].is_confirmed:
-            raise ValidationError(_(f"user '{credential}' unknown or unconfirmed"))
+            raise ValidationError(_(f"User '{credential}' unknown or unconfirmed"))
         return credential
 
 
@@ -73,20 +79,33 @@ class SignUpForm(forms.Form):
         label=_("Username"),
         validators=[MinLengthValidator(4), MaxLengthValidator(64)],
         max_length=64,
+        widget=forms.TextInput({
+            'placeholder': _('Username'),
+        })
     )
     email = forms.EmailField(
         label=_("Email"),
-        validators=[EmailValidator()])
+        validators=[EmailValidator()],
+        widget=forms.EmailInput({
+            'placeholder': _('Email'),
+        }),
+        )
 
     password = forms.CharField(
         label=_("Password"),
-        max_length=64, widget=forms.PasswordInput,
-        validators=[validate_password]
+        max_length=64,
+        validators=[validate_password],
+        widget=forms.PasswordInput({
+            'placeholder': _('Password'),
+        }),
     )
     password2 = forms.CharField(
-        label="Confirm password",
-        max_length=64, widget=forms.PasswordInput,
-        validators=[validate_password]
+        label=_("Confirm password"),
+        max_length=64,
+        validators=[validate_password],
+        widget=forms.PasswordInput({
+            'placeholder': _('Password'),
+        }),
     )
 
     def clean_password2(self):
@@ -99,25 +118,29 @@ class SignUpForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data['username']
         if "@" in username:
-            raise ValidationError(_("'@' not allowed in a username"))
+            raise ValidationError(_("A username cannot include the symbol '@'."))
         else:
             user = User.objects.filter(username=username)
             if user:
-                raise ValidationError(_(f"'{username}' already used by someone"))
+                raise ValidationError(_(f"'{username}' is already taken by someone else."))
         return username
 
     def clean_email(self):
         email = self.cleaned_data['email']
         user = User.objects.filter(email=email)
         if user:
-            raise ValidationError(_(f"'{email}' already used."))
+            raise ValidationError(_(f"'{email}' is already taken by someone else."))
         return email
 
 
 class CredentialForm(forms.Form):
     credential = forms.CharField(
-        label=_("Email or username"),
-        validators=[])
+        label=_("Username or email"),
+        validators=[],
+        widget=forms.TextInput({
+            'placeholder': _('Username or email'),
+        }),
+        )
 
     def clean_credential(self):
         credential = self.cleaned_data['credential']
@@ -133,12 +156,18 @@ class CredentialForm(forms.Form):
 class ResetPasswordForm(forms.Form):
     password = forms.CharField(
         label=_("Password"),
-        max_length=64, widget=forms.PasswordInput,
+        max_length=64,
+        widget=forms.PasswordInput({
+            'placeholder': _('Password'),
+        }),
         validators=[validate_password]
     )
     password2 = forms.CharField(
         label=_("Confirm password"),
-        max_length=64, widget=forms.PasswordInput,
+        max_length=64,
+        widget=forms.PasswordInput({
+            'placeholder': _('Password'),
+        }),
         validators=[validate_password]
     )
 
@@ -150,36 +179,43 @@ class ResetPasswordForm(forms.Form):
         password = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']
         if password != password2:
-            raise ValidationError(_("different than password"))
+            raise ValidationError(_("The passwords you entered do not match."))
         return password2
 
 
 class ChangeUsernameForm(forms.Form):
     username = forms.CharField(
+        label=_("New username"),
         validators=[MinLengthValidator(4), MaxLengthValidator(64)],
         max_length=64,
+        widget=forms.TextInput({
+            'placeholder': _('Username'),
+        })
     )
 
     def clean_username(self):
         username = self.cleaned_data['username']
         if "@" in username:
-            raise ValidationError(_("'@' not allowed in a username"))
+            raise ValidationError(_("A username cannot include the symbol '@'."))
         else:
             user = User.objects.filter(username=username)
             if user:
-                raise ValidationError(_(f"'{username}' is already used by someone"))
+                raise ValidationError(_(f"'{username}' is already taken by someone else."))
         return username
 
 
 class ChangeEmailForm(forms.Form):
     email = forms.EmailField(
-        label=_("New e-mail address"),
-        validators=[EmailValidator()]
+        label=_("New email address"),
+        validators=[EmailValidator()],
+        widget=forms.EmailInput({
+            'placeholder': _('Email'),
+        }),
         )
 
     def clean_email(self):
         email = self.cleaned_data['email']
         user = User.objects.filter(email=email)
         if user:
-            raise ValidationError(_(f"'{email}' already used by someone"))
+            raise ValidationError(_(f"'{email}' already taken by someone else."))
         return email

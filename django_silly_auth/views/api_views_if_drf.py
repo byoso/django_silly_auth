@@ -44,11 +44,11 @@ def resend_email_confirmation(request):
         user = User.objects.filter(username=credential).first()
     if user:
         if user.is_confirmed:
-            msg = _('account already confirmed')
+            msg = _("Your account is already confirmed.")
             raise ValidationError({"error": msg}, code='authorization')
             # return Response({'error': _('account already confirmed')})
         send_confirm_email(request, user)
-        return Response({'success': _('email sent for password reset')})
+        return Response({'success': _('Email sent for password reset')})
     msg = "Invalid credential"
     raise ValidationError({"error": msg}, code='authorization')
 
@@ -60,7 +60,7 @@ def logout_api_view(request):
     """Destroys the auth token"""
     print("=== DSA LOGOUT API VIEW")
     request.user.auth_token.delete()
-    return Response({'success': _('logged out, token destroyed')})
+    return Response({'success': _('Logged out.')})
 
 
 @transaction.atomic
@@ -70,7 +70,7 @@ def request_password_reset(request):
     """Sends an email to the user with a link to reset their password"""
     credential = request.data.get('credential')
     if not credential:
-        msg = _("no credential provided")
+        msg = _("No credentials were provided")
         raise ValidationError({"error": msg}, code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
@@ -78,7 +78,7 @@ def request_password_reset(request):
         user = User.objects.filter(username=credential).first()
     if user:
         send_password_reset_email(request, user)
-        return Response({'success': _('email sent for password reset')})
+        return Response({'success': _("Email sent for password reset")})
     msg = _("Invalid credential")
     raise ValidationError({"error": msg}, code='authorization')
 
@@ -96,14 +96,14 @@ class UserView(APIView):
             user.save()
             delete_unconfirmed(user)
             message = _(
-                    f"Please check your inbox '{user.email}' "
+                    f"Please check your inbox at '{user.email}' "
                     "to confirm your account. "
             )
             if conf["DELETE_UNCONFIRMED_TIME"] != 0:
-                message += _(
-                    "If your account is not confirmed in the next "
-                    f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "
-                    "it will be deleted."
+                message += (
+                    _("If you do not confirm your account within the next "),
+                    _(f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "),
+                    _("it will be deleted.")
                 )
             serializer = GetAllUsersSerializer(user)
             msg = {
@@ -129,7 +129,7 @@ def change_password(request):
         password = request.data.get('password')
         user.set_password(password)
         user.save()
-        return Response({'success': _('password changed')})
+        return Response({'success': _('Password successfully changed.')})
     msg = serializer.errors
     raise ValidationError({"error": msg}, code='authorization')
 
@@ -146,6 +146,7 @@ def change_email_request(request):
         user.save()
         send_confirm_email(request, user, new_email=True)
 
-        return Response({'success': _('New email saved, check your inbox to activate it')})
+        return Response(
+            {'success': _(f"New email saved, check your inbox at '{new_email}' to activate it.")})
     msg = serializer.errors
     raise ValidationError({"error": msg}, code='authorization')

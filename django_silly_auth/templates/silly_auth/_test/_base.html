@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -25,35 +26,36 @@
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
             <a class="navbar-item" href="{% url 'classic_index' %}">
-              Home
+              {% translate 'Home' %}
             </a>
 
             {% if user.is_authenticated %}
             <a class="navbar-item" href="{% url 'classic_account' %}">
-              Account
+              {% translate 'Account' %}
             </a>
             {% endif%}
 
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
-                More
+                {% translate 'More' %}
               </a>
 
               <div class="navbar-dropdown">
                 <a class="navbar-item" href="https://github.com/byoso/django_silly_auth/wiki" target="_blank">
-                  Documentation
+                  {% translate 'Documentation' %}
                 </a>
                 <a class="navbar-item" href="https://www.buymeacoffee.com/byoso" target="_blank">
-                  Buy me a coffee
+                  {% translate 'Buy me a coffee' %}
                 </a>
                 <a class="navbar-item" href="mailto:mail@mail.com">
-                  Contact
+                  {% translate 'Contact' %}
                 </a>
                 <hr class="navbar-divider">
                 <a class="navbar-item" href="https://github.com/byoso/django_silly_auth/issues" target="_blank">
-                  Report an issue
+                  {% translate 'Report an issue' %}
                 </a>
               </div>
+
             </div>
           </div>
 
@@ -62,25 +64,26 @@
               <div class="buttons">
                 {% if user.is_authenticated %}
                 <a class="button is-warning" href="{% url 'classic_logout' %}">
-                  Log out
+                  {% translate 'Log out' %}
                 </a>
                 {% else %}
                 <a class="button is-primary" href="{% url 'classic_signup' %}">
-                  <strong>Sign up</strong>
+                  <strong>{% translate 'Sign up' %}</strong>
                 </a>
                 <a class="button is-light" href="{% url 'classic_login' %}">
-                  Log in
+                  {% translate 'Log in' %}
                 </a>
                 {% endif %}
               </div>
             </div>
           </div>
+
         </div>
       </nav>
       <nav>
 
-        <a href="{% url 'test_templates_view' %}">  Test single page </a>
-        <a href="{% url 'test_users_view' %}"> :: Test Users page </a>
+        <a href="{% url 'test_templates_view' %}">  {% translate 'Test single page' %}</a>
+        <a href="{% url 'test_users_view' %}"> :: {% translate 'Test Users page' %}</a>
 
       </nav>
 

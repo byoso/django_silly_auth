@@ -1,7 +1,13 @@
 {% extends base_template %}
 
+{% load i18n %}
+
 {% block content %}
-<h1 class="h2 subtitle">Login</h1>
+
+<h1 class="h2 subtitle">
+  {% translate 'Login' %}
+</h1>
+
 <form method="post">
   {% csrf_token %}
 
@@ -28,19 +34,21 @@
 
   <ul>
     <li>
-      <a href="{% url 'classic_request_password_reset' %}">I forgot my password.</a>
+      <a href="{% url 'classic_request_password_reset' %}">
+        {% translate 'I forgot my password.' %}
+      </a>
     </li>
     <li>
       <p>
         <a href="{% url 'classic_request_resend_confirmation_email' %}">
-          My account exists but is unconfirmed, please send me the confirmation email again.
+          {% translate 'My account exists but is unconfirmed, please send me the confirmation email again.' %}
         </a>
       </p>
 
     </li>
   </ul>
 
-  <input type="submit" class="button is-success m-2 btn btn-success" value="log in">
+  <input type="submit" class="button is-success m-2 btn btn-success" value="{% translate 'log in' %}">
 </form>
 
 

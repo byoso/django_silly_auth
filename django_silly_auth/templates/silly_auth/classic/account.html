@@ -1,19 +1,22 @@
 {% extends base_template %}
 
+{% load i18n %}
+
 
 {% block content %}
 
-<h1 class="h2 subtitle">Account</h1>
+<h1 class="h2 subtitle">
+  {% translate 'Account' %}</h1>
 
 <h3>{{user.username}} - {{ user.email }}</h3>
-    secret id: {{ user.id }}
+{% translate 'id:' %}  {{ user.id }}
     <hr>
 <p>
-   <a class="button is-primary m-2" href="{% url 'classic_change_username' %}">Change my Username</a>
+   <a class="button is-primary m-2" href="{% url 'classic_change_username' %}">{% translate 'Change my Username' %}</a>
 
-   <a class="button is-primary m-2" href="{% url 'classic_change_email' %}"> Change my email </a>
+   <a class="button is-primary m-2" href="{% url 'classic_change_email' %}">{% translate 'Change my email' %} </a>
 
-   <a class="button is-primary m-2" href="{% url 'classic_request_password_reset' %}">Reset my password</a>
+   <a class="button is-primary m-2" href="{% url 'classic_reset_password_authenticated' %}">{% translate 'Change my password' %}</a>
 </p>
 
 {% endblock content %}

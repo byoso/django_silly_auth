@@ -10,7 +10,6 @@ from django_silly_auth.views import (
     silly_views,
     classics)
 
-import django_silly_auth
 
 if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.urls")
@@ -82,6 +81,11 @@ if conf["USE_CLASSIC"]:
             f'{prefix}classic_request_resend_confirmation_email/',
             classics.request_resend_account_confirmation_email,
             name='classic_request_resend_confirmation_email'
+        ),
+        path(
+            f'{prefix}classic_reset_password/',
+            classics.reset_password,
+            name='classic_reset_password_authenticated'
         ),
     ]
     if conf["USE_CLASSIC_INDEX"]:

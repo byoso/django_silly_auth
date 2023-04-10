@@ -1,12 +1,17 @@
-Dear {{ user.username }},
+{% load i18n %}
 
-To confirm and activate your email, click on the following link:
+{% translate 'Dear' %} {{ user.username }},
+
+{% blocktrans %}
+To confirm your email, please click on the following link:
 {{ link }}
 
 If you have not registered an account,
-please just ignore this message.
+please ignore this message.
 
 Best regards
+
+{% endblocktrans %}
 
 {% if site_name %}
 {{ site_name }}

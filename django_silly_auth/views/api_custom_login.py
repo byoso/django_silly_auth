@@ -41,11 +41,13 @@ class LoginWithAuthToken(ObtainAuthToken):
             match = user.check_password(password)
         if match:
             if not user.is_confirmed and not user.is_superuser:
-                msg = _('Account not confirmed. Please check your email for a confirmation link.')
+                msg = _(
+                    'Your account has not been confirmed yet. '
+                    'Please check your inbox for a confirmation link.')
                 raise ValidationError(msg, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key})
-        msg = _('Unable to log in with the provided credentials.')
+        msg = _('Incorrect credentials.')
         raise ValidationError(msg, code='authorization')
 
 
@@ -65,9 +67,10 @@ class LoginWithJWTToken(APIView):
                 user.email = user.new_email
                 user.new_email = None
                 user.save()
-                msg = _("Your new email has been activated")
+                msg = _("Your new email has been confirmed.")
             else:
-                msg = _("You've been logged in, please change your password if necessary.")
+                msg = _("You've been logged in via email confirmation, "
+                        "please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'message': msg})
         raise ValidationError(serializer.errors, code='authorization')

@@ -1,11 +1,14 @@
 {% extends base_template %}
 
+{% load i18n %}
 
 {% block content %}
 
-<h1 class="h2 subtitle">Change Username</h1>
+<h1 class="h2 subtitle">
+  {% translate 'Change Username' %}
+</h1>
 
-Current username: {{ user.username }} <br>
+{% translate 'Current username' %}: {{ user.username }} <br>
 
 <form method="post">
     {% csrf_token %}
@@ -19,7 +22,7 @@ Current username: {{ user.username }} <br>
 
     </p>
     <p>
-        <input type="submit" class="button is-success m-2 btn btn-success" value="confirm">
+        <input type="submit" class="button is-success m-2 btn btn-success" value="{% translate 'confirm' %}">
     </p>
 
 </form>

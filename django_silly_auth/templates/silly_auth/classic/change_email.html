@@ -1,11 +1,12 @@
 {% extends base_template %}
 
+{% load i18n %}
 
 {% block content %}
 
-<h1 class="h2 subtitle">Change Email</h1>
+<h1 class="h2 subtitle">{% translate 'Change Email' %}</h1>
 
-<p>Your current email: {{ user.email }}</p>
+<p>{% translate 'Your current email:' %} {{ user.email }}</p>
 
 <form method="post">
     {% csrf_token %}
@@ -19,7 +20,7 @@
 
     </p>
     <p>
-        <input type="submit" class="button is-success m-2 btn btn-success" value="confirm">
+        <input type="submit" class="button is-success m-2 btn btn-success" value="{% translate 'confirm' %}">
     </p>
 
 </form>

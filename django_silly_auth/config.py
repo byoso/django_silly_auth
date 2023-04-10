@@ -1,8 +1,5 @@
 from django.conf import settings
 
-# django_silly_auth version
-__version__ = "0.1.1"
-
 
 class SillyAuthError(Exception):
     pass
@@ -122,5 +119,4 @@ except (ValueError, AssertionError):
 
 
 if SILLY_AUTH_SETTINGS["VERBOSE"]:
-    print(f"=== DSA Version: {__version__}")
-    print("=== DSA IMPORT django_silly_auth")
+    print("=== DSA IMPORT django_silly_auth.config")

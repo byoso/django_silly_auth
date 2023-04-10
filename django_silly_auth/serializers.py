@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
@@ -40,7 +41,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
             password_errors += list(e.messages)
 
         if "@" in username:
-            username_errors += ["A username must not contain '@'", ]
+            username_errors += [_("A username cannot include the symbol '@'."), ]
 
         if username_errors:
             errors["username"] = username_errors
@@ -69,7 +70,7 @@ class PasswordsSerializer(serializers.Serializer):
         password_errors = list()
 
         if password != password2:
-            password_errors += ["Passwords don't match", ]
+            password_errors += [_("The passwords you entered do not match."), ]
 
         try:
             validate_password(
@@ -95,7 +96,7 @@ class EmailSerializer(serializers.Serializer):
         email_errors = list()
 
         if User.objects.filter(email=email).exists():
-            email_errors += ["Email already in use", ]
+            email_errors += [_("This email is already associated with an existing account."), ]
 
         if email_errors:
             errors['email'] = email_errors
@@ -116,10 +117,10 @@ class LoginSerializer(serializers.Serializer):
 
         if "@" in credential:
             if not User.objects.filter(email=credential).exists():
-                credential_errors += ["Email not found", ]
+                credential_errors += [_("Email not found"), ]
         else:
             if not User.objects.filter(username=credential).exists():
-                credential_errors += ["User not found", ]
+                credential_errors += [_("User not found"), ]
 
         if credential_errors:
             errors['username'] = credential_errors
@@ -144,12 +145,12 @@ class CredentialJWTokenSerializer(serializers.Serializer):
         user = None
         if "@" in credential:
             if not User.objects.filter(email=credential).exists():
-                credential_errors += ["Email not found", ]
+                credential_errors += [_("Email not found"), ]
             else:
                 user = User.objects.filter(email=credential).first()
         else:
             if not User.objects.filter(username=credential).exists():
-                credential_errors += ["User not found", ]
+                credential_errors += [_("User not found"), ]
             else:
                 user = User.objects.filter(username=credential).first()
         if credential_errors:
@@ -157,9 +158,9 @@ class CredentialJWTokenSerializer(serializers.Serializer):
 
         jwt_user = User.verify_jwt_token(jwt_token)
         if (user is not None and jwt_user is not None) and user != jwt_user:
-            jwt_errors += ['token does not match user']
+            jwt_errors += [_("The given token does not match the user")]
         if User.verify_jwt_token(jwt_token) is None:
-            jwt_errors += ["jwt token invalid or expired"]
+            jwt_errors += [_("jwt token invalid or expired")]
         if jwt_errors:
             errors['jwt_token'] = jwt_errors
         if errors:

@@ -1,6 +1,8 @@
 {% extends base_template %}
 
-<h1 class="h2 subtitle">Sign up</h1>
+{% load i18n %}
+
+<h1 class="h2 subtitle">{% translate "Sign up" %}</h1>
 
 {% block content %}
 
@@ -35,7 +37,7 @@
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
-        <input type="submit" class="button is-success m-2 btn btn-success" value="Sign In">
+        <input type="submit" class="button is-success m-2 btn btn-success" value="{% translate 'Sign Up' %}">
 
 
 </form>

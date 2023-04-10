@@ -1,10 +1,13 @@
 {% extends base_template %}
 
+{% load i18n %}
 
 {% block content %}
 
 
-<h1 class="h2 subtitle">Request resend account confirmation email</h1>
+<h1 class="h2 subtitle">
+  {% translate "Request resend account confirmation email" %}
+</h1>
 
 <form method="post">
     {% csrf_token %}
@@ -17,7 +20,7 @@
 
     </p>
     <p>
-        <input type="submit" class="button is-warning m-2 btn btn-warning" value="send me an email">
+        <input type="submit" class="button is-warning m-2 btn btn-warning" value="{% translate 'send me an email' %}">
     </p>
 
 </form>

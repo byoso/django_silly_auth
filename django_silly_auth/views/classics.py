@@ -55,7 +55,7 @@ def login_view(request):
             else:
                 messages.add_message(
                     request, messages.ERROR,
-                    message=_("Wrong credentials or unconfirmed account"),
+                    message=_("Incorrect credentials or unconfirmed account."),
                     extra_tags="warning"),
         else:
             context = {
@@ -102,15 +102,15 @@ def signup_view(request):
             user.save()
             send_confirm_email(request, user)
             delete_unconfirmed(user)
-            message = _(
-                    f"Please check your email '{user.email}' "
-                    "to confirm your account. "
+            message = (
+                    _(f"Please check your inbox at '{user.email}' "),
+                    _("to confirm your account.")
             )
             if conf["DELETE_UNCONFIRMED_TIME"] != 0.0:
-                message += _(
-                    "If your account is not confirmed in the next "
-                    f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "
-                    "it will be deleted."
+                message += (
+                    _("If you do not confirm your account within the next "),
+                    _(f"{conf['DELETE_UNCONFIRMED_TIME']} hours, "),
+                    _("it will be deleted.")
                 )
             messages.add_message(
                 request, messages.INFO,
@@ -151,7 +151,8 @@ def request_password_reset(request):
                     request, messages.INFO,
                     message=(_(
                         "Please check your inbox "
-                        "to reset your password"
+                        "and follow the instructions "
+                        "to reset your password."
                         )),
                     extra_tags="info"
                 )
@@ -161,8 +162,8 @@ def request_password_reset(request):
                 messages.add_message(
                     request, messages.INFO,
                     message=(_(
-                        "Your account is not active anymore, please contact the administrator, "
-                        "no email has been sent"
+                        "Your account is no longer active. Please contact the administrator. "
+                        "No email has been sent."
                         )),
                     extra_tags="info"
                 )
@@ -189,14 +190,22 @@ def request_password_reset(request):
 
 
 @transaction.atomic
-def reset_password(request, token):
-    """Receive the token from the confirmation email and reset the password"""
-    user = User.verify_jwt_token(token)
+def reset_password(request, token=None):
+    """Receive the token from the confirmation email and reset the password
+    or already authenticated user.
+    """
+    if token:
+        user = User.verify_jwt_token(token)
+    elif request.user.is_authenticated:
+        user = request.user
+    else:
+        user = None
+
     if user is None:
         messages.add_message(
             request, messages.INFO,
             message=(_(
-                "Invalid or expired token"
+                "Token invalid or expired"
                 )),
             extra_tags="danger"
         )
@@ -209,10 +218,10 @@ def reset_password(request, token):
             user.save()
             if conf["USE_SILLY"]:
                 return redirect('silly_password_reset_done')
-
+            login(request, user)
             messages.add_message(
                 request, messages.SUCCESS,
-                message=_("Your password have been reset, please login"),
+                message=_("Your password has been successfully reset. Please log in."),
                 extra_tags="success"
             )
             return redirect('classic_index')
@@ -226,11 +235,12 @@ def reset_password(request, token):
 
     form = ResetPasswordForm()
     login(request, user)
-    messages.add_message(
-        request, messages.SUCCESS,
-        message=_("Your have been logged in by email confirmation, please reset your password."),
-        extra_tags="warning"
-    )
+    if token:
+        messages.add_message(
+            request, messages.SUCCESS,
+            message=_("You have been logged in via email confirmation. Please reset your password."),
+            extra_tags="warning"
+        )
 
     context = {
         'form': form,
@@ -252,7 +262,7 @@ def change_username(request):
             user.save()
             messages.add_message(
                 request, messages.SUCCESS,
-                message=_(f"New username set: '{username}'"),
+                message=_(f"New username set: '{username}'."),
                 extra_tags="success"
             )
             return redirect("classic_account")
@@ -291,10 +301,10 @@ def change_email(request):
 
             messages.add_message(
                 request, messages.INFO,
-                message=(_(
-                    "Please check your inbox to"
-                    f" confirm your new address '{email}'"
-                    )),
+                message=(
+                    _("Please check your inbox to"),
+                    _(f" confirm your new address at '{email}'")
+                    ),
                 extra_tags="info"
             )
             return redirect("classic_account")
@@ -322,7 +332,7 @@ def confirm_email(request, token):
         messages.add_message(
             request, messages.INFO,
             message=(_(
-                "Invalid or expired token"
+                "Token invalid or expired"
                 )),
             extra_tags="danger"
         )
@@ -331,15 +341,15 @@ def confirm_email(request, token):
         if not user.is_confirmed:
             user.is_confirmed = True
             user.new_email = None
-            msg = _("Your account have been confirmed")
+            msg = _("Your account has been confirmed.")
             user.save()
         elif user.new_email:
             user.email = user.new_email
             user.new_email = None
-            msg = _("Your new email have been confirmed")
+            msg = _("Your new email has been confirmed.")
             user.save()
         else:
-            msg = _("Your account is already confirmed")
+            msg = _("Your account is already confirmed.")
         messages.add_message(
             request, messages.SUCCESS,
             message=msg,
@@ -366,8 +376,8 @@ def request_resend_account_confirmation_email(request):
                 messages.add_message(
                     request, messages.INFO,
                     message=(_(
-                        "Your account is already confirmed, "
-                        "no email has been sent."
+                        "Your account is already confirmed. "
+                        "No email has been sent."
                         )),
                     extra_tags="info"
                 )
@@ -379,7 +389,7 @@ def request_resend_account_confirmation_email(request):
                 request, messages.INFO,
                 message=(_(
                     "Please check your inbox "
-                    "to confirm your account"
+                    "to confirm your account."
                     )),
                 extra_tags="info"
             )
