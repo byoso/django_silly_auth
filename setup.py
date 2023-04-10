@@ -51,6 +51,7 @@ setup(
         "django_silly_auth.templates.silly_auth._test",
         "django_silly_auth.templates.silly_auth.classic",
         "django_silly_auth.templates.silly_auth.emails",
+        "django_silly_auth.templates.silly_auth.silly",
         "django_silly_auth.views",
         ],
     # include_package_data=True,
