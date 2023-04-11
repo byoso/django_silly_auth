@@ -102,18 +102,23 @@ def signup_view(request):
             user.save()
             send_confirm_email(request, user)
             delete_unconfirmed(user)
-            part1 = _("Please check your inbox at")
-            part2 = f" '{user.email}' "
-            part3 = _("to confirm your account.")
 
+            message1 = _(
+                "Please check your inbox at"
+                " '%(email)s' to confirm your account."
+            ) % {'email': user.email}
+            message2 = ""
             if conf["DELETE_UNCONFIRMED_TIME"] != 0.0:
 
-                part4 = _(" If you do not confirm your account within the next ")
-                part5 = _("{} hours, it will be deleted.").format(conf['DELETE_UNCONFIRMED_TIME'])
-            else:
-                part4 = part5 = ""
+                message2 = _(
+                    " If you do not confirm your account within the next "
+                    "%(time)s hours, it will be deleted."
+                ) % {'time': conf['DELETE_UNCONFIRMED_TIME']}
 
-            message = "{}{}{}{}{}".format(part1, part2, part3, part4, part5)
+            message = "%(message1)s%(message2)s" % {
+                'message1': message1,
+                'message2': message2,
+            }
 
             messages.add_message(
                 request, messages.INFO,
@@ -265,7 +270,9 @@ def change_username(request):
             user.save()
             messages.add_message(
                 request, messages.SUCCESS,
-                message=_("New username set: '{}'.").format(username),
+                message=_(
+                    "New username set: '%(username)s'."
+                ) % {'username': username},
                 extra_tags="success"
             )
             return redirect("classic_account")
@@ -302,9 +309,9 @@ def change_email(request):
             user.save()
             send_confirm_email(request, user)
 
-            part1 = _("Please check your inbox to"),
-            part2 = _(" confirm your new address at '{}'").format(email)
-            message = "{}{}.".format(part1, part2)
+            message = _(
+                "Please check your inbox to confirm your new "
+                "address at '%(email)s'") % {"email": user.new_email}
             messages.add_message(
                 request, messages.INFO,
                 message,

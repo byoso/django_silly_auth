@@ -40,7 +40,10 @@ class LoginForm(forms.Form):
         else:
             user = User.objects.filter(username=credential)
         if not user or not user[0].is_confirmed:
-            raise ValidationError(_(f"User '{credential}' unknown or unconfirmed"))
+            raise ValidationError(_(
+                "User '%(credential)s' unknown or unconfirmed"
+                ) % {"credential": credential}
+                )
         return credential
 
 
@@ -92,14 +95,20 @@ class SignUpForm(forms.Form):
         else:
             user = User.objects.filter(username=username)
             if user:
-                raise ValidationError(_(f"'{username}' is already taken by someone else."))
+                raise ValidationError(_(
+                    "'%(username)s' is already taken by someone else."
+                    ) % {"username": username}
+                    )
         return username
 
     def clean_email(self):
         email = self.cleaned_data['email']
         user = User.objects.filter(email=email)
         if user:
-            raise ValidationError(_(f"'{email}' is already taken by someone else."))
+            raise ValidationError(_(
+                "'%(email)s' is already taken by someone else."
+                ) % {"email": email}
+                )
         return email
 
 
@@ -119,7 +128,10 @@ class CredentialForm(forms.Form):
         else:
             user = User.objects.filter(username=credential)
         if not user:
-            raise ValidationError(_(f"'{credential}' unknown or unconfirmed"))
+            raise ValidationError(_(
+                "'%(credential)s' unknown or unconfirmed"
+                ) % {"credential": credential}
+                )
         return credential
 
 
@@ -170,7 +182,10 @@ class ChangeUsernameForm(forms.Form):
         else:
             user = User.objects.filter(username=username)
             if user:
-                raise ValidationError(_(f"'{username}' is already taken by someone else."))
+                raise ValidationError(_(
+                    "'%(username)s' is already taken by someone else."
+                    ) % {"username": username}
+                    )
         return username
 
 
@@ -187,5 +202,8 @@ class ChangeEmailForm(forms.Form):
         email = self.cleaned_data['email']
         user = User.objects.filter(email=email)
         if user:
-            raise ValidationError(_(f"'{email}' already taken by someone else."))
+            raise ValidationError(_(
+                "'%(email)s' already taken by someone else."
+                ) % {"email": email}
+                )
         return email

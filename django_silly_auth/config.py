@@ -8,7 +8,7 @@ class SillyAuthError(Exception):
 SILLY_AUTH_SETTINGS = {
     # Quick settings
     "AUTO_SET": 'TEST',  # 'CLASSIC', 'SPA', 'SILLY or 'TEST'
-    "DSA_PREFIX": 'auth/',
+    "DSA_PREFIX": 'auth/',  # only the CLASSIC_INDEX view has a blank prefix, it's the entry point in a classic site.
 
     # Secondary settings
     "SITE_NAME": None,  # str used in templates if provided

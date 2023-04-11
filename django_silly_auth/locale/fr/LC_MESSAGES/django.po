@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 00:57+0200\n"
-"PO-Revision-Date: 2023-04-11 00:57+0200\n"
+"POT-Creation-Date: 2023-04-11 21:00+0200\n"
+"PO-Revision-Date: 2023-04-11 21:01+0200\n"
 "Last-Translator: Vincent Fabre <peigne.plume@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -18,71 +18,71 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: forms.py:21 forms.py:24 forms.py:108 forms.py:111
+#: forms.py:21 forms.py:24 forms.py:117 forms.py:120
 msgid "Username or email"
 msgstr "Nom d'utilisateur ou email"
 
-#: forms.py:28 forms.py:31 forms.py:65 forms.py:69 forms.py:77 forms.py:128
-#: forms.py:131 forms.py:139
+#: forms.py:28 forms.py:31 forms.py:68 forms.py:72 forms.py:80 forms.py:140
+#: forms.py:143 forms.py:151
 msgid "Password"
 msgstr "Mot de passe"
 
-#: forms.py:43
-#, python-brace-format
-msgid "User '{credential}' unknown or unconfirmed"
-msgstr "Utilisateur '{credential}' inconnu ou non confirmé"
+#: forms.py:44
+#, python-format
+msgid "User '%(credential)s' unknown or unconfirmed"
+msgstr "Utilisateur '%(credential)s' inconnu ou non confirmé"
 
-#: forms.py:49 forms.py:53 forms.py:162
+#: forms.py:52 forms.py:56 forms.py:174
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: forms.py:57 forms.py:60 forms.py:182
+#: forms.py:60 forms.py:63 forms.py:197
 msgid "Email"
 msgstr "Email"
 
-#: forms.py:73 forms.py:136
+#: forms.py:76 forms.py:148
 msgid "Confirm password"
 msgstr "Confirmez le mot de passe"
 
-#: forms.py:85
+#: forms.py:88
 msgid "different than password"
 msgstr "mots de passe différents"
 
-#: forms.py:91 forms.py:169 mixins.py:76 serializers.py:44
+#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:44
 msgid "A username cannot include the symbol '@'."
 msgstr "Un nom d'utilisateur ne peut pas inclure '@'."
 
-#: forms.py:95 forms.py:173
-#, python-brace-format
-msgid "'{username}' is already taken by someone else."
-msgstr "'{username}' est déjà utilisé par quelqu'un."
+#: forms.py:99 forms.py:186
+#, python-format
+msgid "'%(username)s' is already taken by someone else."
+msgstr "'%(username)s' est déjà utilisé par quelqu'un."
 
-#: forms.py:102
-#, python-brace-format
-msgid "'{email}' is already taken by someone else."
-msgstr "'{email}' déjà utilisé par quelqu'un."
+#: forms.py:109
+#, python-format
+msgid "'%(email)s' is already taken by someone else."
+msgstr "'%(email)s' déjà utilisé par quelqu'un."
 
-#: forms.py:122
-#, python-brace-format
-msgid "'{credential}' unknown or unconfirmed"
-msgstr "'{credential}' inconnu ou non confirmé"
+#: forms.py:132
+#, python-format
+msgid "'%(credential)s' unknown or unconfirmed"
+msgstr "'%(credential)s' inconnu ou non confirmé"
 
-#: forms.py:152 serializers.py:73
+#: forms.py:164 serializers.py:73
 msgid "The passwords you entered do not match."
 msgstr "Les mots de passe saisis ne correspondent pas."
 
-#: forms.py:158
+#: forms.py:170
 msgid "New username"
 msgstr "Nouveau nom d'utilisateur"
 
-#: forms.py:179
+#: forms.py:194
 msgid "New email address"
 msgstr "Nouvelle adresse email"
 
-#: forms.py:190
-#, python-brace-format
-msgid "'{email}' already taken by someone else."
-msgstr "'{email}' déjà utilisé par quelqu'un."
+#: forms.py:206
+#, python-format
+msgid "'%(email)s' already taken by someone else."
+msgstr "'%(email)s' déjà utilisé par quelqu'un."
 
 #: mixins.py:29
 msgid "username"
@@ -351,6 +351,10 @@ msgstr ""
 "Cordialement\n"
 "\n"
 
+#: templates/silly_auth/silly/silly_confirm_email.html:11
+msgid "Account Confirmation"
+msgstr "Confirmation du compte"
+
 #: views/api_custom_login.py:45
 msgid ""
 "Your account has not been confirmed yet. Please check your inbox for a "
@@ -363,11 +367,11 @@ msgstr ""
 msgid "Incorrect credentials."
 msgstr "Indentifiants incorrectes."
 
-#: views/api_custom_login.py:65 views/classics.py:347
+#: views/api_custom_login.py:65 views/classics.py:354
 msgid "Your account has been confirmed."
 msgstr "Votre compte a été confirmé."
 
-#: views/api_custom_login.py:70 views/classics.py:352
+#: views/api_custom_login.py:70 views/classics.py:359
 msgid "Your new email has been confirmed."
 msgstr "Votre nouvel email a été confirmé."
 
@@ -382,7 +386,7 @@ msgstr ""
 msgid "no credential provided"
 msgstr "aucun identifiant fourni"
 
-#: views/api_views_if_drf.py:47 views/classics.py:355
+#: views/api_views_if_drf.py:47 views/classics.py:362
 msgid "Your account is already confirmed."
 msgstr "Votre compte est déjà confirmé."
 
@@ -402,60 +406,60 @@ msgstr "Aucun identifiant fourni"
 msgid "Invalid credential"
 msgstr "Identifiant non valide"
 
-#: views/api_views_if_drf.py:98
-msgid "Please check your inbox at '{}' to confirm your account. "
-msgstr "Veuillez confirmer votre email à  '{}' pour confirmer votre compte. "
+#: views/api_views_if_drf.py:99
+#, python-format
+msgid "Please check your inbox at '%(email)s' to confirm your account. "
+msgstr ""
+"Veuillez consulter votre boite mail à '%(email)s' pour confirmer votre "
+"compte. "
 
-#: views/api_views_if_drf.py:100
-msgid "If you do not confirm your account within the next "
-msgstr "Si vous ne confirmez pas votre compte dans les "
+#: views/api_views_if_drf.py:103
+#, python-format
+msgid ""
+"If you do not confirm your account within the next %(hours)s hours, it will "
+"be deleted."
+msgstr ""
+"Si vous ne confirmez pas votre compte dans les %(hours)s heures, il sera "
+"supprimé."
 
-#: views/api_views_if_drf.py:101
-msgid "{} hours, "
-msgstr "{} heures, "
-
-#: views/api_views_if_drf.py:102
-msgid "it will be deleted."
-msgstr "il sera supprimé."
-
-#: views/api_views_if_drf.py:129
+#: views/api_views_if_drf.py:136
 msgid "Password successfully changed."
 msgstr "Mot de passe changé avec succès."
 
-#: views/api_views_if_drf.py:147
-msgid "New email saved, check your inbox at '{}' to activate it."
+#: views/api_views_if_drf.py:155
+#, python-format
+msgid "New email saved, check your inbox at '%(new_email)s' to activate it."
 msgstr ""
-"Nouvel email enregistré, veuillez vérifier votre boite de réception à '{}' "
-"pour l'activer."
+"Nouvel email enregistré, veuillez vérifier votre boite de réception à "
+"'%(new_email)s' pour l'activer."
 
 #: views/classics.py:58
 msgid "Incorrect credentials or unconfirmed account."
 msgstr "Identifiants incorrects ou compte non confirmé."
 
-#: views/classics.py:105
-msgid "Please check your inbox at"
-msgstr "Veuillez consulter votre boite mail à"
-
 #: views/classics.py:107
-msgid "to confirm your account."
-msgstr "pour confirmer votre compte."
+#, python-format
+msgid "Please check your inbox at '%(email)s' to confirm your account."
+msgstr ""
+"Veuillez consulter votre email à '%(email)s' pour confirmer votre compte."
 
-#: views/classics.py:111
-msgid " If you do not confirm your account within the next "
-msgstr " Si vous ne confirmez pas votre compte dans les "
+#: views/classics.py:114
+#, python-format
+msgid ""
+" If you do not confirm your account within the next %(time)s hours, it will "
+"be deleted."
+msgstr ""
+" Si vous ne confirmez pas votre compte dans les %(time)s heures, il sera "
+"supprimé."
 
-#: views/classics.py:112
-msgid "{} hours, it will be deleted."
-msgstr "{} heures, il sera supprimé."
-
-#: views/classics.py:156
+#: views/classics.py:161
 msgid ""
 "Please check your inbox and follow the instructions to reset your password."
 msgstr ""
 "Veuillez consulter votre boite mail et cliquer sur le lien fourni pour "
 "réinitialiser votre mot de passe."
 
-#: views/classics.py:168
+#: views/classics.py:173
 msgid ""
 "Your account is no longer active. Please contact the administrator. No email "
 "has been sent."
@@ -463,40 +467,38 @@ msgstr ""
 "Votre compte est inactif. Contactez l'administrateur. L'envoi de l'email a "
 "été annulé."
 
-#: views/classics.py:211 views/classics.py:338 views/silly_views.py:20
+#: views/classics.py:216 views/classics.py:345 views/silly_views.py:20
 msgid "Token invalid or expired"
 msgstr "Token invalide ou expiré"
 
-#: views/classics.py:227
+#: views/classics.py:232
 msgid "Your password has been successfully reset. Please log in."
 msgstr ""
 "Votre mot de passe a été réinitialisé avec succès. Vous pouvez vous "
 "connecter."
 
-#: views/classics.py:244
+#: views/classics.py:249
 msgid ""
 "You have been logged in via email confirmation. Please reset your password."
 msgstr ""
 "Vous avez été connecté via un email de confirmation. Réinitialisez votre mot "
 "de passe si besoin."
 
-#: views/classics.py:268
-msgid "New username set: '{}'."
-msgstr "Nouveau nom d'utilisateur: '{}'."
+#: views/classics.py:274
+#, python-format
+msgid "New username set: '%(username)s'."
+msgstr "Nouveau nom d'utilisateur: '%(username)s'."
 
-#: views/classics.py:305
-msgid "Please check your inbox to"
-msgstr "Veuillez consulter votre boite mail pour"
+#: views/classics.py:313
+#, python-format
+msgid "Please check your inbox to confirm your new address at '%(email)s'"
+msgstr "Consultez votre boite mail à '%(email)s' pour confirmer votre compte."
 
-#: views/classics.py:306
-msgid " confirm your new address at '{}'"
-msgstr " confirmer votre nouvelle adresse à '{}'"
-
-#: views/classics.py:382
+#: views/classics.py:389
 msgid "Your account is already confirmed. No email has been sent."
 msgstr "Votre compte est déjà confirmé, l'email n'est pas envoyé."
 
-#: views/classics.py:394
+#: views/classics.py:401
 msgid "Please check your inbox to confirm your account."
 msgstr "Consultez votre boite mail pour confirmer votre compte."
 
@@ -515,6 +517,34 @@ msgstr "Votre compte a déjà été confirmé."
 #: views/silly_views.py:50
 msgid "Your password has been successfully reset."
 msgstr "Votre mot de passe a été réinitialisé avec succès."
+
+#~ msgid "Please check your inbox at '{}' to confirm your account. "
+#~ msgstr ""
+#~ "Veuillez consulter votre email à  '{}' pour confirmer votre compte. "
+
+#~ msgid "If you do not confirm your account within the next "
+#~ msgstr "Si vous ne confirmez pas votre compte dans les "
+
+#~ msgid "{} hours, "
+#~ msgstr "{} heures, "
+
+#~ msgid "it will be deleted."
+#~ msgstr "il sera supprimé."
+
+#~ msgid "Please check your inbox at"
+#~ msgstr "Veuillez consulter votre boite mail à"
+
+#~ msgid "to confirm your account."
+#~ msgstr "pour confirmer votre compte."
+
+#~ msgid "{} hours, it will be deleted."
+#~ msgstr "{} heures, il sera supprimé."
+
+#~ msgid "Please check your inbox to"
+#~ msgstr "Veuillez consulter votre boite mail pour"
+
+#~ msgid " confirm your new address at '{}'"
+#~ msgstr " confirmer votre nouvelle adresse à '{}'"
 
 #~ msgid "Please check your inbox at '{}' "
 #~ msgstr "Vérifiez votre boite mail à '{}' "

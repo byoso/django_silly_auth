@@ -3,10 +3,12 @@
 
 {% block content %}
 
+{% load i18n %}
+
 {% if site_name %}
   <h2 class="h2 subtitle">{{ site_name }}</h2>
 {% endif %}
-<h1 class="h1 title">Account Confirmation</h1>
+<h1 class="h1 title">{% translate 'Account Confirmation' %}</h1>
 
 
 <div class="notification is-{{ tag }}">
