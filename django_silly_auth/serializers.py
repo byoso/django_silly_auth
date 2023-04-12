@@ -15,7 +15,7 @@ User = get_user_model()
 class GetAllUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = '__all__'
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -164,5 +164,25 @@ class CredentialJWTokenSerializer(serializers.Serializer):
         if jwt_errors:
             errors['jwt_token'] = jwt_errors
         if errors:
+            raise serializers.ValidationError(errors)
+        return data
+
+
+class UsernameSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+    def validate(self, data):
+        username = data.get('username')
+        errors = dict()
+        username_errors = list()
+
+        if User.objects.filter(username=username).exists():
+            username_errors += [_("This username is already associated with an existing account."), ]
+
+        if "@" in username:
+            username_errors += [_("A username cannot include the symbol '@'."), ]
+
+        if username_errors:
+            errors['username'] = username_errors
             raise serializers.ValidationError(errors)
         return data

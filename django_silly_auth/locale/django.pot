@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 21:00+0200\n"
+"POT-Creation-Date: 2023-04-12 19:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "different than password"
 msgstr ""
 
-#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:44
+#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:44 serializers.py:183
 msgid "A username cannot include the symbol '@'."
 msgstr ""
 
@@ -125,6 +125,10 @@ msgstr ""
 
 #: serializers.py:163
 msgid "jwt token invalid or expired"
+msgstr ""
+
+#: serializers.py:180
+msgid "This username is already associated with an existing account."
 msgstr ""
 
 #: templates/silly_auth/_test/_base.html:29
@@ -347,49 +351,57 @@ msgid ""
 "necessary."
 msgstr ""
 
-#: views/api_views_if_drf.py:39
+#: views/api_views_if_drf.py:40
 msgid "no credential provided"
 msgstr ""
 
-#: views/api_views_if_drf.py:47 views/classics.py:362
+#: views/api_views_if_drf.py:48 views/classics.py:362
 msgid "Your account is already confirmed."
 msgstr ""
 
-#: views/api_views_if_drf.py:51 views/api_views_if_drf.py:81
+#: views/api_views_if_drf.py:52 views/api_views_if_drf.py:82
 msgid "Email sent for password reset"
 msgstr ""
 
-#: views/api_views_if_drf.py:63
+#: views/api_views_if_drf.py:64
 msgid "Logged out."
 msgstr ""
 
-#: views/api_views_if_drf.py:73
+#: views/api_views_if_drf.py:74
 msgid "No credentials were provided"
 msgstr ""
 
-#: views/api_views_if_drf.py:82
+#: views/api_views_if_drf.py:83
 msgid "Invalid credential"
 msgstr ""
 
-#: views/api_views_if_drf.py:99
+#: views/api_views_if_drf.py:100
 #, python-format
 msgid "Please check your inbox at '%(email)s' to confirm your account. "
 msgstr ""
 
-#: views/api_views_if_drf.py:103
+#: views/api_views_if_drf.py:104
 #, python-format
 msgid ""
 "If you do not confirm your account within the next %(hours)s hours, it will "
 "be deleted."
 msgstr ""
 
-#: views/api_views_if_drf.py:136
+#: views/api_views_if_drf.py:137
 msgid "Password successfully changed."
 msgstr ""
 
-#: views/api_views_if_drf.py:155
+#: views/api_views_if_drf.py:156
 #, python-format
 msgid "New email saved, check your inbox at '%(new_email)s' to activate it."
+msgstr ""
+
+#: views/api_views_if_drf.py:176
+msgid "Username successfully changed."
+msgstr ""
+
+#: views/api_views_if_drf.py:194
+msgid "Account successfully deleted."
 msgstr ""
 
 #: views/classics.py:58

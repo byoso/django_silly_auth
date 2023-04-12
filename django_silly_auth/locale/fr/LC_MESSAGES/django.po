@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 21:00+0200\n"
-"PO-Revision-Date: 2023-04-11 21:01+0200\n"
+"POT-Creation-Date: 2023-04-12 19:04+0200\n"
+"PO-Revision-Date: 2023-04-12 19:06+0200\n"
 "Last-Translator: Vincent Fabre <peigne.plume@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -48,7 +48,7 @@ msgstr "Confirmez le mot de passe"
 msgid "different than password"
 msgstr "mots de passe différents"
 
-#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:44
+#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:44 serializers.py:183
 msgid "A username cannot include the symbol '@'."
 msgstr "Un nom d'utilisateur ne peut pas inclure '@'."
 
@@ -128,6 +128,10 @@ msgstr "Le token fourni ne correspond pas à l'utilisateur"
 #: serializers.py:163
 msgid "jwt token invalid or expired"
 msgstr "le token jwt est invalide ou expiré"
+
+#: serializers.py:180
+msgid "This username is already associated with an existing account."
+msgstr "Ce nom d'utilisateur est déjà associé à un compte existant."
 
 #: templates/silly_auth/_test/_base.html:29
 #: templates/silly_auth/classic/index.html:9
@@ -382,38 +386,38 @@ msgid ""
 msgstr ""
 "Connexion par email de confirmation, changez votre mot de passe si besoin."
 
-#: views/api_views_if_drf.py:39
+#: views/api_views_if_drf.py:40
 msgid "no credential provided"
 msgstr "aucun identifiant fourni"
 
-#: views/api_views_if_drf.py:47 views/classics.py:362
+#: views/api_views_if_drf.py:48 views/classics.py:362
 msgid "Your account is already confirmed."
 msgstr "Votre compte est déjà confirmé."
 
-#: views/api_views_if_drf.py:51 views/api_views_if_drf.py:81
+#: views/api_views_if_drf.py:52 views/api_views_if_drf.py:82
 msgid "Email sent for password reset"
 msgstr "Email envoyé pour réinitialisation du mot de passe"
 
-#: views/api_views_if_drf.py:63
+#: views/api_views_if_drf.py:64
 msgid "Logged out."
 msgstr "Déconnexion."
 
-#: views/api_views_if_drf.py:73
+#: views/api_views_if_drf.py:74
 msgid "No credentials were provided"
 msgstr "Aucun identifiant fourni"
 
-#: views/api_views_if_drf.py:82
+#: views/api_views_if_drf.py:83
 msgid "Invalid credential"
 msgstr "Identifiant non valide"
 
-#: views/api_views_if_drf.py:99
+#: views/api_views_if_drf.py:100
 #, python-format
 msgid "Please check your inbox at '%(email)s' to confirm your account. "
 msgstr ""
 "Veuillez consulter votre boite mail à '%(email)s' pour confirmer votre "
 "compte. "
 
-#: views/api_views_if_drf.py:103
+#: views/api_views_if_drf.py:104
 #, python-format
 msgid ""
 "If you do not confirm your account within the next %(hours)s hours, it will "
@@ -422,16 +426,24 @@ msgstr ""
 "Si vous ne confirmez pas votre compte dans les %(hours)s heures, il sera "
 "supprimé."
 
-#: views/api_views_if_drf.py:136
+#: views/api_views_if_drf.py:137
 msgid "Password successfully changed."
 msgstr "Mot de passe changé avec succès."
 
-#: views/api_views_if_drf.py:155
+#: views/api_views_if_drf.py:156
 #, python-format
 msgid "New email saved, check your inbox at '%(new_email)s' to activate it."
 msgstr ""
 "Nouvel email enregistré, veuillez vérifier votre boite de réception à "
 "'%(new_email)s' pour l'activer."
+
+#: views/api_views_if_drf.py:176
+msgid "Username successfully changed."
+msgstr "Nom d'utilisateur changé avec succès."
+
+#: views/api_views_if_drf.py:194
+msgid "Account successfully deleted."
+msgstr "Compte utilisateur supprimé avec succès."
 
 #: views/classics.py:58
 msgid "Incorrect credentials or unconfirmed account."

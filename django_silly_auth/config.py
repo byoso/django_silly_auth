@@ -37,6 +37,8 @@ SILLY_AUTH_SETTINGS = {
     "USE_DRF": False,  # False for only classic django views
     "CONFIRMATION_METHOD": 'GET',  # 'GET' or 'POST'
     "ALLOW_CREATE_USER_ENDPOINT": True,  # activate this endpoint
+    "ALLOW_MY_INFOS_ENDPOINT": True,  # activate this endpoint
+    "ALLOW_DELETE_ME_ENDPOINT": True,  # activate this endpoint
 
     # pure SPA only:
     "SPA_EMAIL_LOGIN_LINK": "http://your spa adress/",  # + <jwt_token>",

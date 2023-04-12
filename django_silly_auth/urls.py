@@ -57,15 +57,27 @@ if conf["USE_DRF"]:
             name='change_password'
         ),
         path(
+            f'{prefix}username/change/',
+            api_views.change_username,
+            name='change_username'
+        ),
+        path(
             f'{prefix}email/request_change/',
             api_views.change_email_request,
             name='change_email_request'
         ),
         ]
 
+    if conf["ALLOW_DELETE_ME_ENDPOINT"]:
+        urlpatterns += [
+            path(f'{prefix}users/delete_me/', api_views.delete_me, name='delete_me'),
+        ]
+
     if conf["ALLOW_CREATE_USER_ENDPOINT"]:
         urlpatterns += [path(f'{prefix}users/', api_views.UserView.as_view(), name="users")]
 
+    if conf['ALLOW_MY_INFOS_ENDPOINT']:
+        urlpatterns += [path(f'{prefix}users/my_infos/', api_views.my_infos, name="my_infos")]
 
 # Classic routes
 

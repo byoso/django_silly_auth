@@ -14,6 +14,7 @@ from django_silly_auth.serializers import (
     CreateUserSerializer,
     PasswordsSerializer,
     EmailSerializer,
+    UsernameSerializer,
     )
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.utils import (
@@ -158,3 +159,36 @@ def change_email_request(request):
         )
     msg = serializer.errors
     raise ValidationError({"error": msg}, code='authorization')
+
+
+
+@transaction.atomic
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_username(request):
+    """Changes the user's username"""
+    serializer = UsernameSerializer(data=request.data)
+    if serializer.is_valid():
+        user = request.user
+        username = request.data.get('username')
+        user.username = username
+        user.save()
+        return Response({'success': _('Username successfully changed.')})
+    msg = serializer.errors
+    raise ValidationError({"error": msg}, code='authorization')
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_infos(request):
+    """Returns the user's infos"""
+    serializer = GetAllUsersSerializer(request.user)
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_me(request):
+    """Deletes the user's account"""
+    request.user.auth_token.delete()
+    request.user.delete()
+    return Response({'success': _('Account successfully deleted.')})
