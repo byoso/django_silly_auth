@@ -7,7 +7,7 @@ class SillyAuthError(Exception):
 
 SILLY_AUTH_SETTINGS = {
     # Quick settings
-    "AUTO_SET": 'TEST',  # 'CLASSIC', 'SPA', 'SILLY or 'TEST'
+    "AUTO_SET": 'TRY',  # 'CLASSIC', 'SPA', 'TRY', 'SILLY' or 'TEST'
     "DSA_PREFIX": 'auth/',  # only the CLASSIC_INDEX view has a blank prefix, it's the entry point in a classic site.
 
     # Secondary settings
@@ -41,7 +41,7 @@ SILLY_AUTH_SETTINGS = {
     "ALLOW_DELETE_ME_ENDPOINT": True,  # activate this endpoint
 
     # pure SPA only:
-    "SPA_EMAIL_LOGIN_LINK": "http://your spa adress/",  # + <jwt_token>",
+    "SPA_EMAIL_LOGIN_LINK": "http://your spa address/",  # + <jwt_token>",
 
 
     # Silly settings
@@ -57,7 +57,7 @@ SILLY_AUTH_SETTINGS = {
         "silly_auth/emails/request_password_reset.txt",
 
     # For development,
-    "TEST_TEMPLATES": False,  # for dev only,  opens 2 "_test/" endpoint
+    "TRY_TEMPLATES": False,  # for dev only,  opens 2 "_test/" endpoint
     "VERBOSE": False,  # prints to terminal : imports
 }
 
@@ -72,9 +72,9 @@ except AttributeError:
 
 if is_set and "AUTO_SET" in settings.SILLY_AUTH:
     auto_set = settings.SILLY_AUTH['AUTO_SET']
-    if auto_set not in ['CLASSIC', 'SPA', 'SILLY', 'TEST']:
+    if auto_set not in ['CLASSIC', 'SPA', 'SILLY', 'TRY', 'TEST']:
         raise SillyAuthError(
-            "AUTO_SET must be 'CLASSIC', 'SPA', 'SILLY or 'TEST'")
+            "AUTO_SET must be 'CLASSIC', 'SPA', 'SILLY', 'TRY' or 'TEST'")
 else:
     auto_set = SILLY_AUTH_SETTINGS["AUTO_SET"]
 
@@ -95,13 +95,26 @@ match auto_set:
         SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
         SILLY_AUTH_SETTINGS["USE_SILLY"] = True
 
-    case "TEST":
+    case "TRY":
         SILLY_AUTH_SETTINGS["USE_DRF"] = False
         SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
         SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
-        SILLY_AUTH_SETTINGS["BASE_TEMPLATE"] = "silly_auth/_test/_base.html"
-        SILLY_AUTH_SETTINGS["TEST_TEMPLATES"] = True
+        SILLY_AUTH_SETTINGS["BASE_TEMPLATE"] = "silly_auth/_try/_base.html"
+        SILLY_AUTH_SETTINGS["TRY_TEMPLATES"] = True
         SILLY_AUTH_SETTINGS["VERBOSE"] = True
+
+    case "TEST":
+        SILLY_AUTH_SETTINGS["USE_DRF"] = True
+        SILLY_AUTH_SETTINGS["ALLOW_CREATE_USER_ENDPOINT"] = True,
+        SILLY_AUTH_SETTINGS["ALLOW_MY_INFOS_ENDPOINT"] = True,
+        SILLY_AUTH_SETTINGS["ALLOW_DELETE_ME_ENDPOINT"] = True,
+        SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
+        SILLY_AUTH_SETTINGS["USE_CLASSIC_INDEX"] = True,
+        SILLY_AUTH_SETTINGS["USE_CLASSIC_ACCOUNT"] = True,
+        SILLY_AUTH_SETTINGS["USE_SILLY"] = True
+        SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
+        SILLY_AUTH_SETTINGS["BASE_TEMPLATE"] = "silly_auth/_try/_base.html"
+        SILLY_AUTH_SETTINGS["EMAIL_TERMINAL_PRINT"] = False
 
 if is_set:
     for key in settings.SILLY_AUTH:

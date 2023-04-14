@@ -77,7 +77,7 @@ def send_confirm_email(request, user, new_email=False):
     domain = request.build_absolute_uri('/')[:-1]
     # if new_email:
     if conf["USE_SILLY"]:
-        link = domain + reverse('silly_confirm_email', args=[token])
+        link = domain + reverse('dsa_confirm_email', args=[token])
     elif conf["CONFIRMATION_METHOD"] == 'GET':
         link = domain + reverse('classic_confirm_email', args=[token])
     if conf["CONFIRMATION_METHOD"] == 'POST':

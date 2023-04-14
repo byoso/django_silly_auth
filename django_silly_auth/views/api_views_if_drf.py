@@ -33,7 +33,7 @@ User = get_user_model()
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def resend_email_confirmation(request):
+def email_confirm_email_resend(request):
     """Resends an email to the user to confirm his account"""
     credential = request.data.get('credential')
     if not credential:
@@ -57,9 +57,8 @@ def resend_email_confirmation(request):
 @transaction.atomic
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def logout_api_view(request):
+def token_logout(request):
     """Destroys the auth token"""
-    print("=== DSA LOGOUT API VIEW")
     request.user.auth_token.delete()
     return Response({'success': _('Logged out.')})
 
@@ -67,7 +66,7 @@ def logout_api_view(request):
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def request_password_reset(request):
+def password_request_reset(request):
     """Sends an email to the user with a link to reset their password"""
     credential = request.data.get('credential')
     if not credential:
@@ -126,7 +125,7 @@ class UserView(APIView):
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def change_password(request):
+def password_change(request):
     """Changes the user's password"""
     serializer = PasswordsSerializer(data=request.data)
     if serializer.is_valid():
@@ -142,7 +141,7 @@ def change_password(request):
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def change_email_request(request):
+def email_request_change(request):
     user = request.user
     serializer = EmailSerializer(data=request.data)
     if serializer.is_valid():
@@ -165,7 +164,7 @@ def change_email_request(request):
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def change_username(request):
+def username_change(request):
     """Changes the user's username"""
     serializer = UsernameSerializer(data=request.data)
     if serializer.is_valid():
@@ -180,14 +179,14 @@ def change_username(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def my_infos(request):
+def users_my_infos(request):
     """Returns the user's infos"""
     serializer = GetAllUsersSerializer(request.user)
     return Response(serializer.data)
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def delete_me(request):
+def users_delete_me(request):
     """Deletes the user's account"""
     request.user.auth_token.delete()
     request.user.delete()

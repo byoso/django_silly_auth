@@ -17,22 +17,22 @@ User = get_user_model()
 
 
 @transaction.atomic
-def test_templates_view(request):
+def try_templates_view(request):
     users = User.objects.all()
     context = {
         "users": users,
         "title": "dsa render test",
         "base_template": conf["BASE_TEMPLATE"],
     }
-    return render(request, "silly_auth/_test/_test.html", context)
+    return render(request, "silly_auth/_try/_single_page.html", context)
 
 
 @transaction.atomic
-def test_users_view(request):
+def try_users_view(request):
     users = User.objects.all()
     context = {
         "users": users,
         "title": "dsa render test",
         "base_template": conf["BASE_TEMPLATE"],
     }
-    return render(request, "silly_auth/_test/_users.html", context)
+    return render(request, "silly_auth/_try/_users.html", context)

@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 from django_silly_auth.views import (
     api_views,
-    test_views,
+    try_views,
     silly_views,
     classics)
 
@@ -14,7 +14,7 @@ from django_silly_auth.views import (
 if conf["VERBOSE"]:
     print("=== DSA IMPORT django_silly_auth.urls")
     if conf["USE_DRF"]:
-        print("=== DSA login_with_auth_token FROM django_silly_auth.views.api_custom_login")
+        print("=== DSA LoginWithAuthToken FROM django_silly_auth.views.api_custom_login")
 
 if conf["USE_DRF"]:
     from django_silly_auth.views.api_custom_login import (
@@ -39,45 +39,45 @@ urlpatterns = []
 # DRF routes
 if conf["USE_DRF"]:
     urlpatterns += [
-        path(f'{prefix}token/login/', LoginWithAuthToken.as_view(), name="login_with_auth_token"),
-        path(f'{prefix}token/logout/', api_views.logout_api_view, name="logout_api_view"),
+        path(f'{prefix}token/login/', LoginWithAuthToken.as_view(), name="token_login"),
+        path(f'{prefix}token/logout/', api_views.token_logout, name="token_logout"),
         path(
             f'{prefix}password/request_reset/',
-            api_views.request_password_reset,
-            name='request_password_reset'
+            api_views.password_request_reset,
+            name='password_request_reset'
         ),
         path(
             f'{prefix}email/confirm_email/resend/',
-            api_views.resend_email_confirmation,
-            name="resend_email_confirmation"
+            api_views.email_confirm_email_resend,
+            name="email_confirm_email_resend"
         ),
         path(
             f'{prefix}password/change/',
-            api_views.change_password,
-            name='change_password'
+            api_views.password_change,
+            name='password_change'
         ),
         path(
             f'{prefix}username/change/',
-            api_views.change_username,
-            name='change_username'
+            api_views.username_change,
+            name='username_change'
         ),
         path(
             f'{prefix}email/request_change/',
-            api_views.change_email_request,
-            name='change_email_request'
+            api_views.email_request_change,
+            name='email_request_change'
         ),
         ]
 
     if conf["ALLOW_DELETE_ME_ENDPOINT"]:
         urlpatterns += [
-            path(f'{prefix}users/delete_me/', api_views.delete_me, name='delete_me'),
+            path(f'{prefix}users/delete_me/', api_views.users_delete_me, name='users_delete_me'),
         ]
 
     if conf["ALLOW_CREATE_USER_ENDPOINT"]:
         urlpatterns += [path(f'{prefix}users/', api_views.UserView.as_view(), name="users")]
 
     if conf['ALLOW_MY_INFOS_ENDPOINT']:
-        urlpatterns += [path(f'{prefix}users/my_infos/', api_views.my_infos, name="my_infos")]
+        urlpatterns += [path(f'{prefix}users/my_infos/', api_views.users_my_infos, name="users_my_infos")]
 
 # Classic routes
 
@@ -116,22 +116,22 @@ if conf['CONFIRMATION_METHOD'] == 'GET':  # uses the classic views, not the 'goo
         urlpatterns += [
             path(
                 f'{prefix}dsa_confirm_email/<token>',
-                silly_views.silly_confirm_email,
-                name='silly_confirm_email'),
+                silly_views.dsa_confirm_email,
+                name='dsa_confirm_email'),
             path(
                 f'{prefix}dsa_password_reset_done',
-                silly_views.silly_password_reset_done,
-                name='silly_password_reset_done'),
+                silly_views.dsa_password_reset_done,
+                name='dsa_password_reset_done'),
         ]
 
-if conf['CONFIRMATION_METHOD'] == 'POST':
+if conf['CONFIRMATION_METHOD'] == 'POST' or conf['AUTO_SET'] == 'TEST':
     urlpatterns += [
-        path(f'{prefix}login_with_jwt/', LoginWithJWTToken.as_view(), name="login_with_jwt_token"),
+        path(f'{prefix}login_with_jwt/', LoginWithJWTToken.as_view(), name="login_with_jwt"),
     ]
 
-# testing routes
-if conf["TEST_TEMPLATES"]:
+# trying routes
+if conf["TRY_TEMPLATES"] or conf['AUTO_SET'] == 'TEST':
     urlpatterns += [
-        path(f'{prefix}_test/', test_views.test_templates_view, name="test_templates_view"),
-        path(f'{prefix}_test_users/', test_views.test_users_view, name="test_users_view"),
+        path(f'{prefix}_try/', try_views.try_templates_view, name="try_templates_view"),
+        path(f'{prefix}_try_users/', try_views.try_users_view, name="try_users_view"),
         ]

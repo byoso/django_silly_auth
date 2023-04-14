@@ -58,6 +58,7 @@ setup(
         "django_silly_auth.locale.fr.LC_MESSAGES",
         "django_silly_auth.locale.en",
         "django_silly_auth.locale.en.LC_MESSAGES",
+        "django_silly_auth.tests",
         ],
     # include_package_data=True,
     package_data={'': ['*.txt', '*.html', '*.po', '*.mo', '*.pot']},

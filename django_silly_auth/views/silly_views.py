@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 @transaction.atomic
-def silly_confirm_email(request, token):
+def dsa_confirm_email(request, token):
     user = User.verify_jwt_token(token)
     if user is None:
         msg = _("Token invalid or expired"),
@@ -46,7 +46,7 @@ def silly_confirm_email(request, token):
     return render(request, 'silly_auth/silly/silly_confirm_email.html', context)
 
 
-def silly_password_reset_done(request):
+def dsa_password_reset_done(request):
     msg = _("Your password has been successfully reset.")
     context = {
         "base_template": conf["BASE_TEMPLATE"],
