@@ -225,7 +225,7 @@ def reset_password(request, token=None):
             user.set_password(form.cleaned_data['password'])
             user.save()
             if conf["USE_SILLY"]:
-                return redirect('silly_password_reset_done')
+                return redirect('dsa_password_reset_done')
             login(request, user)
             messages.add_message(
                 request, messages.SUCCESS,

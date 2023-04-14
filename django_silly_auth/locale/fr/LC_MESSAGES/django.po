@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-12 19:04+0200\n"
-"PO-Revision-Date: 2023-04-12 19:06+0200\n"
+"POT-Creation-Date: 2023-04-14 18:23+0200\n"
+"PO-Revision-Date: 2023-04-14 18:24+0200\n"
 "Last-Translator: Vincent Fabre <peigne.plume@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -48,7 +48,7 @@ msgstr "Confirmez le mot de passe"
 msgid "different than password"
 msgstr "mots de passe différents"
 
-#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:44 serializers.py:183
+#: forms.py:94 forms.py:181 mixins.py:76 serializers.py:50 serializers.py:189
 msgid "A username cannot include the symbol '@'."
 msgstr "Un nom d'utilisateur ne peut pas inclure '@'."
 
@@ -67,7 +67,7 @@ msgstr "'%(email)s' déjà utilisé par quelqu'un."
 msgid "'%(credential)s' unknown or unconfirmed"
 msgstr "'%(credential)s' inconnu ou non confirmé"
 
-#: forms.py:164 serializers.py:73
+#: forms.py:164 serializers.py:79
 msgid "The passwords you entered do not match."
 msgstr "Les mots de passe saisis ne correspondent pas."
 
@@ -109,90 +109,90 @@ msgstr ""
 msgid "email address"
 msgstr "adresse email"
 
-#: serializers.py:99
+#: serializers.py:105
 msgid "This email is already associated with an existing account."
 msgstr "Cet email est déjà associé à un compte existant."
 
-#: serializers.py:120 serializers.py:148
+#: serializers.py:126 serializers.py:154
 msgid "Email not found"
 msgstr "Email inconnu"
 
-#: serializers.py:123 serializers.py:153
+#: serializers.py:129 serializers.py:159
 msgid "User not found"
 msgstr "Utilisateur inconnu"
 
-#: serializers.py:161
+#: serializers.py:167
 msgid "The given token does not match the user"
 msgstr "Le token fourni ne correspond pas à l'utilisateur"
 
-#: serializers.py:163
+#: serializers.py:169
 msgid "jwt token invalid or expired"
 msgstr "le token jwt est invalide ou expiré"
 
-#: serializers.py:180
+#: serializers.py:186
 msgid "This username is already associated with an existing account."
 msgstr "Ce nom d'utilisateur est déjà associé à un compte existant."
 
-#: templates/silly_auth/_test/_base.html:29
+#: templates/silly_auth/_try/_base.html:29
 #: templates/silly_auth/classic/index.html:9
 msgid "Home"
 msgstr "Accueil"
 
-#: templates/silly_auth/_test/_base.html:34
+#: templates/silly_auth/_try/_base.html:34
 #: templates/silly_auth/classic/account.html:9
 msgid "Account"
 msgstr "Compte"
 
-#: templates/silly_auth/_test/_base.html:40
+#: templates/silly_auth/_try/_base.html:40
 msgid "More"
 msgstr "Plus"
 
-#: templates/silly_auth/_test/_base.html:45
+#: templates/silly_auth/_try/_base.html:45
 msgid "Documentation"
 msgstr "Documentation"
 
-#: templates/silly_auth/_test/_base.html:48
+#: templates/silly_auth/_try/_base.html:48
 msgid "Buy me a coffee"
 msgstr "Offrez-moi un café"
 
-#: templates/silly_auth/_test/_base.html:51
+#: templates/silly_auth/_try/_base.html:51
 msgid "Contact"
 msgstr "Contact"
 
-#: templates/silly_auth/_test/_base.html:55
+#: templates/silly_auth/_try/_base.html:55
 msgid "Report an issue"
 msgstr "Signaler un problème"
 
-#: templates/silly_auth/_test/_base.html:67
+#: templates/silly_auth/_try/_base.html:67
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: templates/silly_auth/_test/_base.html:71
+#: templates/silly_auth/_try/_base.html:71
 #: templates/silly_auth/classic/signup.html:5
 msgid "Sign up"
 msgstr "S'enregistrer"
 
-#: templates/silly_auth/_test/_base.html:74
+#: templates/silly_auth/_try/_base.html:74
 msgid "Log in"
 msgstr "Connexion"
 
-#: templates/silly_auth/_test/_base.html:85
-msgid "Test single page"
-msgstr "Test page unique"
+#: templates/silly_auth/_try/_base.html:85
+msgid "Single page"
+msgstr "Page simple"
 
-#: templates/silly_auth/_test/_base.html:86
-msgid "Test Users page"
-msgstr "Test page utilisateurs"
+#: templates/silly_auth/_try/_base.html:86
+msgid "Users page"
+msgstr "Page utilisateurs"
 
-#: templates/silly_auth/_test/_test.html:8
+#: templates/silly_auth/_try/_single_page.html:8
 msgid "Test template"
 msgstr "Template de test"
 
-#: templates/silly_auth/_test/_test.html:10
+#: templates/silly_auth/_try/_single_page.html:10
 msgid "Simple test here"
 msgstr "Simple test ici"
 
-#: templates/silly_auth/_test/_users.html:7
+#: templates/silly_auth/_try/_users.html:7
 msgid "Test users"
 msgstr "Test utilisateurs"
 
@@ -386,15 +386,15 @@ msgid ""
 msgstr ""
 "Connexion par email de confirmation, changez votre mot de passe si besoin."
 
-#: views/api_views_if_drf.py:40
+#: views/api_views_if_drf.py:41
 msgid "no credential provided"
 msgstr "aucun identifiant fourni"
 
-#: views/api_views_if_drf.py:48 views/classics.py:362
+#: views/api_views_if_drf.py:49 views/classics.py:362
 msgid "Your account is already confirmed."
 msgstr "Votre compte est déjà confirmé."
 
-#: views/api_views_if_drf.py:52 views/api_views_if_drf.py:82
+#: views/api_views_if_drf.py:53 views/api_views_if_drf.py:82
 msgid "Email sent for password reset"
 msgstr "Email envoyé pour réinitialisation du mot de passe"
 

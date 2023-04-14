@@ -16,12 +16,6 @@ if conf["VERBOSE"]:
     if conf["USE_DRF"]:
         print("=== DSA LoginWithAuthToken FROM django_silly_auth.views.api_custom_login")
 
-if conf["USE_DRF"]:
-    from django_silly_auth.views.api_custom_login import (
-        LoginWithAuthToken,
-        LoginWithJWTToken,
-    )
-
 prefix = conf["DSA_PREFIX"]
 User = get_user_model()
 
@@ -39,7 +33,7 @@ urlpatterns = []
 # DRF routes
 if conf["USE_DRF"]:
     urlpatterns += [
-        path(f'{prefix}token/login/', LoginWithAuthToken.as_view(), name="token_login"),
+        path(f'{prefix}token/login/', api_views.LoginWithAuthToken.as_view(), name="token_login"),
         path(f'{prefix}token/logout/', api_views.token_logout, name="token_logout"),
         path(
             f'{prefix}password/request_reset/',
@@ -126,7 +120,7 @@ if conf['CONFIRMATION_METHOD'] == 'GET':  # uses the classic views, not the 'goo
 
 if conf['CONFIRMATION_METHOD'] == 'POST' or conf['AUTO_SET'] == 'TEST':
     urlpatterns += [
-        path(f'{prefix}login_with_jwt/', LoginWithJWTToken.as_view(), name="login_with_jwt"),
+        path(f'{prefix}login_with_jwt/', api_views.LoginWithJWTToken.as_view(), name="login_with_jwt"),
     ]
 
 # trying routes

@@ -10,6 +10,7 @@ from rest_framework.exceptions import (
     )
 
 from django_silly_auth.serializers import (
+    UserInfosSerializer,
     GetAllUsersSerializer,
     CreateUserSerializer,
     PasswordsSerializer,
@@ -181,7 +182,7 @@ def username_change(request):
 @permission_classes([IsAuthenticated])
 def users_my_infos(request):
     """Returns the user's infos"""
-    serializer = GetAllUsersSerializer(request.user)
+    serializer = UserInfosSerializer(request.user)
     return Response(serializer.data)
 
 @api_view(['DELETE'])

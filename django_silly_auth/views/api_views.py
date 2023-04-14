@@ -7,3 +7,7 @@ if conf["VERBOSE"]:
 
 if conf["USE_DRF"]:
     from django_silly_auth.views.api_views_if_drf import *
+    from django_silly_auth.views.api_custom_login import (
+        LoginWithAuthToken,
+        LoginWithJWTToken,
+    )

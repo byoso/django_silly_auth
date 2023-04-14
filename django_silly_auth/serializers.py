@@ -12,6 +12,12 @@ if conf["VERBOSE"]:
 User = get_user_model()
 
 
+class UserInfosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = [*conf["USER_INFOS_EXCLUDE"]]
+
+
 class GetAllUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

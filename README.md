@@ -24,4 +24,5 @@ DSA works as well with both DRF and Classic, just use differents simple settings
 
 ### Changelog
 
+- 1.0.5: test coverage: 75 %
 - 1.0.1: **i18n** fr + en
