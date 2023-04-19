@@ -51,15 +51,19 @@ if conf["USE_DRF"]:
             name='password_change'
         ),
         path(
-            f'{prefix}username/change/',
-            api_views.username_change,
-            name='username_change'
-        ),
-        path(
             f'{prefix}email/request_change/',
             api_views.email_request_change,
             name='email_request_change'
         ),
+        ]
+
+    if conf['ALLOW_CHANGE_USERNAME']:
+        urlpatterns += [
+            path(
+                f'{prefix}username/change/',
+                api_views.username_change,
+                name='username_change'
+            ),
         ]
 
     if conf["ALLOW_DELETE_ME_ENDPOINT"]:
@@ -73,6 +77,9 @@ if conf["USE_DRF"]:
     if conf['ALLOW_MY_INFOS_ENDPOINT']:
         urlpatterns += [path(f'{prefix}users/my_infos/', api_views.users_my_infos, name="users_my_infos")]
 
+    if conf["ALLOW_GET_ALL_USERS"]:
+        urlpatterns += [path(f'{prefix}users/all/', api_views.get_users_all, name="get_users_all")]
+
 # Classic routes
 
 if conf["USE_CLASSIC"]:
@@ -80,7 +87,6 @@ if conf["USE_CLASSIC"]:
         path(f'{prefix}classic_login/', classics.login_view, name='classic_login'),
         path(f'{prefix}classic_logout/', classics.logout_view, name='classic_logout'),
         path(f'{prefix}classic_signup/', classics.signup_view, name='classic_signup'),
-        path(f'{prefix}classic_change_username/', classics.change_username, name='classic_change_username'),
         path(f'{prefix}classic_change_email/', classics.change_email, name='classic_change_email'),
         path(f'{prefix}classic_confirm_email/<token>', classics.confirm_email, name='classic_confirm_email'),
         path(
@@ -94,6 +100,14 @@ if conf["USE_CLASSIC"]:
             name='classic_reset_password_authenticated'
         ),
     ]
+    if conf["ALLOW_CHANGE_USERNAME"]:
+        urlpatterns += [
+            path(
+                f'{prefix}classic_change_username/',
+                classics.change_username,
+                name='classic_change_username'
+            ),
+        ]
     if conf["USE_CLASSIC_INDEX"]:
         urlpatterns += [path('', classics.index, name='classic_index'), ]
     if conf["USE_CLASSIC_ACCOUNT"]:

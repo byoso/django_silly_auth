@@ -123,6 +123,13 @@ class UserView(APIView):
             raise ValidationError({"error": msg}, code='authorization')
 
 
+@api_view(['GET'])
+def get_users_all(request):
+    """!! FOR DEV ONLY !! Get all users"""
+    users = User.objects.all()
+    serializer = GetAllUsersSerializer(users, many=True)
+    return Response(serializer.data)
+
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

@@ -13,6 +13,8 @@ SILLY_AUTH_SETTINGS = {
     # Secondary settings
     "SITE_NAME": None,  # str used in templates if provided
     "DELETE_UNCONFIRMED_TIME": 24.0,  # hours after what an unconfirmed account is deleted, O to set off
+    "ALLOW_CHANGE_USERNAME": True,  # allows the change username endpoint
+
 
     # Classic settings
     "USE_CLASSIC": True,
@@ -60,6 +62,7 @@ SILLY_AUTH_SETTINGS = {
     # For development,
     "TRY_TEMPLATES": False,  # for dev only,  opens 2 "_test/" endpoint
     "VERBOSE": False,  # prints to terminal : imports
+    "ALLOW_GET_ALL_USERS": False,  # for DEV ONLY,  opens 'users/all/' endpoint
 }
 
 
