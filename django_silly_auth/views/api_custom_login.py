@@ -48,7 +48,7 @@ class LoginWithAuthToken(ObtainAuthToken):
             token, created = Token.objects.get_or_create(user=user)
             return Response({'auth_token': token.key})
         msg = _('Incorrect credentials.')
-        raise ValidationError({'authentication': msg}, code='authorization')
+        raise ValidationError({'authentication': [msg, ]}, code='authorization')
 
 
 class LoginWithJWTToken(APIView):
