@@ -129,7 +129,7 @@ class LoginSerializer(serializers.Serializer):
                 credential_errors += [_("User not found"), ]
 
         if credential_errors:
-            errors['username'] = credential_errors
+            errors['credential'] = credential_errors
         if password_errors:
             errors['password'] = password_errors
 

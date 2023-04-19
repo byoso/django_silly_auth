@@ -46,9 +46,9 @@ class LoginWithAuthToken(ObtainAuthToken):
                     'Please check your inbox for a confirmation link.')
                 raise ValidationError(msg, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key})
+            return Response({'auth_token': token.key})
         msg = _('Incorrect credentials.')
-        raise ValidationError(msg, code='authorization')
+        raise ValidationError({'authentication': msg}, code='authorization')
 
 
 class LoginWithJWTToken(APIView):
