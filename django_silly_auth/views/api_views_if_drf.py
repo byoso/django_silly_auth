@@ -38,20 +38,20 @@ def email_confirm_email_resend(request):
     """Resends an email to the user to confirm his account"""
     credential = request.data.get('credential')
     if not credential:
-        msg = _("no credential provided")
-        raise ValidationError({"detail": msg}, code='authorization')
+        error = _("no credential provided")
+        raise ValidationError({"detail": [error]}, code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
     else:
         user = User.objects.filter(username=credential).first()
     if user:
         if user.is_confirmed:
-            msg = _("Your account is already confirmed.")
-            raise ValidationError({"detail": msg}, code='authorization')
+            error = _("Your account is already confirmed.")
+            raise ValidationError({"detail": [error]}, code='authorization')
         send_confirm_email(request, user)
         return Response({'success': _('Email sent for password reset')})
-    msg = "Invalid credential"
-    raise ValidationError({"detail": msg}, code='authorization')
+    error = "Invalid credential"
+    raise ValidationError({"detail": [error]}, code='authorization')
 
 
 @transaction.atomic
@@ -70,8 +70,8 @@ def password_request_reset(request):
     """Sends an email to the user with a link to reset their password"""
     credential = request.data.get('credential')
     if not credential:
-        msg = _("No credentials were provided")
-        raise ValidationError({"detail": msg}, code='authorization')
+        error = _("No credentials were provided")
+        raise ValidationError({"detail": [error]}, code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
     else:
@@ -79,8 +79,8 @@ def password_request_reset(request):
     if user:
         send_password_reset_email(request, user)
         return Response({'success': _("Email sent for password reset")})
-    msg = _("Invalid credential")
-    raise ValidationError({"detail": msg}, code='authorization')
+    error = _("Invalid credential")
+    raise ValidationError({"detail": [error]}, code='authorization')
 
 
 class UserView(APIView):

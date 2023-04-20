@@ -44,11 +44,11 @@ class LoginWithAuthToken(ObtainAuthToken):
                 msg = _(
                     'Your account has not been confirmed yet. '
                     'Please check your inbox for a confirmation link.')
-                raise ValidationError({'detail': msg}, code='authorization')
+                raise ValidationError({'detail': [msg]}, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
             return Response({'auth_token': token.key})
         msg = _('Incorrect credentials.')
-        raise ValidationError({'detail': [msg, ]}, code='authorization')
+        raise ValidationError({'detail': [msg]}, code='authorization')
 
 
 class LoginWithJWTToken(APIView):
