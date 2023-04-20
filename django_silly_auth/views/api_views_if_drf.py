@@ -39,7 +39,7 @@ def email_confirm_email_resend(request):
     credential = request.data.get('credential')
     if not credential:
         msg = _("no credential provided")
-        raise ValidationError({"error": msg}, code='authorization')
+        raise ValidationError({"detail": msg}, code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
     else:
@@ -47,12 +47,11 @@ def email_confirm_email_resend(request):
     if user:
         if user.is_confirmed:
             msg = _("Your account is already confirmed.")
-            raise ValidationError({"error": msg}, code='authorization')
-            # return Response({'error': _('account already confirmed')})
+            raise ValidationError({"detail": msg}, code='authorization')
         send_confirm_email(request, user)
         return Response({'success': _('Email sent for password reset')})
     msg = "Invalid credential"
-    raise ValidationError({"error": msg}, code='authorization')
+    raise ValidationError({"detail": msg}, code='authorization')
 
 
 @transaction.atomic
@@ -72,7 +71,7 @@ def password_request_reset(request):
     credential = request.data.get('credential')
     if not credential:
         msg = _("No credentials were provided")
-        raise ValidationError({"error": msg}, code='authorization')
+        raise ValidationError({"detail": msg}, code='authorization')
     if "@" in credential:
         user = User.objects.filter(email=credential).first()
     else:
@@ -81,7 +80,7 @@ def password_request_reset(request):
         send_password_reset_email(request, user)
         return Response({'success': _("Email sent for password reset")})
     msg = _("Invalid credential")
-    raise ValidationError({"error": msg}, code='authorization')
+    raise ValidationError({"detail": msg}, code='authorization')
 
 
 class UserView(APIView):
@@ -109,7 +108,7 @@ class UserView(APIView):
                     'message1': message1,
                     'message2': message2,
                 }
-            serializer = GetAllUsersSerializer(user)
+            serializer = UserInfosSerializer(user)
             msg = {
                 "user": serializer.data,
                 "message": message,
@@ -119,8 +118,8 @@ class UserView(APIView):
 
             return Response(msg)
         else:
-            msg = serializer.errors
-            raise ValidationError({"error": msg}, code='authorization')
+            error = serializer.errors
+            raise ValidationError(error, code='authorization')
 
 
 @api_view(['GET'])
@@ -142,8 +141,8 @@ def password_change(request):
         user.set_password(password)
         user.save()
         return Response({'success': _('Password successfully changed.')})
-    msg = serializer.errors
-    raise ValidationError({"error": msg}, code='authorization')
+    error = serializer.errors
+    raise ValidationError(error, code='authorization')
 
 
 @transaction.atomic
@@ -164,8 +163,8 @@ def email_request_change(request):
                 "to activate it."
             ) % {'new_email': new_email}}
         )
-    msg = serializer.errors
-    raise ValidationError({"error": msg}, code='authorization')
+    error = serializer.errors
+    raise ValidationError(error, code='authorization')
 
 
 
@@ -181,8 +180,8 @@ def username_change(request):
         user.username = username
         user.save()
         return Response({'success': _('Username successfully changed.')})
-    msg = serializer.errors
-    raise ValidationError({"error": msg}, code='authorization')
+    error = serializer.errors
+    raise ValidationError(error, code='authorization')
 
 
 @api_view(['GET'])
