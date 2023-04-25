@@ -129,6 +129,7 @@ def get_users_all(request):
     serializer = GetAllUsersSerializer(users, many=True)
     return Response(serializer.data)
 
+
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -167,7 +168,6 @@ def email_request_change(request):
     raise ValidationError(error, code='authorization')
 
 
-
 @transaction.atomic
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -190,6 +190,7 @@ def users_my_infos(request):
     """Returns the user's infos"""
     serializer = UserInfosSerializer(request.user)
     return Response(serializer.data)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])

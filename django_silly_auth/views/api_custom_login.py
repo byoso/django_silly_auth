@@ -9,8 +9,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.serializers import ValidationError
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
 
 from django_silly_auth.serializers import (
     LoginSerializer,
@@ -72,5 +70,5 @@ class LoginWithJWTToken(APIView):
                 msg = _("You've been logged in via email confirmation, "
                         "please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'message': msg})
+            return Response({'auth_token': token.key, 'message': msg})
         raise ValidationError(serializer.errors, code='authorization')
