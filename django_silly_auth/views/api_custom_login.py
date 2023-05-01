@@ -44,7 +44,11 @@ class LoginWithAuthToken(ObtainAuthToken):
                     'Please check your inbox for a confirmation link.')
                 raise ValidationError({'detail': [msg]}, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'auth_token': token.key})
+            return Response({
+                'auth_token': token.key,
+                'username': user.username,
+                'email': user.email,
+                })
         msg = _('Incorrect credentials.')
         raise ValidationError({'detail': [msg]}, code='authorization')
 
@@ -70,5 +74,10 @@ class LoginWithJWTToken(APIView):
                 msg = _("You've been logged in via email confirmation, "
                         "please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'auth_token': token.key, 'message': msg})
+            return Response({
+                'auth_token': token.key,
+                'username': user.username,
+                'email': user.email,
+                'message': msg
+                })
         raise ValidationError(serializer.errors, code='authorization')
