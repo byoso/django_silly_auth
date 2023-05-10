@@ -12,7 +12,8 @@ from rest_framework.serializers import ValidationError
 
 from django_silly_auth.serializers import (
     LoginSerializer,
-    CredentialJWTokenSerializer
+    CredentialJWTokenSerializer,
+    UserInfosSerializer,
     )
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
 
@@ -44,11 +45,14 @@ class LoginWithAuthToken(ObtainAuthToken):
                     'Please check your inbox for a confirmation link.')
                 raise ValidationError({'detail': [msg]}, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
-            return Response({
+            serializer = UserInfosSerializer(user)
+            data = {
                 'auth_token': token.key,
-                'username': user.username,
-                'email': user.email,
-                })
+                'user': serializer.data
+            }
+            return Response(
+                data,
+                )
         msg = _('Incorrect credentials.')
         raise ValidationError({'detail': [msg]}, code='authorization')
 
@@ -74,10 +78,14 @@ class LoginWithJWTToken(APIView):
                 msg = _("You've been logged in via email confirmation, "
                         "please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
-            return Response({
+            serializer = UserInfosSerializer(user)
+            data = {
                 'auth_token': token.key,
-                'username': user.username,
-                'email': user.email,
+                'user': serializer.data
+            }
+            return Response({
+                'user': serializer.data,
+                'auth_token': token.key,
                 'message': msg
                 })
         raise ValidationError(serializer.errors, code='authorization')

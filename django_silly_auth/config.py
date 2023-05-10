@@ -41,7 +41,7 @@ SILLY_AUTH_SETTINGS = {
     "ALLOW_CREATE_USER_ENDPOINT": True,  # activate this endpoint
     "ALLOW_MY_INFOS_ENDPOINT": True,  # activate this endpoint
     "ALLOW_DELETE_ME_ENDPOINT": True,  # activate this endpoint
-    "USER_INFOS_EXCLUDE": ['password', 'id'],  # fields to exclude from the user infos
+    "USER_INFOS_EXCLUDE": ['password',],  # fields to exclude from the user infos
 
     # pure SPA only:
     "SPA_EMAIL_LOGIN_LINK": "http://your spa address/",  # + <jwt_token>",
