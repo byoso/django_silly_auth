@@ -5,7 +5,7 @@ from django.core.validators import (
     MinLengthValidator,
     MaxLengthValidator
     )
-from django.utils.translation import gettext_lazy as _
+from django_silly_auth.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf

@@ -1,7 +1,7 @@
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import render
-from django.utils.translation import gettext_lazy as _
+from django_silly_auth.translation import gettext_lazy as _
 from django.db import transaction
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf

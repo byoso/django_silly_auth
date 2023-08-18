@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core import exceptions
 from django.contrib.auth.password_validation import validate_password
-from django.utils.translation import gettext_lazy as _
+from django_silly_auth.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
@@ -118,20 +118,13 @@ class LoginSerializer(serializers.Serializer):
         credential = data.get('credential')
         password = data.get('password')
         errors = dict()
-        credential_errors = list()
-        password_errors = list()
 
         if "@" in credential:
             if not User.objects.filter(email=credential).exists():
-                credential_errors += [_("Email not found"), ]
+                errors['detail'] = _("Incorrect credentials.")
         else:
             if not User.objects.filter(username=credential).exists():
-                credential_errors += [_("User not found"), ]
-
-        if credential_errors:
-            errors['credential'] = credential_errors
-        if password_errors:
-            errors['password'] = password_errors
+                errors['detail'] = _("Incorrect credentials.")
 
         if errors:
             raise serializers.ValidationError(errors)

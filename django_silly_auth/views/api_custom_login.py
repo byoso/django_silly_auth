@@ -1,8 +1,8 @@
 
 from django.db import transaction
-from django.utils.translation import gettext_lazy as _
+from django_silly_auth.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
-
+from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
@@ -45,6 +45,8 @@ class LoginWithAuthToken(ObtainAuthToken):
                     'Please check your inbox for a confirmation link.')
                 raise ValidationError({'detail': [msg]}, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
+            user.last_login = timezone.now()
+            user.save()
             serializer = UserInfosSerializer(user)
             data = {
                 'auth_token': token.key,
@@ -78,6 +80,8 @@ class LoginWithJWTToken(APIView):
                 msg = _("You've been logged in via email confirmation, "
                         "please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
+            user.last_login = timezone.now()
+            user.save()
             serializer = UserInfosSerializer(user)
             data = {
                 'auth_token': token.key,

@@ -24,7 +24,7 @@ DSA works as well with both DRF and Classic, just use differents simple settings
 
 ### Changelog
 
-
+- 1.1.3: USE_I18N = False crash fixed
 - 1.1.0: login improved: returns 'auth_token', errors are normalized.
 - 1.0.5: test coverage: 75 %
 - 1.0.1: **i18n** fr + en

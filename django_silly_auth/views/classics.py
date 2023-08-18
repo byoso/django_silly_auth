@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import gettext_lazy as _
+from django_silly_auth.translation import gettext_lazy as _
 from django.db import transaction
 
 from django_silly_auth.config import SILLY_AUTH_SETTINGS as conf
