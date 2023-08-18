@@ -45,8 +45,9 @@ class LoginWithAuthToken(ObtainAuthToken):
                     'Please check your inbox for a confirmation link.')
                 raise ValidationError({'detail': [msg]}, code='authorization')
             token, created = Token.objects.get_or_create(user=user)
-            user.last_login = timezone.now()
-            user.save()
+            if hasattr(user, 'last_login'):
+                user.last_login = timezone.now()
+                user.save()
             serializer = UserInfosSerializer(user)
             data = {
                 'auth_token': token.key,
@@ -80,8 +81,9 @@ class LoginWithJWTToken(APIView):
                 msg = _("You've been logged in via email confirmation, "
                         "please change your password if necessary.")
             token, created = Token.objects.get_or_create(user=user)
-            user.last_login = timezone.now()
-            user.save()
+            if hasattr(user, 'last_login'):
+                user.last_login = timezone.now()
+                user.save()
             serializer = UserInfosSerializer(user)
             data = {
                 'auth_token': token.key,
