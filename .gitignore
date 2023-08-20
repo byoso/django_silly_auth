@@ -1,7 +1,4 @@
 # environment
-_project_fake/
-_users/
-/templates
 .venv/
 manage.py
 __pycache__/

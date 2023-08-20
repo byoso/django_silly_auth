@@ -51,7 +51,7 @@ def login_view(request):
                     request, username=credential, password=password)
             if user is not None and user.is_confirmed:
                 login(request, user)
-                return redirect('classic_index')
+                return redirect(conf['CLASSIC_INDEX_NAME'])
             else:
                 messages.add_message(
                     request, messages.ERROR,
@@ -76,7 +76,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('classic_index')
+    return redirect(conf['CLASSIC_INDEX_NAME'])
 
 
 @transaction.atomic
@@ -217,7 +217,7 @@ def reset_password(request, token=None):
                 )),
             extra_tags="danger"
         )
-        return redirect('classic_index')
+        return redirect(conf['CLASSIC_INDEX_NAME'])
 
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
@@ -232,7 +232,7 @@ def reset_password(request, token=None):
                 message=_("Your password has been successfully reset. Please log in."),
                 extra_tags="success"
             )
-            return redirect('classic_index')
+            return redirect(conf['CLASSIC_INDEX_NAME'])
         else:
             context = {
                 'form': form,
@@ -346,7 +346,7 @@ def confirm_email(request, token):
                 )),
             extra_tags="danger"
         )
-        return redirect('classic_index')
+        return redirect(conf['CLASSIC_INDEX_NAME'])
     if user is not None and user.is_active:
         if not user.is_confirmed:
             user.is_confirmed = True
@@ -366,7 +366,7 @@ def confirm_email(request, token):
             extra_tags="success"
         )
 
-        return redirect("classic_index")
+        return redirect(conf['CLASSIC_INDEX_NAME'])
 
 
 @transaction.atomic

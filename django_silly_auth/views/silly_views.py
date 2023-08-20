@@ -40,7 +40,7 @@ def dsa_confirm_email(request, token):
         "base_template": conf["BASE_TEMPLATE"],
         "message": msg,
         "tag": tag,
-        "link": conf["SILLY_LINK_TO_SPA"],
+        "link": conf["SILLY_LINK_TO_API"],
         "site_name": conf["SITE_NAME"],
     }
     return render(request, 'silly_auth/silly/silly_confirm_email.html', context)
@@ -52,7 +52,7 @@ def dsa_password_reset_done(request):
         "base_template": conf["BASE_TEMPLATE"],
         "message": msg,
         "tag": "success",
-        "link": conf["SILLY_LINK_TO_SPA"],
+        "link": conf["SILLY_LINK_TO_API"],
         "site_name": conf["SITE_NAME"],
     }
     return render(request, 'silly_auth/silly/silly_confirm_email.html', context)

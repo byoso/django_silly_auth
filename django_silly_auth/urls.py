@@ -115,7 +115,7 @@ if conf["USE_CLASSIC"]:
 
 # Email Confirmation routes
 
-if conf['CONFIRMATION_METHOD'] == 'GET':  # uses the classic views, not the 'good' way for a SPA, but works.
+if conf['CONFIRMATION_METHOD'] == 'GET':  # uses the classic views, not the 'good' way for a API, but works.
     urlpatterns += [
         path(f'{prefix}classic_reset_password/<token>', classics.reset_password, name='classic_reset_password'),
         path(f'{prefix}classic_request_password_reset/', classics.request_password_reset, name='classic_request_password_reset'),

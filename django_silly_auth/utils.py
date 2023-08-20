@@ -51,7 +51,7 @@ def send_password_reset_email(request, user):
     if conf["CONFIRMATION_METHOD"] == 'GET':
         link = domain + reverse('classic_reset_password', args=[token])
     if conf["CONFIRMATION_METHOD"] == 'POST':
-        link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
+        link = conf['API_EMAIL_LOGIN_LINK'] + f"{token}"
     context = {
         'user': user,
         'link': link,
@@ -81,7 +81,7 @@ def send_confirm_email(request, user, new_email=False):
     elif conf["CONFIRMATION_METHOD"] == 'GET':
         link = domain + reverse('classic_confirm_email', args=[token])
     if conf["CONFIRMATION_METHOD"] == 'POST':
-        link = conf['SPA_EMAIL_LOGIN_LINK'] + f"{token}"
+        link = conf['API_EMAIL_LOGIN_LINK'] + f"{token}"
     context = {
         'user': user,
         'link': link,

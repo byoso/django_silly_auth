@@ -7,7 +7,7 @@ class SillyAuthError(Exception):
 
 SILLY_AUTH_SETTINGS = {
     # Quick settings
-    "AUTO_SET": 'TRY',  # 'CLASSIC', 'SPA', 'TRY', 'SILLY' or 'TEST'
+    "AUTO_SET": 'CLASSIC',  # 'CLASSIC', 'API', 'TRY', 'SILLY' or 'TEST'
     "DSA_PREFIX": 'auth/',  # only the CLASSIC_INDEX view has a blank prefix, it's the entry point in a classic site.
 
     # Secondary settings
@@ -19,11 +19,13 @@ SILLY_AUTH_SETTINGS = {
     # Classic settings
     "USE_CLASSIC": True,
         # redirections
-    "USE_CLASSIC_INDEX": True,  # if False, your index route must have the name='classic_index'
+    "USE_CLASSIC_INDEX": True,  # if False, your index route must have the name='classic_index' or change CLASSIC_INDEX_NAME
     "USE_CLASSIC_ACCOUNT": True,  # if False, your account route must have the name='classic_account'
         # templates settings
     "TEMPLATES_TITLE": "D.S. AUTH",  # title if you use the provided templates
     "BASE_TEMPLATE": "silly_auth/_base.html",  # if you use the provided templates
+        # routes names
+    "CLASSIC_INDEX_NAME": 'classic_index',  # name of the classic_index route
         # templates paths
     "CLASSIC_INDEX": "silly_auth/classic/index.html",
     "CLASSIC_ACCOUNT": "silly_auth/classic/account.html",
@@ -43,13 +45,13 @@ SILLY_AUTH_SETTINGS = {
     "ALLOW_DELETE_ME_ENDPOINT": True,  # activate this endpoint
     "USER_INFOS_EXCLUDE": ['password',],  # fields to exclude from the user infos
 
-    # pure SPA only:
-    "SPA_EMAIL_LOGIN_LINK": "http://your spa address/",  # + <jwt_token>",
+    # pure API only:
+    "API_EMAIL_LOGIN_LINK": "http://your spa address/",  # + <jwt_token>",
 
 
     # Silly settings
     "USE_SILLY": False,
-    "SILLY_LINK_TO_SPA": None,  # link used in templates to get back to your SPA
+    "SILLY_LINK_TO_API": None,  # link used in templates to get back to your API
 
     # emails settings
     "EMAIL_TERMINAL_PRINT": True,  # print emails to terminal
@@ -74,11 +76,12 @@ try:
 except AttributeError:
     is_set = False
 
+
 if is_set and "AUTO_SET" in settings.SILLY_AUTH:
     auto_set = settings.SILLY_AUTH['AUTO_SET']
-    if auto_set not in ['CLASSIC', 'SPA', 'SILLY', 'TRY', 'TEST']:
+    if auto_set not in ['CLASSIC', 'API', 'SILLY', 'TRY', 'TEST']:
         raise SillyAuthError(
-            "AUTO_SET must be 'CLASSIC', 'SPA', 'SILLY', 'TRY' or 'TEST'")
+            "AUTO_SET must be 'CLASSIC', 'API', 'SILLY', 'TRY' or 'TEST'")
 else:
     auto_set = SILLY_AUTH_SETTINGS["AUTO_SET"]
 
@@ -88,7 +91,7 @@ match auto_set:
         SILLY_AUTH_SETTINGS["USE_CLASSIC"] = True
         SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'GET'
 
-    case "SPA":
+    case "API":
         SILLY_AUTH_SETTINGS["USE_DRF"] = True
         SILLY_AUTH_SETTINGS["USE_CLASSIC"] = False
         SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] = 'POST'
@@ -127,8 +130,8 @@ if is_set:
         SILLY_AUTH_SETTINGS[key] = settings.SILLY_AUTH[key]
 
 
-if SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] == 'POST' and "SPA_EMAIL_LOGIN_LINK" not in settings.SILLY_AUTH:
-    raise SillyAuthError("Confirmation method is 'POST', you must define a SPA_EMAIL_LOGIN_LINK")
+if SILLY_AUTH_SETTINGS["CONFIRMATION_METHOD"] == 'POST' and "API_EMAIL_LOGIN_LINK" not in settings.SILLY_AUTH:
+    raise SillyAuthError("Confirmation method is 'POST', you must define a API_EMAIL_LOGIN_LINK")
 
 try:
     float(SILLY_AUTH_SETTINGS["DELETE_UNCONFIRMED_TIME"])
