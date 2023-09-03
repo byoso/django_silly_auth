@@ -46,6 +46,10 @@ setup(
     ],
     packages=[
         "django_silly_auth",
+        "django_silly_auth.management",
+        "django_silly_auth.management.commands",
+        "django_silly_auth.plop",
+        "django_silly_auth.plop._users",
         "django_silly_auth.templates",
         "django_silly_auth.templates.silly_auth",
         "django_silly_auth.templates.silly_auth._try",

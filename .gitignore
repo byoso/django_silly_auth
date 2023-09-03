@@ -3,6 +3,7 @@
 manage.py
 __pycache__/
 *.sqlite3
+/_users/
 
 # packaging
 .eggs/
