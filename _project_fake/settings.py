@@ -147,6 +147,14 @@ AUTH_USER_MODEL = '_users.User'
 ## Site's email config
 EMAIL_IS_CONFIGURED = False
 
+# for testing email easily and free: https://mailtrap.io/
+EMAIL_HOST = "mail.my-host.com"
+EMAIL_HOST_USER = "no-reply@xxxxxx.fr"
+EMAIL_HOST_PASSWORD = "xxxxxxx"
+EMAIL_PORT = 465
+# TLS/SSL is better on if available, otherwise keep it off
+EMAIL_USE_SSL = True
+
 if EMAIL_IS_CONFIGURED:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
@@ -157,6 +165,7 @@ SILLY_AUTH = {
     "CLASSIC_INDEX": "index.html",
     "BASE_TEMPLATE": "index.html",
     "SITE_NAME": "Super Site",
+    "EMAIL_TERMINAL_PRINT": False,
     # "API_EMAIL_LOGIN_LINK": "http://some_spa_link/",
     # "SILLY_LINK_TO_API": "http://google.fr",
     "DELETE_UNCONFIRMED_TIME": 0.02,
