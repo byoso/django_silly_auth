@@ -66,7 +66,7 @@ setup(
         ],
     # include_package_data=True,
     package_data={'': ['*.txt', '*.html', '*.po', '*.mo', '*.pot']},
-    python_requires='>=3.7',
+    python_requires='>=3.10',
     install_requires=[
         "pyjwt >= 2.6.0",
     ],
