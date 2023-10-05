@@ -90,6 +90,7 @@ class UserView(APIView):
     def post(self, request, format=None):
         """Create a new user"""
         serializer = CreateUserSerializer(data=request.data)
+        message = ""
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(request.data['password'])
