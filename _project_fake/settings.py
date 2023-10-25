@@ -137,11 +137,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # If used with Django Rest Framework
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',
-#     ],
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 AUTH_USER_MODEL = '_users.User'
 
 ## Site's email config
@@ -161,14 +161,15 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SILLY_AUTH = {
-    "AUTO_SET": "CLASSIC",
+    "AUTO_SET": "TEST",
     "CLASSIC_INDEX": "index.html",
     "BASE_TEMPLATE": "index.html",
     "SITE_NAME": "Super Site",
     "EMAIL_TERMINAL_PRINT": False,
-    # "API_EMAIL_LOGIN_LINK": "http://some_spa_link/",
-    # "SILLY_LINK_TO_API": "http://google.fr",
     "DELETE_UNCONFIRMED_TIME": 0.02,
     # "VERBOSE": True,
     # "ALLOW_GET_ALL_USERS": True,
+    # API settings
+    "API_EMAIL_LOGIN_LINK": "http://some_spa_link/",
+    "SILLY_LINK_TO_API": "http://google.fr",
 }
